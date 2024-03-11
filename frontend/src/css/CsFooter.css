@@ -1,0 +1,47 @@
+/* Code used from https://www.cs.ucf.edu as this would be a subdomain */
+
+.FooterBody {
+    background-color: #3e3e3e;
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    padding: 45px 15px;
+    text-align: center;
+    width: 100%
+}
+
+.FooterTitle {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+@media (min-width:768px) {
+    .FooterTitle {
+        font-size: 15px
+    }
+}
+
+.FooterText {
+    font-size: 9px;
+    font-weight: 400;
+    line-height: 1.8;
+    margin-bottom: 0;
+    margin-top: 25px
+}
+
+@media (min-width:768px) {
+    .FooterText {
+        font-size: 13px
+    }
+}
+
+p {
+    color: #fff;
+    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
+    -moz-osx-font-smoothing: auto;
+    -webkit-font-smoothing: auto
+}
