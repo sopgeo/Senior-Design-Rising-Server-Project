@@ -8,10 +8,11 @@ exports.getProjects = async (req, res) => {
           order: [["name", "ASC"]]
         });
       
-      
-        res.status(200).send(projects);
+        res.setHeader('Content-Type', 'application/json')
+        
+        res.status(200).json(projects);
       } catch (error) {
         console.log(error);
-        res.status(500).send({error: error, message: "Error occurred getting projects"});
+        res.status(500).json({error: error, message: "Error occurred getting projects"});
       }
 }
