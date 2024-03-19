@@ -13,6 +13,7 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.projects = require("./projectmodel")(sequelize, Sequelize)
+db.files = require("./filemodel")(sequelize, Sequelize)
 
 
 module.exports = db;

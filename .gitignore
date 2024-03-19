@@ -16,3 +16,4 @@ node_modules
 
 
 backend/db.config.js
+frontend/public/files

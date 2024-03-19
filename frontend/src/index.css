@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.hidelink a {
+  /* Define styles to make it look like regular text */
+  color: inherit; /* Inherit the color from the parent */
+  text-decoration: none; /* Remove underline */
+}

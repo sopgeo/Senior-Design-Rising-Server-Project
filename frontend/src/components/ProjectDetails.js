@@ -1,8 +1,13 @@
 const ProjectDetails = ({project}) => {
     return(
         <div>
-            <h>{project.name} {project.end_semester} {project.end_year}</h>
-            
+            {project.documents.length > 0 &&
+                <h className="hidelink">
+                    <a href={project.documents[0].filepath} target="_blank">
+                        {project.name} {project.end_semester} {project.end_year}
+                    </a>
+                </h>
+            }
         </div>
     )
 }
