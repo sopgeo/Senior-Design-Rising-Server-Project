@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const projectRoutes = require('./routes/projectroute')
+const fileRoutes = require('./routes/fileroute')
 
 const app = express();
 app.use(cors());
@@ -24,5 +25,6 @@ app.use((req, res, next) =>
 
 // routes
 app.use('/api/project', projectRoutes)
+app.use('/api/file', fileRoutes)
 
 app.listen(5000); // start Node + Express server on port 5000
