@@ -3,7 +3,7 @@ const path = require('path');
 const db = require('../models');
 const File = db.files;
 const fs = require('fs');
-
+const Projects = db.projects
 
 // Define the storage without setting the destination yet
   const storage = multer.diskStorage({
@@ -49,12 +49,16 @@ const fs = require('fs');
   
         // File has been moved, now save the file metadata to the database
         let newFile = File.create({
+            project_id: req.body.projectId,
             filename: req.file.filename,
-            filepath: req.file.path,
             filetype: req.file.mimetype,
             filesize: req.file.size,
-            project_id: req.body.projectId
+            filepath: `Files/${year}/${semester}/Projects/${projectId}/` + req.file.originalname,
+            hidden: 0,
+            type: "final_document"
         });
+
+        Projects.update({documents: 1}, {where: {project_id: req.body.projectId}})
   
         res.send({ message: 'File uploaded successfully', path: finalPath });
       });
