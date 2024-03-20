@@ -54,7 +54,6 @@ const Projects = db.projects
             filetype: req.file.mimetype,
             filesize: req.file.size,
             filepath: `Files/${year}/${semester}/Projects/${projectId}/` + req.file.originalname,
-            hidden: 0,
             type: "final_document"
         });
 

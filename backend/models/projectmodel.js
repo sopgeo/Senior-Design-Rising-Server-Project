@@ -7,11 +7,6 @@ module.exports = (sequelize, Sequelize) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        class_id: {
-          type: Sequelize.INTEGER,
-          foreignKey: true,
-          allowNull: false,
-        },
         group_id: {
           type: Sequelize.INTEGER,
           foreignKey: true,
@@ -29,14 +24,6 @@ module.exports = (sequelize, Sequelize) => {
         description: {
           type: Sequelize.TEXT,
         },
-        start_semester:{
-          type: Sequelize.STRING,
-          allowNull: false,
-        },
-        start_year: {
-          type: Sequelize.STRING,
-          allowNull: false,
-        },
         end_semester: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -45,15 +32,8 @@ module.exports = (sequelize, Sequelize) => {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        capacity: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-        },
         documents: {
           type: Sequelize.STRING,
-        },
-        hidden: {
-          type: Sequelize.BOOLEAN,
         },
       },
       {

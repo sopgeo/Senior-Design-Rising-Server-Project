@@ -7,14 +7,6 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      group_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      class_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
       project_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -32,10 +24,6 @@ module.exports = (sequelize, Sequelize) => {
       },
       filepath: {
         type: Sequelize.STRING,
-      },
-      hidden: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
       },
       user_id: {
         type: Sequelize.INTEGER,
