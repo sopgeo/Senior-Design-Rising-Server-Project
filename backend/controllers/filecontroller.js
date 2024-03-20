@@ -48,7 +48,7 @@ const Projects = db.projects
         }
   
         // File has been moved, now save the file metadata to the database
-        let newFile = File.create({
+        const newFile = File.create({
             project_id: req.body.projectId,
             filename: req.file.filename,
             filetype: req.file.mimetype,

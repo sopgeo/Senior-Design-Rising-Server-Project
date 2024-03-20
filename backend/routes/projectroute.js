@@ -5,4 +5,6 @@ const router = express.Router()
 
 router.get('/', projectController.getProjects)
 
+router.post('/createProject', projectController.createProject)
+
 module.exports = router

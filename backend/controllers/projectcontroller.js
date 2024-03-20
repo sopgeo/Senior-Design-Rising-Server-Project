@@ -30,3 +30,23 @@ exports.getProjects = async (req, res) => {
         res.status(500).json({error: error, message: "Error occurred getting projects"});
       }
 }
+
+exports.createProject = async (req, res) => {
+  try {
+    const newProject = Project.create({
+      group_id: req.body.group_id,
+      name: req.body.name,
+      sponsor: req.body.sponsor,
+      sponsor_contact: req.body.sponsor_contact,
+      description: req.body.description,
+      end_semester: req.body.end_semester,
+      end_year: req.body.end_year,
+      documents: 0
+    })
+
+    res.send({ message: 'Project created'})
+  }
+  catch (error) {
+    res.status(500).json({error: error, message: "Error occurred creating project"})
+  }
+}
