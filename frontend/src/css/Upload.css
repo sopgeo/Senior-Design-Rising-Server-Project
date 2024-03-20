@@ -1,0 +1,27 @@
+/* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
+    margin: 5px;
+} */
+.user-info {
+    margin: 10px;
+    display: inline-flex;
+    align-items: center;
+    text-align: left;
+}
+
+.full-name-field, .linked-in-field, .project-role-field, .project-name-field, .tags-field, .tech-doc-field, .proj-desc-field {
+    margin: 10px 15px;
+}
+
+
+
+.line1 {
+    margin: 10px;
+    display: inline-flex;
+    text-align: left;
+}
+
+.line2 {
+    margin: 10px;
+    display: inline-flex;
+    text-align: left;
+}
