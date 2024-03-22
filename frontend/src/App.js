@@ -16,7 +16,7 @@ function App() {
       </BrowserRouter>
 
       {/* Uncomment the below line to view and edit upload page */}
-      {/* <Upload/> */}
+      <Upload/>
       <CsFooter/>
     </div>
   );

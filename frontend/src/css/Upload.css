@@ -1,6 +1,20 @@
+#done-button {
+    width: 100px;
+    margin: 20px;
+    background-color: #FFC904;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+/* #done-button:hover {
+    background-color: ;
+} */
+
 /* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
     margin: 5px;
 } */
+
 .user-info {
     margin: 10px;
     display: inline-flex;
