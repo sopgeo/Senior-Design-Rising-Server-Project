@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './css/App.css';
 import CsFooter from './components/CsFooter';
 import Upload from './components/Upload';
+import Home from './components/Home';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -9,14 +10,14 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          {/* <Route path='/' index element={<Home/>} /> */}
+          <Route path='/' index element={<Home/>} />
           <Route path='/Upload' index element={<Upload/>} />
 
         </Routes>
       </BrowserRouter>
 
       {/* Uncomment the below line to view and edit upload page */}
-      <Upload/>
+      {/* <Upload/> */}
       <CsFooter/>
     </div>
   );
