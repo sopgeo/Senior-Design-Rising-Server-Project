@@ -4,6 +4,7 @@ import ProjectPage from './pages/ProjectPage'
 
 import Upload from './components/Upload';
 import Home from './components/Home';
+import Project from './components/Project';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
@@ -13,14 +14,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' index element={<ProjectPage/>} />
-          <Route path='/Upload' index element={<Upload/>} />
+          <Route path='/home' index element={<Home/>} />
+          <Route path='/upload' index element={<Upload/>} />
+          <Route path='/project' index element={<Project/>} />
 
         </Routes>
       </BrowserRouter>
 
       {/* Uncomment the below line to view and edit upload page */}
       {/* <Upload/> */}
-      <CsFooter/>
     </div>
   );
 }

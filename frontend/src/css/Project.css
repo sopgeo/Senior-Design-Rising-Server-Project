@@ -1,0 +1,47 @@
+.Title {
+    color: #000;
+    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
+    text-align: left;
+    padding-left: 5%;
+}
+
+.GridContainer {
+    display: grid;
+    grid-template-columns: 70% auto;
+    gap: 10px;
+    text-align: left;
+}
+
+.Details {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.Students {
+    padding-left: 5%;
+}
+
+p {
+    color: #000;
+}
+
+
+
+
+
+
+.FooterBody {
+    background-color: #3e3e3e;
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    padding: 45px 15px;
+    text-align: center;
+    width: 100%
+}
+
+@media (min-width:768px) {
+    .FooterTitle {
+        font-size: 15px
+    }
+}
