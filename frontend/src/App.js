@@ -1,7 +1,5 @@
 import './css/App.css';
-import CsFooter from './components/CsFooter';
 import ProjectPage from './pages/ProjectPage'
-
 import Upload from './components/Upload';
 import Home from './components/Home';
 import Project from './components/Project';
@@ -13,7 +11,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' index element={<ProjectPage/>} />
+          <Route path='/ab' index element={<ProjectPage/>} />
           <Route path='/home' index element={<Home/>} />
           <Route path='/upload' index element={<Upload/>} />
           <Route path='/project' index element={<Project/>} />
