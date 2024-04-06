@@ -3,7 +3,9 @@ const projectController = require('../controllers/projectcontroller')
 
 const router = express.Router()
 
-router.get('/', projectController.getProjects)
+router.get('/getProjects', projectController.getProjects)
+
+router.get('/getProject', projectController.getProject)
 
 router.post('/createProject', projectController.createProject)
 

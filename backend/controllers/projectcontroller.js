@@ -31,6 +31,34 @@ exports.getProjects = async (req, res) => {
       }
 }
 
+exports.getProject = async (req, res) => {
+  try {
+      const project_id = req.query.project_id
+      const project = await Project.findOne({
+        where: { project_id: project_id}
+      });
+    
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+  
+      res.setHeader('Content-Type', 'application/json');
+
+      // Fetch related files
+      var files = await Files.findAll({ where: { project_id: project_id } });
+
+      // Attach documents to the project if any
+      project['documents'] = files.length > 0 ? files : [];
+
+      
+      res.status(200).json(project);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({error: error, message: "Error occurred getting project"});
+    }
+}
+
+
 exports.createProject = async (req, res) => {
   try {
     const newProject = Project.create({
