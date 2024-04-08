@@ -9,22 +9,51 @@ import { useState } from "react";
 
 function Project() {
   const [projectName, setProjectName] = useState("Placeholder name");
-  const [description, setDescription] = useState("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus.");
+  const [description, setDescription] = useState(
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus."
+  );
+  const [show, setShow] = useState("https://wwf.org");
+  const [tags, setTags] = useState([
+    "test",
+    "this is another tag",
+    "need to fill out space",
+    "hi",
+    "text",
+    "more text",
+    "continuing",
+    "other things",
+    "hoping this wraps",
+    "very long piece of text to fill up space",
+    "this shouldn't overflow please",
+  ]);
+  const [students, setStudents] = useState([
+    "Student1",
+    "Student2",
+    "Student3",
+    "Student4",
+    "Student5",
+  ]);
 
   function displayTags() {
-    let tempTags = [
-      "word",
-      "this is another tag",
-      "need to fill out space",
-      "hi",
-      "text",
-      "more text",
-      "continuing",
-      "other things" /*, "hoping this wraps", "very long piece of text to fill up space", "this shouldn't overflow please"*/,
-    ];
+    if (Array.isArray(tags)) {
+      return tags.map((tag) => (
+        <>
+          <span className="Tag">{tag}</span>
+        </>
+      ));
+    } else {
+      return <></>;
+    }
+  }
 
-    if (Array.isArray(tempTags)) {
-      return tempTags.map((tag) => <span className="Tag">{tag}</span>);
+  function displayStudents() {
+    if (Array.isArray(students)) {
+      return students.map((student) => (
+        <>
+          {student}
+          <br />
+        </>
+      ));
     } else {
       return <></>;
     }
@@ -44,7 +73,7 @@ function Project() {
         <Row>
           <Col xs={7}>
             <div className="Details">
-              {displayTags()}
+              <figure>{displayTags()}</figure>
 
               <p class="Details">{description}</p>
             </div>
@@ -52,17 +81,13 @@ function Project() {
           <Col auto>
             <div className="Students">
               <h3>Students</h3>
-              Person 1<br />
-              Person 2<br />
-              Person 4<br />
-              Person 4<br />
-              Person 5<br />
+              {displayStudents()}
             </div>
           </Col>
         </Row>
 
         <Row classname="PDF">
-          <iframe src={"https://wwf.org"} width={"75%"} height={"1000px"} />
+          <iframe src={show} width={"75%"} height={"1000px"} />
         </Row>
         <br />
         <br />

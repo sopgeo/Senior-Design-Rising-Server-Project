@@ -28,7 +28,9 @@
     padding: .1% 1% .5%;
     border-radius: 5%;
     margin-right: 2%;
-    white-space: nowrap;
+    margin-bottom: 10px;
+    word-wrap: normal;
+    display: inline-block;
 }
 
 p {
