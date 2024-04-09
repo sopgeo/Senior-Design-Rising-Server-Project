@@ -22,6 +22,10 @@
     padding-left: 5%;
 }
 
+.Tags {
+    padding-left: 5%;
+}
+
 .Tag {
     background-color: #FFC904;
     color: #000;
@@ -35,25 +39,4 @@
 
 p {
     color: black;
-}
-
-
-
-
-
-
-.FooterBody {
-    background-color: #3e3e3e;
-    box-sizing: border-box;
-    display: block;
-    margin: 0;
-    padding: 45px 15px;
-    text-align: center;
-    width: 100%
-}
-
-@media (min-width:768px) {
-    .FooterTitle {
-        font-size: 15px
-    }
 }
