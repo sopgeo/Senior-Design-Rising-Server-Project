@@ -19,25 +19,31 @@ function GenericHeader({ background, user }) {
     if (user === "admin") {
       return (
         <div className={css}>
-        <a href="/home">Home</a>
-        <a href="/search">Projects</a>
-        <a href="/upload">Upload</a>
-        <a href="/manage">Manage</a>
+          <div className="navbar">
+            <div className="home"><a className="navItem" href="/home">Home</a></div>
+            <a className="navItem" href="/search">Projects</a>
+            <a className="navItem" href="/upload">Upload</a>
+            <a className="navItem" href="/manage">Manage</a>
+          </div>
         </div>
       );
     } else if (user === "student") {
       return (
         <div className={css}>
-        <a href="/home">Home</a>
-        <a href="/search">Projects</a>
-        <a href="/upload">Upload</a>
+          <div className="navbar">
+            <div className="home"><a className="navItem" href="/home">Home</a></div>
+            <a className="navItem" href="/search">Projects</a>
+            <a className="navItem" href="/upload">Upload</a>
+          </div>
         </div>
       );
     } else {
       return (
         <div className={css}>
-          <a href="/home">Home</a>
-          <a href="/search">Projects</a>
+          <div className="navbar">
+          <div className="home"><a className="navItem" href="/home">Home</a></div>
+            <a className="navItem" href="/search">Projects</a>
+          </div>
         </div>
       );
     }

@@ -15,6 +15,21 @@
     opacity: 0%;
 }
 
-.text {
+.navItem {
     color: #fff;
+    text-decoration: none;
+}
+
+.navbar {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: 30% auto auto auto auto auto;
+    gap: 10px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.home {
+    grid-column: 2;
 }
