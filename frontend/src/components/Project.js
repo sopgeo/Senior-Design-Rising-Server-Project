@@ -13,6 +13,7 @@ function Project() {
     projectId = "";
   }
 
+  const [user, setUser] = useState("public");
   const [projectName, setProjectName] = useState("Placeholder name");
   const [description, setDescription] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus."
@@ -78,13 +79,17 @@ function Project() {
     return show;
   }
 
+  function getUser() {
+    return user;
+  }
+
   useEffect(() => {
     // May be needed to run functions in the return if they give loading issues
   }, []);
 
   return (
     <>
-      <GenericHeader background={false} />
+      <GenericHeader background={true} user={getUser()} />
 
       <div className="PageBody">
         <br />

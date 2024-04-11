@@ -10,7 +10,7 @@ function GenericHeader({ background, user }) {
     );
   }
 
-  function NavBar(background, user) {
+  function NavBar() {
     let css = "background";
     if (background == false) {
       css = "see-through";
