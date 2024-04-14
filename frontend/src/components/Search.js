@@ -46,7 +46,7 @@ function Search() {
           </div>
           <div class="SearchTextBox">
               <h3>Search:   </h3>
-            <input type="text" placeholder="Search..." />
+            <input type="text" name="Search" placeholder="Search..." />
           </div>
 
           <div className="SearchResults"></div>
