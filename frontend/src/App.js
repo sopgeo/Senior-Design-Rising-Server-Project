@@ -3,6 +3,7 @@ import ProjectPage from './pages/ProjectPage'
 import Upload from './components/Upload';
 import Home from './components/Home';
 import Project from './components/Project';
+import Search from './components/Search';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 
@@ -15,6 +16,7 @@ function App() {
           <Route path='/home' index element={<Home/>} />
           <Route path='/upload' index element={<Upload/>} />
           <Route path='/project' index element={<Project/>} />
+          <Route path='/search' index element={<Search/>} />
 
         </Routes>
       </BrowserRouter>
