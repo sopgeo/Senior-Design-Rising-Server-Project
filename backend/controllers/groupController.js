@@ -14,13 +14,31 @@ function parseCSV( path ){
     });
 }
 
+//Returns an object that has arrays of student names with keys that are the group names
 function createGroups( path ){
+
+    const groups = {};
 
     parseCSV(path)
         .then((data) => {
+
+            data.forEach((row) => {
+                const studentName = row['name'];
+                const groupName = row['group_name'];
+    
+                //checking if group exists
+                if (!groups[groupName]) {
+                    groups[groupName] = [];
+                }
+    
+                //add student name to group
+                groups[groupName].push(studentName);
+            });
 
         })
         .catch((error) => {
             console.error('Error parsing group creation CSV:', error);
         });
+        
+    return groups;
 }
