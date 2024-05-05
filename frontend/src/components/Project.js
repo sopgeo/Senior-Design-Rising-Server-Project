@@ -1,18 +1,26 @@
 import React from "react";
 import CsFooter from "../components/CsFooter";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import "bootstrap/dist/css/bootstrap.css";
+import GenericHeader from "../components/GenericHeader";
 import "../css/Project.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Project() {
+  const urlInfo = new URLSearchParams(window.location.search);
+  var projectId;
+  if (urlInfo.has("projectId")) {
+    projectId = urlInfo.get("projectId");
+  } else {
+    projectId = "";
+  }
+
+  const [user, setUser] = useState("public");
   const [projectName, setProjectName] = useState("Placeholder name");
   const [description, setDescription] = useState(
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus."
   );
-  const [show, setShow] = useState("https://wwf.org");
+  const [show, setShow] = useState(
+    "http://localhost:3000/Files/2018/Fall/Projects/402/DesignDocument.pdf"
+  );
   const [tags, setTags] = useState([
     "test",
     "this is another tag",
@@ -59,40 +67,62 @@ function Project() {
     }
   }
 
+  function getName() {
+    return projectName;
+  }
+
+  function getDescription() {
+    return description;
+  }
+
+  function getPDF() {
+    return show;
+  }
+
+  function getUser() {
+    return user;
+  }
+
+  useEffect(() => {
+    // May be needed to run functions in the return if they give loading issues
+  }, []);
+
   return (
     <>
-      <Container className="PageBody">
-        <br />
-        <br />
+      <GenericHeader background={true} user={getUser()} />
+
+      <div className="PageBody">
         <br />
 
-        <Row>
-          <h1 className="Title">{projectName}</h1>
-        </Row>
+        <h1 className="Title">{getName()}</h1>
+        <br />
 
-        <Row>
-          <Col xs={7}>
-            <div className="Details">
-              <figure>{displayTags()}</figure>
+        <div class="GridContainer">
+          <div className="Details">
+            <figure className="Tags">{displayTags()}</figure>
+            <p class="Details">{getDescription()}</p>
+          </div>
 
-              <p class="Details">{description}</p>
-            </div>
-          </Col>
-          <Col auto>
-            <div className="Students">
-              <h3>Students</h3>
-              {displayStudents()}
-            </div>
-          </Col>
-        </Row>
+          <div className="Students">
+            <h3>Students</h3>
+            {displayStudents()}
+          </div>
+        </div>
 
-        <Row classname="PDF">
-          <iframe src={show} width={"75%"} height={"1000px"} />
-        </Row>
+        <div classname="PDF">
+          <object
+            data={getPDF()}
+            type="application/pdf"
+            width="100%"
+            height="1000px"
+          >
+            WHYYYYYY
+          </object>
+        </div>
         <br />
         <br />
         <br />
-      </Container>
+      </div>
       <CsFooter />
     </>
   );

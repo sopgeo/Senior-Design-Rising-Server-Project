@@ -4,7 +4,6 @@ import "../css/CsFooter.css";
 function CsFooter() {
   return (
     <div className="FooterBody">
-      <div>
         <div className="FooterTitle">
           <p>DEPARTMENT OF CS, CECS, UCF</p>
         </div>
@@ -15,7 +14,6 @@ function CsFooter() {
             <br />© University of Central Florida
           </p>
         </div>
-      </div>
     </div>
   );
 }
