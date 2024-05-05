@@ -5,6 +5,7 @@ import Home from './components/Home';
 import Project from './components/Project';
 import Search from './components/Search';
 
+import Header from './components/GenericHeader.js';
 import Navbar from './components/Navbar';
 import Footer from './components/CsFooter.js';
 
@@ -16,6 +17,7 @@ function App() {
     
     <div className="App">
       <Navbar/>
+      {/* <Header/> */}
       <BrowserRouter>
         <Routes>
           <Route path='/ab' index element={<ProjectPage/>} />
