@@ -2,6 +2,7 @@
 import "../css/Upload.css";
 import React, { useState } from "react";
 import { useDropzone } from 'react-dropzone'
+import TagsInput from "../components/TagsInput"
 
 function Upload() {
     // const [dataURL, setDataURL] = useState(null)}
@@ -52,17 +53,17 @@ function Upload() {
             <div className="full-name-field">
                 <div id="full-name-header">Full Name</div>
                 {/* <br/> */}
-                <input type="text" id="full-name-input"/>
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
             </div>
 
             <div className="linked-in-field">
                 <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input"/>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
             </div>
 
             <div className="project-role-field">
                 <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input"/>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
             </div>
         
             {/* <button onClick={addUser}>+</button> */}
@@ -75,12 +76,12 @@ function Upload() {
             <div className="line1">
                 <div className="project-name-field">
                     <div id="project-name">Project Name</div>
-                    <input type="text" id="proj-name-input"/>
+                    <input type="text" id="proj-name-input" placeholder="Type project name here..."/>
                 </div>
                 
                 <div className="tags-field">
                     <div id="tags">Tags</div>
-                    <input type="text" id="tags-input"/>
+                    <TagsInput />
                 </div>
             </div>
             <br/>
@@ -116,7 +117,7 @@ function Upload() {
 
                 <div className="proj-desc-field">
                     <div id="project-description">Project description</div>
-                    <input type="text" id="proj-desc"/>
+                    <input type="text" id="proj-desc" placeholder="Type project description here..."/>
                 </div>
             </div>
 
