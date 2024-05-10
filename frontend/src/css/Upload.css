@@ -6,11 +6,61 @@
 
 
 .upload-page {
+    margin: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    min-height: 100vh;
+    /* min-height: 100vh; */
+}
+
+.upload-header h1, .upload-header h2{
+    margin: 10px;
+}
+
+#full-name-header, #linked-in-header, #project-role-header, #project-name, #tags, #project-description{
+    margin-left: 3px;
+    margin-bottom: 8px;
+}
+
+.user-info {
+    margin: 10px;
+    display: flex;
+    /* align-items: left; */
+    text-align: left;
+}
+
+#full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc {
+    border: 1px solid #555555;
+    height: 45px;
+    padding: 10px;   
+}
+
+#proj-desc {
+    /* height: 200px; */
+    /* width: 150px; */
+}
+
+#full-name-input, #linked-in-input, #project-role-input {
+    width: 214px;
+}
+
+.full-name-field, .linked-in-field, .project-role-field, .project-name-field, .tags-field, .tech-doc-field, .proj-desc-field {
+    margin: 10px 15px;
+}
+
+
+.line1 {
+    margin: 10px;
+    display: flex;
+    justify-content: left;
+    text-align: left;
+}
+
+.line2 {
+    margin: 10px;
+    display: inline-flex;
+    text-align: left;
 }
 
 /* upload section */
@@ -19,7 +69,7 @@
     width: 100%;
 }
 
-.drag-area {
+.drag-area, .drop-files {
     width: 450px;
     height: 200px;
     /* height: 200px; */
@@ -39,26 +89,26 @@
     margin: 10px auto;
 }
 
-.drag-area .icon {
+.drag-area .icon, .drop-files {
     font-size: 25px;
 }
 
-.drag-area .span {
+.drag-area .span, .drop-files {
     white-space: pre;
 }
 
-.drag-area .header {
+.drag-area .header, .drop-files {
     margin: 5px;
     white-space: pre;
 }
 
-.drag-area .support {
+.drag-area .support, .drop-files {
    font-size: 12px;
    color: grey;
    margin: 10px 0 15px 0;
 }
 
-.drag-area .button {
+.drag-area .button, .drop-files {
     font-weight: 700;
 }
 
@@ -79,25 +129,4 @@
     margin: 5px;
 } */
 
-.user-info {
-    margin: 10px;
-    display: inline-flex;
-    align-items: center;
-    text-align: left;
-}
 
-.full-name-field, .linked-in-field, .project-role-field, .project-name-field, .tags-field, .tech-doc-field, .proj-desc-field {
-    margin: 10px 15px;
-}
-
-.line1 {
-    margin: 10px;
-    display: inline-flex;
-    text-align: left;
-}
-
-.line2 {
-    margin: 10px;
-    display: inline-flex;
-    text-align: left;
-}

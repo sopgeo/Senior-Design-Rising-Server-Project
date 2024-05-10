@@ -1,10 +1,48 @@
-import React from "react";
+// import React from "react";
 import "../css/Upload.css";
+import React, { useState } from "react";
+import { useDropzone } from 'react-dropzone'
 
 function Upload() {
+    // const [dataURL, setDataURL] = useState(null)}
+    const [uploadedURL, setUploadedURL] = useState(null)
+
+    // const onDrop = useCallback(acceptedFiles => {
+    //     acceptedFiles.forEach(file => {
+    //         const reader = new FileReader()
+    //         reader.onabort = () => console.log("file reading was aborted")
+    //         reader.onerror = () => console.log("file reading has an error")
+    //         // reader.onload = () => {
+    //         //     const binaryStr = reader.result
+    //         //     setDataURL(binaryStr)
+    //         // }
+    //         // reader.readAsDataURL(file)
+    //     })
+    // }, [])
+
+    const {
+        getRootProps,
+        getInputProps,
+        acceptedFiles,
+        isDragActive,
+    } = useDropzone({})
+
+    const files = acceptedFiles.map((file) => (
+        <li key={file.path}>
+          {file.path} - {file.size} bytes
+        </li>
+      ));
+
+    const selectedFile = acceptedFiles[0]
+    console.log(selectedFile)
+
+
   return (
       <div className="upload-page">
+        <script src="../Pages/UploadPage.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
+        
         <div className="upload-header">
             <h1>Upload your project</h1>
             <h3>Enter metadata about your project and submit it for admin approval</h3>
@@ -12,20 +50,18 @@ function Upload() {
 
         <div className="user-info">
             <div className="full-name-field">
-                <label id="full-name-header">Full Name</label>
-                <br/>
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
                 <input type="text" id="full-name-input"/>
             </div>
 
             <div className="linked-in-field">
-                <label id="linked-in-header">LinkedIn</label>
-                <br/>
+                <div id="linked-in-header">LinkedIn</div>
                 <input type="text" id="linked-in-input"/>
             </div>
 
             <div className="project-role-field">
-                <label id="project-role-header">Project Role</label>
-                <br/>
+                <div id="project-role-header">Project Role</div>
                 <input type="text" id="project-role-input"/>
             </div>
         
@@ -38,14 +74,12 @@ function Upload() {
         <div className="project-info">
             <div className="line1">
                 <div className="project-name-field">
-                    <label id="project-name">Project Name</label>
-                    <br/>
+                    <div id="project-name">Project Name</div>
                     <input type="text" id="proj-name-input"/>
                 </div>
                 
                 <div className="tags-field">
-                    <label id="tags">Tags</label>
-                    <br/>
+                    <div id="tags">Tags</div>
                     <input type="text" id="tags-input"/>
                 </div>
             </div>
@@ -54,8 +88,15 @@ function Upload() {
             <div className="line2">
                 <div className="tech-doc-field">
                 <label id="tech-doc">Upload your technical document</label>
-                    <br/>
-                    <div className="drag-area">
+                <div className="drop-zone" {...getRootProps({className: "dropzone"})} >
+                    <input className="input-zone" {...getInputProps() } />
+                    {isDragActive ? (
+                        <div className="drop-files">
+                             <p>Release to drop the file here</p>
+                        </div>
+    
+                    ) : 
+                    <div className='drag-area' >
                         <span className="header">Drag and drop a file here</span>
                         <span className="header">or <span class="button">select a file</span> <span className="header2"> from your computer </span> </span>
                         <span class="support">Supports: PDF only</span>
@@ -63,14 +104,19 @@ function Upload() {
                             <i class="fas fa-upload"></i>
                             {/* <i class="fas fa-cloud-upload"></i> */}
                         </div>
+                        <aside>
+                            <br/>
+                            <ul>{files}</ul>
+                        </aside>
                     </div>
-                    {/* <input type="file" id="myfile" name="myfile" multiple></input> */}
+                    }
+                    </div>
                 </div>
 
+
                 <div className="proj-desc-field">
-                    <label id="project-description">Project description</label>
-                    <br/>
-                    <input type="text" id="project-description"/>
+                    <div id="project-description">Project description</div>
+                    <input type="text" id="proj-desc"/>
                 </div>
             </div>
 
