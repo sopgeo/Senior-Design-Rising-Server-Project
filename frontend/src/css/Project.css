@@ -1,29 +1,34 @@
+.PageBody {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
 .Title {
     color: #000;
-    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
     text-align: left;
     padding-left: 5%;
 }
 
 .GridContainer {
     display: grid;
-    grid-template-columns: 70% auto;
     gap: 10px;
     text-align: left;
+    justify-items: stretch;
 }
 
 .Details {
-    padding-left: 5%;
-    padding-right: 5%;
-    color: black;
+    grid-column: 1 / span 6;
+    grid-row: 1;
+    max-width: 100%;
+    
 }
 
 .Students {
-    padding-left: 5%;
-}
-
-.Tags {
-    padding-left: 5%;
+    grid-column: 7 / span 3;
+    grid-row: 1;
+    padding-left: 3vw;
+    padding-right: 8vw;
+    text-align: left;
 }
 
 .Tag {
