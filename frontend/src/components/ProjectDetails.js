@@ -8,9 +8,11 @@ const ProjectDetails = ({project}) => {
                     </a>
                 </h>
             ) : (
-                <h1>
-                    {project.name} {project.end_semester} {project.end_year} {project.project_id} {project.documents.length}
-                </h1>
+                <h className="nolink">
+                    <a>
+                    {project.name} {project.end_semester} {project.end_year} {project.project_id}
+                    </a>
+                </h>
             )
             }
         </div>

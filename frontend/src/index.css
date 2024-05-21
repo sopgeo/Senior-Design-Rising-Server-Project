@@ -17,3 +17,9 @@ code {
   color: inherit; /* Inherit the color from the parent */
   text-decoration: none; /* Remove underline */
 }
+
+.nolink a {
+  /* Define styles to make it look like regular text */
+  color: red; /* red */
+  text-decoration: none; /* Remove underline */
+}
