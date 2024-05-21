@@ -35,7 +35,7 @@ function Project() {
     "this shouldn't overflow please",
   ]);
   const [students, setStudents] = useState([
-    "Student1",
+    "Salvador Felipe Jacinto Dalí y Domenech",
     "Student2",
     "Student3",
     "Student4",
@@ -100,14 +100,17 @@ function Project() {
         <div class="GridContainer">
           <div className="Details">
             <figure className="Tags">{displayTags()}</figure>
-            <p class="Details">{getDescription()}</p>
+            <p class="Description">{getDescription()}</p>
           </div>
 
           <div className="Students">
             <h3>Students</h3>
+            <br/>
             {displayStudents()}
           </div>
         </div>
+
+        <br />
 
         <div classname="PDF">
           <object
