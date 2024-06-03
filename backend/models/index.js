@@ -14,6 +14,8 @@ db.sequelize = sequelize;
 
 db.projects = require("./projectmodel")(sequelize, Sequelize)
 db.files = require("./filemodel")(sequelize, Sequelize)
+db.users = require("./usermodel")(sequelize, Sequelize)
+db.groups = require("./groupmodel")(sequelize, Sequelize)
 
 
 module.exports = db;
