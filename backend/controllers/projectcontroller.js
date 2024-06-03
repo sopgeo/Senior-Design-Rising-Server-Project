@@ -1,9 +1,12 @@
+const { Op } = require('sequelize');
+const { Sequelize } = require('../models');
 const db = require("../models/")
 
 const Project = db.projects
 const Files = db.files
 const User = db.users
 const Group = db.groups
+const Tags = db.tags
 
 exports.getProjects = async (req, res) => {
     try {
@@ -104,5 +107,67 @@ exports.createProject = async (req, res) => {
   }
   catch (error) {
     res.status(500).json({error: error, message: "Error occurred creating project"})
+  }
+}
+
+exports.projectSearch = async (req, res) => {
+  try {
+    // validate body and filters
+    const queryString = req.body.query || '';
+    const yearFilter = req.body.year || '';
+    const semesterFilter = req.body.semester || '';
+
+    const projects = await Project.findAll({
+      order: [["end_year", "DESC"]],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.substring]: queryString
+            }
+          },
+          {
+            sponsor: {
+              [Op.substring]: queryString
+            }
+          },
+          {
+            description: {
+              [Op.substring]: queryString
+            }
+          },
+          {
+            '$tags.name$': { [Op.substring]: queryString }
+          },
+          Sequelize.where(Sequelize.fn("concat", Sequelize.col('group.users.first_name'), ' ', Sequelize.col('group.users.last_name')), { [Op.substring]: queryString })
+        ],
+        end_semester: {
+          [Op.substring]: semesterFilter
+        },
+        end_year: {
+          [Op.substring]: yearFilter
+        }
+      },
+      include: [
+        {
+          model: Group,
+          include: User
+        },
+        {
+          model: Tags,
+          through: {
+            attributes: []
+          },
+        },
+      ]
+
+    });
+
+    res.status(200).send(projects);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({
+      message: err.message || "An error occurred while attempting to search projects.",
+    });
   }
 }

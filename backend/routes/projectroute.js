@@ -11,4 +11,6 @@ router.post('/getProjectMembers', projectController.getMembers)
 
 router.post('/createProject', projectController.createProject)
 
+router.post('/searchProjects', projectController.projectSearch)
+
 module.exports = router
