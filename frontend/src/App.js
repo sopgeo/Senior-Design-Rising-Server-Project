@@ -4,8 +4,6 @@ import Upload from './components/Upload';
 import Home from './components/Home';
 import Project from './components/Project';
 import Search from './components/Search';
-
-import Navbar from './components/Navbar';
 import Footer from './components/CsFooter.js';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -15,7 +13,6 @@ function App() {
   return (
     
     <div className="App">
-      <Navbar/>
       <BrowserRouter>
         <Routes>
           <Route path='/ab' index element={<ProjectPage/>} />
@@ -26,7 +23,6 @@ function App() {
 
         </Routes>
       </BrowserRouter>
-      <Footer/>
     </div>
   );
 }
