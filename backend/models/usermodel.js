@@ -8,6 +8,9 @@ module.exports = (sequelize, Sequelize) => {
           autoIncrement: true,
           allowNull: false,
         },
+        password: {
+          type: Sequelize.STRING,
+        },
         type: {
           type: Sequelize.ENUM("admin", "student", "sponsor", "coordinator", "advisor"),
           allowNull: false,

@@ -32,7 +32,7 @@ exports.getProjects = async (req, res) => {
         res.status(200).json(projects);
       } catch (error) {
         console.log(error);
-        res.status(500).json({error: error, message: "Error occurred getting projects"});
+        res.status(500).json({error: error.message, message: "Error occurred getting projects"});
       }
 }
 
@@ -59,7 +59,7 @@ exports.getProject = async (req, res) => {
       res.status(200).json(project);
     } catch (error) {
       console.log(error);
-      res.status(500).json({error: error, message: "Error occurred getting project"});
+      res.status(500).json({error: error.message, message: "Error occurred getting project"});
     }
 }
 
@@ -71,7 +71,7 @@ exports.getMembers = async (req, res) => {
       });
 
       if (!group) {
-        return res.status(500).json({ error: 'Group not found' });
+        throw Error("Group not found")
       }
 
       const group_id = group.group_id
@@ -85,7 +85,7 @@ exports.getMembers = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-      res.status(500).json({error: error, message: "Error occurred getting project members"});
+      res.status(500).json({error: error.message, message: "Error occurred getting project members"});
   }
 }
 
@@ -106,7 +106,7 @@ exports.createProject = async (req, res) => {
     res.send({ message: 'Project created'})
   }
   catch (error) {
-    res.status(500).json({error: error, message: "Error occurred creating project"})
+    res.status(500).json({error: error.message, message: "Error occurred creating project"})
   }
 }
 
