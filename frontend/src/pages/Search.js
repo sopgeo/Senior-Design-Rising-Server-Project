@@ -1,6 +1,6 @@
 import React from "react";
-import CsFooter from "./CsFooter";
-import GenericHeader from "./GenericHeader";
+import CsFooter from "../components/CsFooter";
+import GenericHeader from "../components/GenericHeader";
 import "../css/Search.css";
 import { useState, useEffect } from "react";
 import ProjectDetails from "../components/ProjectDetails";

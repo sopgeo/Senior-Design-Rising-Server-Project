@@ -2,8 +2,8 @@ import './css/App.css';
 import ProjectPage from './pages/ProjectPage'
 import Upload from './components/Upload';
 import Home from './components/Home';
-import Project from './components/Project';
-import Search from './components/Search';
+import Project from './pages/Project';
+import Search from './pages/Search';
 import Footer from './components/CsFooter.js';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
