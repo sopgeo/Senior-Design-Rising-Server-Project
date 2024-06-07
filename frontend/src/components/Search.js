@@ -4,10 +4,39 @@ import GenericHeader from "./GenericHeader";
 import "../css/Search.css";
 import { useState, useEffect } from "react";
 import ProjectDetails from "../components/ProjectDetails";
+//import DataTable from "datatables.net-dt";
 
 function Search() {
+
   const [user, setUser] = useState("public");
   const [projects, setProjects] = useState(null);
+
+  /*
+  function makeDataTable(proj) {
+    new DataTable("#example", {
+      ajax: proj,
+      columns: [
+        { title: "Title", data: 'name'},
+        { title: "Term", data: 'end_year'},
+        { title: "Sponsor", data: 'sponsor'},
+        { title: "Key Words", data: 'group_id'},
+      ],
+      retrieve: true
+    });
+  
+    if(projects != null){
+      proj.forEach((r) => {
+        var div1 = document.createElement("div");
+        div1.innerHTML = r[1];
+        r[1] = div1;
+    
+        var div3 = document.createElement("div");
+        div3.innerHTML = r[3];
+        r[3] = div3;
+      });
+    }
+  }
+*/
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -21,7 +50,7 @@ function Search() {
 
       if (response.ok) {
         setProjects(json);
-        console.log(json);
+        //makeDataTable(json);
       }
     };
 
@@ -74,8 +103,8 @@ function Search() {
         <h1 className="Title">Project Lookup</h1>
         <br />
 
-        <div class="GridContainer">
-          <div class="TermBox">
+        <div className="GridContainer">
+          <div className="TermBox">
             <h3>Term: </h3>
             <select name="Term" id="Term">
               <option value="Spring_2023">Spring 2023</option>
@@ -84,7 +113,7 @@ function Search() {
               <option value="Spring_2024">Spring 2024</option>
             </select>
           </div>
-          <div class="KeyWordsBox">
+          <div className="KeyWordsBox">
             <h3>Key Words: </h3>
             <select name="KeyWords" id="KeyWords">
               <option value="Unity">Unity</option>
@@ -93,13 +122,14 @@ function Search() {
               <option value="Simulation">Simulation</option>
             </select>
           </div>
-          <div class="SearchTextBox">
+          <div className="SearchTextBox">
             <h3>Search: </h3>
             <input type="text" name="Search" placeholder="Search..." />
           </div>
 
           <div className="SearchResults"></div>
         </div>
+        {/*<table id="example" className="display" width="100%"></table>*/}
         <br />
         <br />
         <br />
