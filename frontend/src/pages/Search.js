@@ -4,39 +4,71 @@ import GenericHeader from "../components/GenericHeader";
 import "../css/Search.css";
 import { useState, useEffect } from "react";
 import ProjectDetails from "../components/ProjectDetails";
-//import DataTable from "datatables.net-dt";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  getPaginationRowModel,
+} from "@tanstack/react-table";
 
 function Search() {
-
   const [user, setUser] = useState("public");
-  const [projects, setProjects] = useState(null);
+  const [projects, setProjects] = useState([
+    {
+      /*
+      description:
+        "Remote controlled robot that autonomously detects and fires at specific targets using Nerf guns.",
+      end_semester: "Fall",
+      end_year: 2017,
+      group_id: 59,
+      name: "12c: Lockheed Battlebot",
+      project_id: 332,
+      sponsor: "Lockheed Martin",
+      sponsor_contact: null,
+  */
+    },
+  ]);
+  const columns = [
+    {
+      accessorKey: "name",
+      header: "Title",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+    {
+      header: "Term",
+      cell: ({ row }) => (
+        <p>{row.original.end_semester + " " + row.original.end_year}</p>
+      ),
+    },
+    {
+      accessorKey: "sponsor",
+      header: "Sponsor",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+    {
+      accessorKey: "group_id",
+      header: "Key Words",
+      cell: (props) => <p>{props.getValue()}</p>,
+    },
+  ];
 
-  /*
-  function makeDataTable(proj) {
-    new DataTable("#example", {
-      ajax: proj,
-      columns: [
-        { title: "Title", data: 'name'},
-        { title: "Term", data: 'end_year'},
-        { title: "Sponsor", data: 'sponsor'},
-        { title: "Key Words", data: 'group_id'},
-      ],
-      retrieve: true
-    });
-  
-    if(projects != null){
-      proj.forEach((r) => {
-        var div1 = document.createElement("div");
-        div1.innerHTML = r[1];
-        r[1] = div1;
-    
-        var div3 = document.createElement("div");
-        div3.innerHTML = r[3];
-        r[3] = div3;
-      });
-    }
-  }
-*/
+  const [pagination, setPagination] = useState({
+    pageIndex: 1, //initial page index
+    pageSize: 10, //default page size
+  });
+
+  const table = useReactTable({
+    data: projects,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: 1, //custom initial page index
+        pageSize: 15, //custom default page size
+      },
+    },
+  });
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -50,7 +82,6 @@ function Search() {
 
       if (response.ok) {
         setProjects(json);
-        //makeDataTable(json);
       }
     };
 
@@ -59,34 +90,6 @@ function Search() {
 
   function getUser() {
     return user;
-  }
-
-  function displayList() {
-    return (
-      <table id="myTable" align="center">
-        <thead>
-          <tr>
-            <th className="TitleCol">Title</th>
-            <th className="TermCol">Term</th>
-            <th className="SponsorCol">Sponsor</th>
-            <th className="KeyWordsCol">Key Words</th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects &&
-            projects.map((project) => (
-              <tr>
-                <td>{project.name}</td>
-                <td>
-                  {project.end_semester} {project.end_year}
-                </td>
-                <td>Sponsor</td>
-                <td>Tags</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    );
   }
 
   useEffect(() => {
@@ -129,12 +132,68 @@ function Search() {
 
           <div className="SearchResults"></div>
         </div>
-        {/*<table id="example" className="display" width="100%"></table>*/}
+
         <br />
         <br />
         <br />
 
-        <div>{displayList()}</div>
+        <table id="tanstackTable" align="center">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => {
+              return (
+                <tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        id={header.id}
+                        className={header.column.columnDef.header + "Col"}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+
+        <button
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          {"<"}
+        </button>
+        <button
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          {">"}
+        </button>
+
         <br />
         <br />
         <br />
