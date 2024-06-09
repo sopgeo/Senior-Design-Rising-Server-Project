@@ -52,11 +52,6 @@ function Search() {
     },
   ];
 
-  const [pagination, setPagination] = useState({
-    pageIndex: 1, //initial page index
-    pageSize: 10, //default page size
-  });
-
   const table = useReactTable({
     data: projects,
     columns,
@@ -64,7 +59,7 @@ function Search() {
     getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       pagination: {
-        pageIndex: 1, //custom initial page index
+        pageIndex: 0, //custom initial page index
         pageSize: 15, //custom default page size
       },
     },
@@ -134,8 +129,6 @@ function Search() {
         </div>
 
         <br />
-        <br />
-        <br />
 
         <table id="tanstackTable" align="center">
           <thead>
@@ -181,18 +174,37 @@ function Search() {
           </tbody>
         </table>
 
-        <button
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          {"<"}
-        </button>
-        <button
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          {">"}
-        </button>
+        <div class="GridContainer">
+          <div className="leftButtons">
+            <button
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+          </div>
+
+          <div className="rightButtons">
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            <button
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+          </div>
+        </div>
 
         <br />
         <br />
