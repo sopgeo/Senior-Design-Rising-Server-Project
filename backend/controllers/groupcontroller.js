@@ -1,3 +1,6 @@
+const db = require('../models');
+const Group = db.groups
+
 //will need to install csv-parse node module
 const fs = require('fs'); //look into using ES modules
 const csvParser = require('csv-parser');
