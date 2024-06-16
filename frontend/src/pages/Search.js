@@ -15,7 +15,6 @@ function Search() {
   const [user, setUser] = useState("public");
   const [projects, setProjects] = useState([
     {
-      /*
       description:
         "Remote controlled robot that autonomously detects and fires at specific targets using Nerf guns.",
       end_semester: "Fall",
@@ -25,30 +24,36 @@ function Search() {
       project_id: 332,
       sponsor: "Lockheed Martin",
       sponsor_contact: null,
-  */
     },
   ]);
   const columns = [
     {
       accessorKey: "name",
       header: "Title",
-      cell: (props) => <p>{props.getValue()}</p>,
     },
     {
       header: "Term",
       cell: ({ row }) => (
-        <p>{row.original.end_semester + " " + row.original.end_year}</p>
+        <>
+          {row.original.end_semester.toString() +
+            " " +
+            row.original.end_year.toString()}{" "}
+          {console.log(
+            row.original.end_semester.toString() +
+              " " +
+              row.original.end_year.toString()
+          )}
+        </>
       ),
     },
     {
       accessorKey: "sponsor",
       header: "Sponsor",
-      cell: (props) => <p>{props.getValue()}</p>,
     },
     {
       accessorKey: "group_id",
       header: "Key Words",
-      cell: (props) => <p>{props.getValue()}</p>,
+      cell: ({ row }) => <>{row.original.group_id.toString()}</>,
     },
   ];
 
@@ -79,7 +84,6 @@ function Search() {
         setProjects(json);
       }
     };
-
     fetchProjects();
   }, []);
 
@@ -90,6 +94,12 @@ function Search() {
   useEffect(() => {
     // May be needed to run functions in the return if they give loading issues
   }, []);
+
+  function rowClick(project) {
+    window.open("/project?id=" + project);
+
+    console.log(table.getState().globalFilter);
+  }
 
   return (
     <>
@@ -105,10 +115,10 @@ function Search() {
           <div className="TermBox">
             <h3>Term: </h3>
             <select name="Term" id="Term">
-              <option value="Spring_2023">Spring 2023</option>
-              <option value="Summer_2023">Summer 2023</option>
-              <option value="Fall_2023">Fall 2023</option>
-              <option value="Spring_2024">Spring 2024</option>
+              <option value="Spring 2021">Spring 2021</option>
+              <option value="Summer 2021">Summer 2021</option>
+              <option value="Fall 2021">Fall 2021</option>
+              <option value="Spring 2022">Spring 2022</option>
             </select>
           </div>
           <div className="KeyWordsBox">
@@ -122,7 +132,11 @@ function Search() {
           </div>
           <div className="SearchTextBox">
             <h3>Search: </h3>
-            <input type="text" name="Search" placeholder="Search..." />
+            <input
+              type="text"
+              name="Search"
+              placeholder="Search..." /*value={search} onChange={(e) => setSearch(e.target.value)}*/
+            />
           </div>
 
           <div className="SearchResults"></div>
@@ -131,7 +145,7 @@ function Search() {
         <br />
 
         <table id="tanstackTable" align="center">
-          <thead>
+          <thead key="Header">
             {table.getHeaderGroups().map((headerGroup) => {
               return (
                 <tr key={headerGroup.id}>
@@ -139,6 +153,7 @@ function Search() {
                     return (
                       <th
                         id={header.id}
+                        key={header.column.columnDef.header}
                         className={header.column.columnDef.header + "Col"}
                       >
                         {header.isPlaceholder
@@ -157,10 +172,16 @@ function Search() {
           <tbody>
             {table.getRowModel().rows.map((row) => {
               return (
-                <tr key={row.id}>
+                <tr
+                  key={row.original.group_id}
+                  onClick={() => rowClick(row.original.project_id)}
+                >
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td>
+                      <td
+                        key={cell.getValue() + "_" + row.original.group_id}
+                        onClick={console.log(cell.getValue())}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -174,7 +195,7 @@ function Search() {
           </tbody>
         </table>
 
-        <div class="GridContainer">
+        <div className="GridContainer">
           <div className="leftButtons">
             <button
               onClick={() => table.firstPage()}
