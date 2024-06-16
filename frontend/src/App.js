@@ -4,6 +4,7 @@ import Upload from './components/Upload';
 import Home from './components/Home';
 import Project from './components/Project';
 import Search from './components/Search';
+import Login from './components/Login';
 
 import Header from './components/GenericHeader.js';
 import Navbar from './components/Navbar';
@@ -25,6 +26,7 @@ function App() {
           <Route path='/upload' index element={<Upload/>} />
           <Route path='/project' index element={<Project/>} />
           <Route path='/search' index element={<Search/>} />
+          <Route path='/Login' index element={<Login/>} />
 
         </Routes>
       </BrowserRouter>
