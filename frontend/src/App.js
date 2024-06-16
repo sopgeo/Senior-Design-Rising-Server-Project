@@ -4,6 +4,8 @@ import Upload from './components/Upload';
 import Home from './components/Home';
 import Project from './pages/Project';
 import Search from './pages/Search';
+import Header from './components/GenericHeader.js';
+import Navbar from './components/Navbar';
 import Footer from './components/CsFooter.js';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";

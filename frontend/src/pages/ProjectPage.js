@@ -7,7 +7,7 @@ const ProjectPage = () => {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch('http://localhost:5000/api/project')
+      const response = await fetch('http://localhost:5000/api/project/getProjects')
       
       if (!response.ok) {
         throw new Error('Failed to fetch projects');

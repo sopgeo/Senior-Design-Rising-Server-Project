@@ -15,5 +15,5 @@ node_modules
 .vscode
 
 backend/node_modules
-backend/db.config.js
 frontend/public/files
+frontend/build

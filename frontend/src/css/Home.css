@@ -21,7 +21,7 @@ body {
     background-color: rgba(255, 201, 4, 0.8);
     color: black;
     font-weight: 700;
-    font-size: 300%;
+    font-size: 3vw;
     width: 60%;
     max-width: 40vw;
 }
@@ -48,7 +48,7 @@ body {
 }
 
 .white-rect p {
-    width: 50em;
+    width: 80%;
 }
 
 .yellow-rect {
@@ -61,7 +61,8 @@ body {
 }
 
 .yellow-rect p {
-    width: 50em;
+    width: 80%;
+    max-width: 80%;
 }
 
 .black-rect {
@@ -76,7 +77,8 @@ body {
 
 .black-rect p {
     color: white;
-    width: 50em;
+    width: 100%;
+    max-width: 80%;
 }
 
 .white-rect2 {
@@ -89,7 +91,8 @@ body {
 }
 
 .white-rect2 p {
-    width: 40em;
+    width: 80%;
+    max-width: 80%;
 }
 
 /* images on home page */
@@ -116,6 +119,7 @@ body {
 
 /* horizontal underlines under section headers */
 .about hr {
+    margin-left: 0;
     border: 2px solid #FFC904;
     opacity: 100%;
     color: #FFC904;
@@ -123,6 +127,7 @@ body {
 }
 
 .presentations hr {
+    margin-left: 0;
     border: 2px solid;
     opacity: 100%;
     color: white;
@@ -130,6 +135,7 @@ body {
 }
 
 .sponsors hr {
+    margin-left: 0;
     border: 2px solid;
     opacity: 100%;
     color: #FFC904;
@@ -137,10 +143,12 @@ body {
 }
 
 .sd1 hr, .sd2 hr {
+    margin-left: 0;
     border: 2px solid;
     opacity: 100%;
     color: #FFC904;
     width: 280px;
+    text-align: left;
 }
 
 .about, .presentations, .sponsors, .sd1, .sd2 {
