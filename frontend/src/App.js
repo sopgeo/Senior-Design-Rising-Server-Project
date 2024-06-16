@@ -2,9 +2,8 @@ import './css/App.css';
 import ProjectPage from './pages/ProjectPage'
 import Upload from './components/Upload';
 import Home from './components/Home';
-import Project from './components/Project';
-import Search from './components/Search';
-
+import Project from './pages/Project';
+import Search from './pages/Search';
 import Header from './components/GenericHeader.js';
 import Navbar from './components/Navbar';
 import Footer from './components/CsFooter.js';
@@ -16,8 +15,6 @@ function App() {
   return (
     
     <div className="App">
-      <Navbar/>
-      {/* <Header/> */}
       <BrowserRouter>
         <Routes>
           <Route path='/ab' index element={<ProjectPage/>} />
@@ -28,7 +25,6 @@ function App() {
 
         </Routes>
       </BrowserRouter>
-      <Footer/>
     </div>
   );
 }

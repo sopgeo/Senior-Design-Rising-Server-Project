@@ -2,10 +2,10 @@ import React from "react";
 import "../css/GenericHeader.css";
 
 function GenericHeader({ background, user }) {
-  function UCFHeader() {
+  function Header() {
     return (
-      <div className="UCFHeader">
-        <img src="http://localhost:3000/UCFHeaderLogo.png" height="50px" />
+      <div className="Header">
+        Computer Science Senior Design Projects
       </div>
     );
   }
@@ -51,7 +51,7 @@ function GenericHeader({ background, user }) {
 
   return (
     <div className="FullHeader">
-      {UCFHeader()}
+      {Header()}
       {NavBar()}
     </div>
   );

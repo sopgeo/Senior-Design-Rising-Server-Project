@@ -7,7 +7,7 @@
 
 .GridContainer {
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
+    grid-template-columns: 20% auto 20%;
     gap: 10px;
     text-align: center;
 }
@@ -50,6 +50,10 @@ th {
     background-color: #FFC904;
 }
 
+tr:hover {
+    background-color: #E4E4E4;
+}
+
 table {
     width: 90%;
 }
@@ -68,4 +72,24 @@ table {
 
 .KeyWordsCol {
     width: 35%;
+}
+
+button{
+    width: 25%;
+    aspect-ratio: 1/1;
+    background-color: #FFC904;
+    font-size: large;
+    font-weight: bold;
+}
+
+button:disabled{
+    background-color: #EAB700;
+}
+
+.leftButtons{
+    grid-column: 1;
+}
+
+.rightButtons{
+    grid-column: 3;
 }
