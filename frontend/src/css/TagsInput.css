@@ -11,21 +11,18 @@ body{
     /* font-weight: bold; */
 }
 
-/* .tags-input-container{ */
-
-
-.react-select{
-    margin: 10rem;
+.tags-input-container{
     border: 1px solid #555555;
     padding: 0.5em;
     border-radius: 3px;
-    /* width: min(30vw, 600px);  */
+    /* height: min(40vw, 200px);  */
+    width: min(30vw, 600px); 
+    /* width: 30vw; */
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    /* gap: .5em; */
-} 
-
+    gap: .5em;
+}
 
 .tag-item{
     background-color: rgb(218, 216, 216);
