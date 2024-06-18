@@ -13,6 +13,7 @@ import {
 
 function Search() {
   const [user, setUser] = useState("public");
+  const [search, setSearch] = useState("");
   const [projects, setProjects] = useState([
     {
       description:
@@ -72,7 +73,18 @@ function Search() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const response = await fetch("http://localhost:5000/api/project");
+      const response = await fetch(
+        "http://localhost:5000/api/project/searchProjects",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            query: "Jake",
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch projects");
@@ -84,6 +96,7 @@ function Search() {
         setProjects(json);
       }
     };
+
     fetchProjects();
   }, []);
 
@@ -91,14 +104,8 @@ function Search() {
     return user;
   }
 
-  useEffect(() => {
-    // May be needed to run functions in the return if they give loading issues
-  }, []);
-
   function rowClick(project) {
     window.open("/project?id=" + project);
-
-    console.log(table.getState().globalFilter);
   }
 
   return (
@@ -135,7 +142,8 @@ function Search() {
             <input
               type="text"
               name="Search"
-              placeholder="Search..." /*value={search} onChange={(e) => setSearch(e.target.value)}*/
+              placeholder="Search..."
+              onChange={(e) => fetchProjects(e.target.value)}
             />
           </div>
 
@@ -143,57 +151,58 @@ function Search() {
         </div>
 
         <br />
-
-        <table id="tanstackTable" align="center">
-          <thead key="Header">
-            {table.getHeaderGroups().map((headerGroup) => {
-              return (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <th
-                        id={header.id}
-                        key={header.column.columnDef.header}
-                        className={header.column.columnDef.header + "Col"}
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </th>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((row) => {
-              return (
-                <tr
-                  key={row.original.group_id}
-                  onClick={() => rowClick(row.original.project_id)}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td
-                        key={cell.getValue() + "_" + row.original.group_id}
-                        onClick={console.log(cell.getValue())}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div align="center">
+          <table id="tanstackTable" align="center">
+            <thead key="Header">
+              {table.getHeaderGroups().map((headerGroup) => {
+                return (
+                  <tr key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <th
+                          id={header.id}
+                          key={header.column.columnDef.header}
+                          className={header.column.columnDef.header + "Col"}
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((row) => {
+                return (
+                  <tr
+                    key={row.original.group_id}
+                    onClick={() => rowClick(row.original.project_id)}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <td
+                          key={cell.getValue() + "_" + row.original.group_id}
+                          onClick={console.log(cell.getValue())}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
         <div className="GridContainer">
           <div className="leftButtons">
