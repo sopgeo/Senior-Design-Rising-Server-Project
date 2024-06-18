@@ -12,6 +12,7 @@ import {
 } from "@tanstack/react-table";
 
 function Search() {
+  // Sets up variables we're using
   const [user, setUser] = useState("public");
   const [search, setSearch] = useState("");
   const [projects, setProjects] = useState([
@@ -27,6 +28,8 @@ function Search() {
       sponsor_contact: null,
     },
   ]);
+
+  // Sets up table
   const columns = [
     {
       accessorKey: "name",
@@ -39,11 +42,6 @@ function Search() {
           {row.original.end_semester.toString() +
             " " +
             row.original.end_year.toString()}{" "}
-          {console.log(
-            row.original.end_semester.toString() +
-              " " +
-              row.original.end_year.toString()
-          )}
         </>
       ),
     },
@@ -57,7 +55,6 @@ function Search() {
       cell: ({ row }) => <>{row.original.group_id.toString()}</>,
     },
   ];
-
   const table = useReactTable({
     data: projects,
     columns,
@@ -71,6 +68,7 @@ function Search() {
     },
   });
 
+  // API request
   useEffect(() => {
     const fetchProjects = async () => {
       const response = await fetch(
@@ -100,10 +98,12 @@ function Search() {
     fetchProjects();
   }, []);
 
+  // Getters
   function getUser() {
     return user;
   }
 
+  // Handles clicks (in a function because putting debug prints in here on click is really nice)
   function rowClick(project) {
     window.open("/project?id=" + project);
   }
@@ -115,10 +115,13 @@ function Search() {
       <div className="PageBody">
         <br />
 
+        {/* Title */}
         <h1 className="Title">Project Lookup</h1>
         <br />
 
+        {/* Drop downs */}
         <div className="GridContainer">
+          {/* Term */}
           <div className="TermBox">
             <h3>Term: </h3>
             <select name="Term" id="Term">
@@ -128,6 +131,8 @@ function Search() {
               <option value="Spring 2022">Spring 2022</option>
             </select>
           </div>
+
+          {/* Key words */}
           <div className="KeyWordsBox">
             <h3>Key Words: </h3>
             <select name="KeyWords" id="KeyWords">
@@ -137,26 +142,30 @@ function Search() {
               <option value="Simulation">Simulation</option>
             </select>
           </div>
+
+          {/* Search */}
           <div className="SearchTextBox">
             <h3>Search: </h3>
             <input
               type="text"
               name="Search"
               placeholder="Search..."
-              onChange={(e) => fetchProjects(e.target.value)}
+              /*onChange={(e) => fetchProjects(e.target.value)}*/
             />
           </div>
-
-          <div className="SearchResults"></div>
         </div>
-
         <br />
+
+        {/* Table */}
         <div align="center">
           <table id="tanstackTable" align="center">
+            {/* Table header */}
             <thead key="Header">
+              {/* For all header rows... (we only have 1) */}
               {table.getHeaderGroups().map((headerGroup) => {
                 return (
                   <tr key={headerGroup.id}>
+                    {/* For all headers... */}
                     {headerGroup.headers.map((header) => {
                       return (
                         <th
@@ -177,19 +186,20 @@ function Search() {
                 );
               })}
             </thead>
+
+            {/* Table body */}
             <tbody>
+              {/* For all rows... */}
               {table.getRowModel().rows.map((row) => {
                 return (
                   <tr
                     key={row.original.group_id}
                     onClick={() => rowClick(row.original.project_id)}
                   >
+                    {/* For all cells... */}
                     {row.getVisibleCells().map((cell) => {
                       return (
-                        <td
-                          key={cell.getValue() + "_" + row.original.group_id}
-                          onClick={console.log(cell.getValue())}
-                        >
+                        <td key={cell.getValue() + "_" + row.original.group_id}>
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -204,14 +214,17 @@ function Search() {
           </table>
         </div>
 
+        {/* Nav buttons */}
         <div className="GridContainer">
           <div className="leftButtons">
+            {/* First */}
             <button
               onClick={() => table.firstPage()}
               disabled={!table.getCanPreviousPage()}
             >
               {"<<"}
             </button>
+            {/* Prev */}
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
@@ -219,7 +232,7 @@ function Search() {
               {"<"}
             </button>
           </div>
-
+          {/* Next */}
           <div className="rightButtons">
             <button
               onClick={() => table.nextPage()}
@@ -227,6 +240,7 @@ function Search() {
             >
               {">"}
             </button>
+            {/* Last */}
             <button
               onClick={() => table.lastPage()}
               disabled={!table.getCanNextPage()}
@@ -235,12 +249,10 @@ function Search() {
             </button>
           </div>
         </div>
-
         <br />
         <br />
         <br />
       </div>
-
       <CsFooter />
     </>
   );
