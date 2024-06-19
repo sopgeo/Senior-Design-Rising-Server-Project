@@ -15,7 +15,8 @@ function Search() {
   // Sets up variables we're using
   const [user, setUser] = useState("public");
   const [search, setSearch] = useState("Jake");
-  const [term, setTerm] = useState("");
+  const [semester, setSemester] = useState("");
+  const [year, setYear] = useState("");
   const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([
     {
@@ -41,9 +42,9 @@ function Search() {
       header: "Term",
       cell: ({ row }) => (
         <>
-          {row.original.end_semester.toString() +
+          {row.original.end_semester +
             " " +
-            row.original.end_year.toString()}{" "}
+            row.original.end_year}{" "}
         </>
       ),
     },
@@ -54,7 +55,7 @@ function Search() {
     {
       accessorKey: "group_id",
       header: "Key Words",
-      cell: ({ row }) => <>{row.original.group_id.toString()}</>,
+      cell: ({ row }) => <>{row.original.group_id}</>,
     },
   ];
   const table = useReactTable({
@@ -70,18 +71,14 @@ function Search() {
     },
   });
 
-
-  function getProjects(){
-    
+  function getProjects() {
     let bodyJSON = {};
-    if(search!=""){
-      bodyJSON['query'] = search;
+    if (search != "") {
+      bodyJSON["query"] = search;
       //console.log(bodyJSON);
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
     //console.log(bodyJSONStr);
-
-
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -108,7 +105,6 @@ function Search() {
 
     fetchProjects();
     console.log("Ran");
-
   }
 
   // API request
@@ -116,9 +112,78 @@ function Search() {
     getProjects();
   }, []);
 
+  // Search and filter setters
+  function giveSearch(search) {
+    setSearch(search);
+    getProjects();
+  }
+
   // Getters
   function getUser() {
     return user;
+  }
+
+  function getTable() {
+    try {
+      return (
+        <table id="tanstackTable" align="center">
+          {/* Table header */}
+          <thead key="Header">
+            {/* For all header rows... (we only have 1) */}
+            {table.getHeaderGroups().map((headerGroup) => {
+              return (
+                <tr key={headerGroup.id}>
+                  {/* For all headers... */}
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        id={header.id}
+                        key={header.column.columnDef.header}
+                        className={header.column.columnDef.header + "Col"}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </thead>
+  
+          {/* Table body */}
+          <tbody>
+            {/* For all rows... */}
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <tr
+                  key={row.original.group_id}
+                  onClick={() => rowClick(row.original.project_id)}
+                >
+                  {/* For all cells... */}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td key={cell.getValue() + "_" + row.original.group_id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
+    } catch (error) {
+      <p>Well that didn't work...</p>
+    }
   }
 
   // Handles clicks (in a function because putting debug prints in here on click is really nice)
@@ -168,69 +233,14 @@ function Search() {
               type="text"
               name="Search"
               placeholder="Search..."
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) => giveSearch(e.target.value)}
             />
           </div>
         </div>
         <br />
 
         {/* Table */}
-        <div align="center">
-          <table id="tanstackTable" align="center">
-            {/* Table header */}
-            <thead key="Header">
-              {/* For all header rows... (we only have 1) */}
-              {table.getHeaderGroups().map((headerGroup) => {
-                return (
-                  <tr key={headerGroup.id}>
-                    {/* For all headers... */}
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <th
-                          id={header.id}
-                          key={header.column.columnDef.header}
-                          className={header.column.columnDef.header + "Col"}
-                        >
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </thead>
-
-            {/* Table body */}
-            <tbody>
-              {/* For all rows... */}
-              {table.getRowModel().rows.map((row) => {
-                return (
-                  <tr
-                    key={row.original.group_id}
-                    onClick={() => rowClick(row.original.project_id)}
-                  >
-                    {/* For all cells... */}
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <td key={cell.getValue() + "_" + row.original.group_id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <div align="center">{getTable()}</div>
 
         {/* Nav buttons */}
         <div className="GridContainer">
