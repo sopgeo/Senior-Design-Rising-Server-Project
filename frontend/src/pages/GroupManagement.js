@@ -2,9 +2,9 @@ import React from "react";
 import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import { useState, useEffect } from "react";
+import "../css/GroupManagement.css";
 
-function GroupManagment() {
-
+function GroupManagement() {
   const [user, setUser] = useState("public");
 
   function getUser() {
@@ -14,6 +14,14 @@ function GroupManagment() {
   useEffect(() => {
     // May be needed to run functions in the return if they give loading issues
   }, []);
+
+  function renderSemester(semInfo) {
+    return(
+      <div className="SemesterBar">AAAAA</div>
+    )
+  }
+
+  function renderGroup(groupInfo) {}
 
   return (
     <>
@@ -25,11 +33,11 @@ function GroupManagment() {
         <h1 className="Title">Group Management</h1>
         <br />
 
-
+        {renderSemester()}
       </div>
       <CsFooter />
     </>
   );
 }
 
-export default GroupManagment;
+export default GroupManagement;
