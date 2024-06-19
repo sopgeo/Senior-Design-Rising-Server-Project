@@ -14,7 +14,9 @@ import {
 function Search() {
   // Sets up variables we're using
   const [user, setUser] = useState("public");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState("Jake");
+  const [term, setTerm] = useState("");
+  const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([
     {
       description:
@@ -68,16 +70,25 @@ function Search() {
     },
   });
 
-  // API request
-  useEffect(() => {
+
+  function getProjects(){
+    
+    let bodyJSON = {};
+    if(search!=""){
+      bodyJSON['query'] = search;
+      //console.log(bodyJSON);
+    }
+    let bodyJSONStr = JSON.stringify(bodyJSON);
+    //console.log(bodyJSONStr);
+
+
+
     const fetchProjects = async () => {
       const response = await fetch(
         "http://localhost:5000/api/project/searchProjects",
         {
           method: "POST",
-          body: JSON.stringify({
-            query: "Jake",
-          }),
+          body: bodyJSONStr,
           headers: {
             "Content-Type": "application/json",
           },
@@ -96,6 +107,13 @@ function Search() {
     };
 
     fetchProjects();
+    console.log("Ran");
+
+  }
+
+  // API request
+  useEffect(() => {
+    getProjects();
   }, []);
 
   // Getters
@@ -150,7 +168,7 @@ function Search() {
               type="text"
               name="Search"
               placeholder="Search..."
-              /*onChange={(e) => fetchProjects(e.target.value)}*/
+              onChange={(e) => setSearch(e.target.value)}
             />
           </div>
         </div>
