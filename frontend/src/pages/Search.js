@@ -14,7 +14,7 @@ import {
 function Search() {
   // Sets up variables we're using
   const [user, setUser] = useState("public");
-  const [search, setSearch] = useState("Jake");
+  const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
   const [keyWords, setKeyWords] = useState([]);
@@ -41,11 +41,7 @@ function Search() {
     {
       header: "Term",
       cell: ({ row }) => (
-        <>
-          {row.original.end_semester +
-            " " +
-            row.original.end_year}{" "}
-        </>
+        <>{row.original.end_semester + " " + row.original.end_year} </>
       ),
     },
     {
@@ -124,7 +120,7 @@ function Search() {
   }
 
   function getTable() {
-    try {
+    if (projects.length != 0) {
       return (
         <table id="tanstackTable" align="center">
           {/* Table header */}
@@ -154,20 +150,20 @@ function Search() {
               );
             })}
           </thead>
-  
+
           {/* Table body */}
           <tbody>
             {/* For all rows... */}
             {table.getRowModel().rows.map((row) => {
               return (
                 <tr
-                  key={row.original.group_id}
+                  key={row.original.project_id + "_" + row.original.group_id}
                   onClick={() => rowClick(row.original.project_id)}
                 >
                   {/* For all cells... */}
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.getValue() + "_" + row.original.group_id}>
+                      <td key={cell.getValue() + "_" + row.original.name + "_" + row.original.group_id}>
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -181,8 +177,8 @@ function Search() {
           </tbody>
         </table>
       );
-    } catch (error) {
-      <p>Well that didn't work...</p>
+    }else{
+      return(<p>Sorry, that query returned no results</p>);
     }
   }
 
