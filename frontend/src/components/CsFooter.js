@@ -12,7 +12,7 @@ function CsFooter() {
           <p>
             This page seeks to give students a place to access past projects in order to help them succeed in their class.
             <br/>
-            Projects from 2015 to present are archieved here for everyone to access.
+            Projects from 2016 to present are archieved here for everyone to access.
           </p>
         </div>
     </div>
