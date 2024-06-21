@@ -13,6 +13,7 @@ import {
 
 function Search() {
   // Sets up variables we're using
+  const [timer, setTimer] = useState("");
   const [user, setUser] = useState("public");
   const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
@@ -52,22 +53,20 @@ function Search() {
       accessorKey: "tags",
       header: "Key Words",
       cell: ({ row }) => {
-
-
-        try{
+        try {
           let keys = "";
-          for(let i=0; i<row.original.tags.length; i++){
+          for (let i = 0; i < row.original.tags.length; i++) {
             keys = keys.concat(row.original.tags[i].name + ", ");
           }
-          keys = keys.slice(0, keys.length-2);
-          return(keys)
-        }catch{
-          return("")
+          keys = keys.slice(0, keys.length - 2);
+          return keys;
+        } catch {
+          return "";
         }
       },
     },
   ];
-  
+
   const table = useReactTable({
     data: projects,
     columns,
@@ -93,8 +92,6 @@ function Search() {
       bodyJSON["year"] = year;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
-
-
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -131,7 +128,15 @@ function Search() {
   // Search and filter setters
   function giveSearch(searchQuery) {
     setSearch(searchQuery);
-    getProjects(searchQuery, semester, year);
+    if (timer != "") {
+      clearTimeout(timer);
+    }
+    setTimer(
+      setTimeout(() => {
+        getProjects(searchQuery, semester, year);
+      }, 750)
+    );
+    clearTimeout(timer);
   }
 
   async function giveTerm(term) {
@@ -196,7 +201,7 @@ function Search() {
                           "_" +
                           row.original.name +
                           "_" +
-                          row.original.group_id + 
+                          row.original.group_id +
                           "_" +
                           cell.column.id
                         }
@@ -241,7 +246,11 @@ function Search() {
     return (
       <select name="Term" id="Term" onChange={(e) => giveTerm(e.target.value)}>
         {arr.map((term) => {
-          return <option value={term} key ={term}>{term}</option>;
+          return (
+            <option value={term} key={term}>
+              {term}
+            </option>
+          );
         })}
       </select>
     );
