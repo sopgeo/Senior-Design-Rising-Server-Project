@@ -51,12 +51,23 @@ function Search() {
     {
       accessorKey: "tags",
       header: "Key Words",
-      render: ({ value }) => {
-        const tagList = value.map((x) => x).name.join(", ");
-        return <span>{tagList}</span>;
+      cell: ({ row }) => {
+
+
+        try{
+          let keys = "";
+          for(let i=0; i<row.original.tags.length; i++){
+            keys = keys.concat(row.original.tags[i].name + ", ");
+          }
+          keys = keys.slice(0, keys.length-2);
+          return(keys)
+        }catch{
+          return("")
+        }
       },
     },
   ];
+  
   const table = useReactTable({
     data: projects,
     columns,
