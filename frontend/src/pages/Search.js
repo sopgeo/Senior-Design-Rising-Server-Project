@@ -49,9 +49,12 @@ function Search() {
       header: "Sponsor",
     },
     {
-      accessorKey: "group_id",
+      accessorKey: "tags",
       header: "Key Words",
-      cell: ({ row }) => <>{row.original.group_id}</>,
+      render: ({ value }) => {
+        const tagList = value.map((x) => x).name.join(", ");
+        return <span>{tagList}</span>;
+      },
     },
   ];
   const table = useReactTable({
@@ -67,14 +70,20 @@ function Search() {
     },
   });
 
-  function getProjects() {
+  function getProjects(query, semester, year) {
     let bodyJSON = {};
-    if (search != "") {
-      bodyJSON["query"] = search;
-      //console.log(bodyJSON);
+    if (query != "") {
+      bodyJSON["query"] = query;
+    }
+    if (semester != "") {
+      bodyJSON["semester"] = semester;
+    }
+    if (year != "") {
+      bodyJSON["year"] = year;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
-    //console.log(bodyJSONStr);
+
+
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -105,13 +114,20 @@ function Search() {
 
   // API request
   useEffect(() => {
-    getProjects();
+    getProjects(search, semester, year);
   }, []);
 
   // Search and filter setters
-  function giveSearch(search) {
-    setSearch(search);
-    getProjects();
+  function giveSearch(searchQuery) {
+    setSearch(searchQuery);
+    getProjects(searchQuery, semester, year);
+  }
+
+  async function giveTerm(term) {
+    let termArr = term.split(" ");
+    setSemester(termArr[0]);
+    setYear(termArr[1]);
+    getProjects(search, termArr[0], termArr[1]);
   }
 
   // Getters
@@ -163,7 +179,17 @@ function Search() {
                   {/* For all cells... */}
                   {row.getVisibleCells().map((cell) => {
                     return (
-                      <td key={cell.getValue() + "_" + row.original.name + "_" + row.original.group_id}>
+                      <td
+                        key={
+                          cell.getValue() +
+                          "_" +
+                          row.original.name +
+                          "_" +
+                          row.original.group_id + 
+                          "_" +
+                          cell.column.id
+                        }
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -177,14 +203,37 @@ function Search() {
           </tbody>
         </table>
       );
-    }else{
-      return(<p>Sorry, that query returned no results</p>);
+    } else {
+      return <p>Sorry, that query returned no results</p>;
     }
   }
 
   // Handles clicks (in a function because putting debug prints in here on click is really nice)
   function rowClick(project) {
     window.open("/project?id=" + project);
+  }
+
+  function getTerms() {
+    let arr = new Array();
+    let date = new Date();
+    for (let i = 0; i <= date.getFullYear() - 2016; i++) {
+      arr = arr.concat([
+        "Spring " + (i + 2016).toString(),
+        "Summer " + (i + 2016).toString(),
+        "Fall " + (i + 2016).toString(),
+      ]);
+    }
+
+    arr = arr.concat(" ");
+    arr = arr.reverse();
+
+    return (
+      <select name="Term" id="Term" onChange={(e) => giveTerm(e.target.value)}>
+        {arr.map((term) => {
+          return <option value={term} key ={term}>{term}</option>;
+        })}
+      </select>
+    );
   }
 
   return (
@@ -203,12 +252,7 @@ function Search() {
           {/* Term */}
           <div className="TermBox">
             <h3>Term: </h3>
-            <select name="Term" id="Term">
-              <option value="Spring 2021">Spring 2021</option>
-              <option value="Summer 2021">Summer 2021</option>
-              <option value="Fall 2021">Fall 2021</option>
-              <option value="Spring 2022">Spring 2022</option>
-            </select>
+            {getTerms()}
           </div>
 
           {/* Key words */}
