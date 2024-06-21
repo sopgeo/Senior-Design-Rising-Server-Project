@@ -229,6 +229,7 @@ function Search() {
     window.open("/project?id=" + project);
   }
 
+  // Creates a list of possible terms to filter by, somewhat lazily
   function getTerms() {
     let arr = new Array();
     let date = new Date();
