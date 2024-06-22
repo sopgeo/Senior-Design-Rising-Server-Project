@@ -7,17 +7,15 @@ import { useState, useEffect } from "react";
 function Project() {
   const urlInfo = new URLSearchParams(window.location.search);
   var projectId;
-  if (urlInfo.has("projectId")) {
-    projectId = urlInfo.get("projectId");
+  if (urlInfo.has("id")) {
+    projectId = urlInfo.get("id");
   } else {
     projectId = "";
   }
 
   const [user, setUser] = useState("public");
-  const [projectName, setProjectName] = useState("Placeholder name");
-  const [description, setDescription] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus."
-  );
+  const [projectName, setProjectName] = useState("Name");
+  const [description, setDescription] = useState("Description");
   const [show, setShow] = useState(
     "http://localhost:3000/Files/2018/Fall/Projects/402/DesignDocument.pdf"
   );
@@ -76,7 +74,25 @@ function Project() {
   }
 
   function getPDF() {
-    return show;
+    if (show != "") {
+      return (
+        <>
+          <div classname="PDF">
+            <object
+              data={show}
+              type="application/pdf"
+              width="100%"
+              height="1000px"
+            ></object>
+          </div>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    } else {
+      return <p>Nope</p>;
+    }
   }
 
   function getUser() {
@@ -84,8 +100,39 @@ function Project() {
   }
 
   useEffect(() => {
-    // May be needed to run functions in the return if they give loading issues
+    getProject();
   }, []);
+
+  function getProject() {
+    const fetchProject = async () => {
+      let url =
+        "http://localhost:5000/api/project/getProject?project_id=" + projectId;
+      console.log(url);
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+
+      const json = await response.json();
+
+      if (response.ok) {
+        console.log(json);
+        json.hasOwnProperty("name")
+          ? setProjectName(json.name)
+          : setProjectName("");
+        json.hasOwnProperty("description")
+          ? setDescription(json.description)
+          : setDescription("");
+        json.hasOwnProperty("documents[0].filepath")
+          ? setShow("http://localhost:3000/" + json.documents[0].filepath)
+          : setShow("");
+      }
+    };
+
+    fetchProject();
+    console.log("Ran");
+  }
 
   return (
     <>
@@ -105,26 +152,16 @@ function Project() {
 
           <div className="Students">
             <h3>Students</h3>
-            <br/>
+            <br />
             {displayStudents()}
           </div>
         </div>
 
+        <div className="Spacer"></div>
+
         <br />
 
-        <div classname="PDF">
-          <object
-            data={getPDF()}
-            type="application/pdf"
-            width="100%"
-            height="1000px"
-          >
-            WHYYYYYY
-          </object>
-        </div>
-        <br />
-        <br />
-        <br />
+        {getPDF()}
       </div>
       <CsFooter />
     </>
