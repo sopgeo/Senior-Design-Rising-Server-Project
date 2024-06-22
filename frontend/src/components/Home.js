@@ -1,9 +1,11 @@
 import React from "react";
 import "../css/Home.css";
+import Header from './GenericHeader.js'
 
 function Home() {
   return (
     <div className="home-page">
+      <Header/>
       {/* header! */}
       <div className="header">
         <div className="header-logo">

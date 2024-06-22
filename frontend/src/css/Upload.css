@@ -6,12 +6,11 @@
 }
 
 .upload-page {
-    margin: 5rem;
     display: flex;
+    /* margin: 5rem; */
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-    /* min-height: 100vh; */
+    
 }
 
 .upload-header h1, .upload-header h2{
