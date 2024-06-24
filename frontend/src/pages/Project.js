@@ -45,7 +45,7 @@ function Project() {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
         <>
-          <span className="Tag">{tag}</span>
+          <span className="Tag" key={tag}>{tag}</span>
         </>
       ));
     } else {
@@ -56,10 +56,9 @@ function Project() {
   function displayStudents() {
     if (Array.isArray(students)) {
       return students.map((student) => (
-        <>
+        <p key={student}>
           {student}
-          <br />
-        </>
+        </p>
       ));
     } else {
       return <></>;
@@ -79,7 +78,7 @@ function Project() {
     if (show != "") {
       return (
         <>
-          <div classname="PDF">
+          <div className="PDF">
             <object
               data={show}
               type="application/pdf"
@@ -146,10 +145,10 @@ function Project() {
         <h1 className="Title">{getName()}</h1>
         <br />
 
-        <div class="GridContainer">
+        <div className="GridContainer">
           <div className="Details">
             <figure className="Tags">{displayTags()}</figure>
-            <p class="Description">{getDescription()}</p>
+            <p className="Description">{getDescription()}</p>
           </div>
 
           <div className="Students">
