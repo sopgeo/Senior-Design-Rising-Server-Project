@@ -10,6 +10,7 @@ import {
   flexRender,
   getPaginationRowModel,
 } from "@tanstack/react-table";
+import Path from '../components/Path';
 
 function Search() {
   // Sets up variables we're using
@@ -95,7 +96,7 @@ function Search() {
 
     const fetchProjects = async () => {
       const response = await fetch(
-        "http://localhost:5000/api/project/searchProjects",
+        Path.buildPath("api/project/searchProjects", true),
         {
           method: "POST",
           body: bodyJSONStr,

@@ -3,6 +3,7 @@ import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import "../css/Project.css";
 import { useState, useEffect } from "react";
+import Path from "../components/Path";
 
 function Project() {
   const urlInfo = new URLSearchParams(window.location.search);
@@ -74,6 +75,7 @@ function Project() {
   }
 
   function getPDF() {
+    console.log(show);
     if (show != "") {
       return (
         <>
@@ -106,7 +108,7 @@ function Project() {
   function getProject() {
     const fetchProject = async () => {
       let url =
-        "http://localhost:5000/api/project/getProject?project_id=" + projectId;
+        Path.buildPath("api/project/getProject?project_id=", true) + projectId;
       console.log(url);
       const response = await fetch(url);
 
@@ -124,8 +126,8 @@ function Project() {
         json.hasOwnProperty("description")
           ? setDescription(json.description)
           : setDescription("");
-        json.hasOwnProperty("documents[0].filepath")
-          ? setShow("http://localhost:3000/" + json.documents[0].filepath)
+        json.hasOwnProperty("documents")
+          ? setShow(Path.buildPath(json.documents[0].filepath, false))
           : setShow("");
       }
     };
