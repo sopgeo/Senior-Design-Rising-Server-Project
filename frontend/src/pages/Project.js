@@ -17,24 +17,13 @@ function Project() {
   const [user, setUser] = useState("public");
   const [projectName, setProjectName] = useState("Name");
   const [description, setDescription] = useState("Description");
+  const [sponsor, setSponsor] = useState("Sponsor");
   const [show, setShow] = useState(
     "http://localhost:3000/Files/2018/Fall/Projects/402/DesignDocument.pdf"
   );
-  const [tags, setTags] = useState([
-    "test",
-    "this is another tag",
-    "need to fill out space",
-    "hi",
-    "text",
-    "more text",
-    "continuing",
-    "other things",
-    "hoping this wraps",
-    "very long piece of text to fill up space",
-    "this shouldn't overflow please",
-  ]);
+  const [tags, setTags] = useState(["tag1", "tag2", "tag3"]);
   const [students, setStudents] = useState([
-    "Salvador Felipe Jacinto Dalí y Domenech",
+    "Student1",
     "Student2",
     "Student3",
     "Student4",
@@ -45,7 +34,9 @@ function Project() {
     if (Array.isArray(tags)) {
       return tags.map((tag) => (
         <>
-          <span className="Tag" key={tag}>{tag}</span>
+          <span className="Tag" key={tag}>
+            {tag}
+          </span>
         </>
       ));
     } else {
@@ -53,16 +44,44 @@ function Project() {
     }
   }
 
-  function displayStudents() {
+  function mapStudents() {
     if (Array.isArray(students)) {
-      return students.map((student) => (
-        <p key={student}>
-          {student}
-        </p>
-      ));
+      return students.map((student) => <p key={student}>{student}</p>);
     } else {
       return <></>;
     }
+  }
+
+  function displayStudents() {
+    return (
+      <>
+        <h3>Students</h3>
+        <br />
+        {mapStudents()}
+      </>
+    );
+  }
+
+  function displaySponsor() {
+    if(sponsor != ""){
+      return(
+        <>
+        <br />
+        <h3>Sponsor</h3>
+        <br />
+        {sponsor}
+      </>
+      )
+    }
+  }
+
+  function displayPeople() {
+    return(
+      <>
+      {displayStudents()}
+      {displaySponsor()}
+      </>
+    )
   }
 
   function getName() {
@@ -125,6 +144,9 @@ function Project() {
         json.hasOwnProperty("description")
           ? setDescription(json.description)
           : setDescription("");
+        json.hasOwnProperty("sponsor")
+          ? setSponsor(json.sponsor)
+          : setSponsor("");
         json.hasOwnProperty("documents")
           ? setShow(Path.buildPath(json.documents[0].filepath, false))
           : setShow("");
@@ -151,11 +173,7 @@ function Project() {
             <p className="Description">{getDescription()}</p>
           </div>
 
-          <div className="Students">
-            <h3>Students</h3>
-            <br />
-            {displayStudents()}
-          </div>
+          <div className="Students">{displayPeople()}</div>
         </div>
 
         <div className="Spacer"></div>
