@@ -381,9 +381,11 @@ function Search() {
     <>
       <GenericHeader background={true} user={getUser()} />
       {getTitle()}
-      {getDropDowns()}
-      {getTable()}
-      {getButtons()}
+      <div className="PageBody">
+        {getDropDowns()}
+        {getTable()}
+        {getButtons()}
+      </div>
       <CsFooter />
     </>
   );
