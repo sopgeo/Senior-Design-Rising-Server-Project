@@ -5,6 +5,7 @@ const cors = require('cors');
 const projectRoutes = require('./routes/projectroute')
 const fileRoutes = require('./routes/fileroute')
 const userRoutes = require('./routes/userroute')
+const tagRoutes = require('./routes/tagroute')
 
 const app = express();
 app.use(cors());
@@ -28,5 +29,6 @@ app.use((req, res, next) =>
 app.use('/api/project', projectRoutes)
 app.use('/api/file', fileRoutes)
 app.use('/api/user', userRoutes)
+app.use('/api/tag', tagRoutes)
 
 app.listen(5000); // start Node + Express server on port 5000
