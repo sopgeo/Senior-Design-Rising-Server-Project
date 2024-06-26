@@ -2,10 +2,10 @@ import React from "react";
 import "../css/GenericHeader.css";
 
 function GenericHeader({ background, user }) {
-  function UCFHeader() {
+  function Header() {
     return (
-      <div className="UCFHeader">
-        <img src="http://localhost:3000/UCFHeaderLogo.png" height="50px" />
+      <div className="Header">
+        Computer Science Senior Design Projects
       </div>
     );
   }
@@ -20,7 +20,7 @@ function GenericHeader({ background, user }) {
       return (
         <div className={css}>
           <div className="navbar">
-            <div className="home"><a className="navItem" href="/home">Home</a></div>
+            <div className="home"><a className="navItem" href="/">Home</a></div>
             <a className="navItem" href="/search">Projects</a>
             <a className="navItem" href="/upload">Upload</a>
             <a className="navItem" href="/manage">Manage</a>
@@ -31,7 +31,7 @@ function GenericHeader({ background, user }) {
       return (
         <div className={css}>
           <div className="navbar">
-            <div className="home"><a className="navItem" href="/home">Home</a></div>
+            <div className="home"><a className="navItem" href="/">Home</a></div>
             <a className="navItem" href="/search">Projects</a>
             <a className="navItem" href="/upload">Upload</a>
           </div>
@@ -41,7 +41,7 @@ function GenericHeader({ background, user }) {
       return (
         <div className={css}>
           <div className="navbar">
-          <div className="home"><a className="navItem" href="/home">Home</a></div>
+          <div className="home"><a className="navItem" href="/">Home</a></div>
             <a className="navItem" href="/search">Projects</a>
           </div>
         </div>
@@ -51,7 +51,7 @@ function GenericHeader({ background, user }) {
 
   return (
     <div className="FullHeader">
-      {UCFHeader()}
+      {Header()}
       {NavBar()}
     </div>
   );

@@ -6,12 +6,11 @@
 }
 
 .upload-page {
-    margin: 5rem;
     display: flex;
+    /* margin: 5rem; */
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-    /* min-height: 100vh; */
+    
 }
 
 .upload-header h1, .upload-header h2{
@@ -21,6 +20,11 @@
 #full-name-header, #linked-in-header, #project-role-header, #project-name, #tags, #project-description{
     margin-left: 3px;
     margin-bottom: 8px;
+}
+
+#proj-desc {
+    height: 250em;
+    width: 400px;
 }
 
 .user-info {
@@ -39,8 +43,9 @@
 }
 
 #proj-desc {
-    /* height: 200px; */
-    /* width: 150px; */
+    width: 450px;
+    height: 200px;
+    font-size: 16px;
 }
 
 #full-name-input, #linked-in-input, #project-role-input {
@@ -55,7 +60,7 @@
 .line1 {
     margin: 10px;
     display: flex;
-    justify-content: left;
+    justify-content: center;
     text-align: left;
 }
 
@@ -126,11 +131,10 @@
 }
 
 #done-button:hover {
-    background-color: grey;
+    background-color:#EAB906;
 }
 
 /* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
     margin: 5px;
 } */
-
 

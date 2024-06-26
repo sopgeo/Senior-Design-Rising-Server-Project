@@ -2,6 +2,7 @@
 import "../css/Upload.css";
 import React, { useState } from "react";
 import { useDropzone } from 'react-dropzone'
+import Header from './GenericHeader.js'
 import TagsInput from "../components/TagsInput"
 
 function Upload() {
@@ -40,6 +41,7 @@ function Upload() {
 
   return (
       <div className="upload-page">
+        <Header/>
         <script src="../Pages/UploadPage.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
@@ -49,6 +51,7 @@ function Upload() {
             <h3>Enter metadata about your project and submit it for admin approval</h3>
         </div>
 
+        {/* first member field */}
         <div className="user-info">
             <div className="full-name-field">
                 <div id="full-name-header">Full Name</div>
@@ -65,12 +68,103 @@ function Upload() {
                 <div id="project-role-header">Project Role</div>
                 <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
             </div>
-        
-            {/* <button onClick={addUser}>+</button> */}
-            {/* <button onClick={removeUser}>-</button> */}
-            <button id="add-button">+</button>
-            <button id="remove-button">-</button>
         </div>
+
+        {/* second member field */}
+        <div className="user-info">
+            <div className="full-name-field">
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
+            </div>
+
+            <div className="linked-in-field">
+                <div id="linked-in-header">LinkedIn</div>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
+            </div>
+
+            <div className="project-role-field">
+                <div id="project-role-header">Project Role</div>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
+            </div>
+        </div>
+
+        {/* third member field */}
+        <div className="user-info">
+            <div className="full-name-field">
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
+            </div>
+
+            <div className="linked-in-field">
+                <div id="linked-in-header">LinkedIn</div>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
+            </div>
+
+            <div className="project-role-field">
+                <div id="project-role-header">Project Role</div>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
+            </div>
+        </div>
+
+        {/* fourth member field */}
+        <div className="user-info">
+            <div className="full-name-field">
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
+            </div>
+
+            <div className="linked-in-field">
+                <div id="linked-in-header">LinkedIn</div>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
+            </div>
+
+            <div className="project-role-field">
+                <div id="project-role-header">Project Role</div>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
+            </div>
+        </div>
+
+        {/* fifth member field */}
+        <div className="user-info">
+            <div className="full-name-field">
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
+            </div>
+
+            <div className="linked-in-field">
+                <div id="linked-in-header">LinkedIn</div>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
+            </div>
+
+            <div className="project-role-field">
+                <div id="project-role-header">Project Role</div>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
+            </div>
+        </div>
+
+        {/* sixth member field */}
+        <div className="user-info">
+            <div className="full-name-field">
+                <div id="full-name-header">Full Name</div>
+                {/* <br/> */}
+                <input type="text" id="full-name-input" placeholder="Type name here..."/>
+            </div>
+
+            <div className="linked-in-field">
+                <div id="linked-in-header">LinkedIn</div>
+                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
+            </div>
+
+            <div className="project-role-field">
+                <div id="project-role-header">Project Role</div>
+                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
+            </div>
+        </div>
+        
 
         <div className="project-info">
             <div className="line1">
@@ -90,7 +184,7 @@ function Upload() {
                 <div className="tech-doc-field">
                 <label id="tech-doc">Upload your technical document</label>
                 <div className="drop-zone" {...getRootProps({className: "dropzone"})} >
-                    <input className="input-zone" {...getInputProps() } />
+                    <input accept="application/pdf" className="input-zone" {...getInputProps() } />
                     {isDragActive ? (
                         <div className="drop-files">
                              <p>Release to drop the file here</p>
@@ -117,7 +211,9 @@ function Upload() {
 
                 <div className="proj-desc-field">
                     <div id="project-description">Project description</div>
-                    <input type="text" id="proj-desc" placeholder="Type project description here..."/>
+                    <span contenteditable="true">
+                        <textarea type="text" id="proj-desc" placeholder="Type project description here..."> </textarea>
+                    </span>
                 </div>
             </div>
 

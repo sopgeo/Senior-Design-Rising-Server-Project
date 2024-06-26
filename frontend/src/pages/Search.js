@@ -1,0 +1,350 @@
+import React from "react";
+import CsFooter from "../components/CsFooter";
+import GenericHeader from "../components/GenericHeader";
+import "../css/Search.css";
+import { useState, useEffect } from "react";
+import ProjectDetails from "../components/ProjectDetails";
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+  getPaginationRowModel,
+} from "@tanstack/react-table";
+import Path from '../components/Path';
+
+function Search() {
+  // Sets up variables we're using
+  const [timer, setTimer] = useState("");
+  const [user, setUser] = useState("public");
+  const [search, setSearch] = useState("");
+  const [semester, setSemester] = useState("");
+  const [year, setYear] = useState("");
+  const [keyWords, setKeyWords] = useState([]);
+  const [projects, setProjects] = useState([
+    {
+      description:
+        "Remote controlled robot that autonomously detects and fires at specific targets using Nerf guns.",
+      end_semester: "Fall",
+      end_year: 2017,
+      group_id: 59,
+      name: "12c: Lockheed Battlebot",
+      project_id: 332,
+      sponsor: "Lockheed Martin",
+      sponsor_contact: null,
+    },
+  ]);
+
+  // Sets up table
+  const columns = [
+    {
+      accessorKey: "name",
+      header: "Title",
+    },
+    {
+      header: "Term",
+      cell: ({ row }) => (
+        <>{row.original.end_semester + " " + row.original.end_year} </>
+      ),
+    },
+    {
+      accessorKey: "sponsor",
+      header: "Sponsor",
+    },
+    {
+      accessorKey: "tags",
+      header: "Key Words",
+      cell: ({ row }) => {
+        try {
+          let keys = "";
+          for (let i = 0; i < row.original.tags.length; i++) {
+            keys = keys.concat(row.original.tags[i].name + ", ");
+          }
+          keys = keys.slice(0, keys.length - 2);
+          return keys;
+        } catch {
+          return "";
+        }
+      },
+    },
+  ];
+
+  const table = useReactTable({
+    data: projects,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageIndex: 0, //custom initial page index
+        pageSize: 15, //custom default page size
+      },
+    },
+  });
+
+  function getProjects(query, semester, year) {
+    let bodyJSON = {};
+    if (query != "") {
+      bodyJSON["query"] = query;
+    }
+    if (semester != "") {
+      bodyJSON["semester"] = semester;
+    }
+    if (year != "") {
+      bodyJSON["year"] = year;
+    }
+    let bodyJSONStr = JSON.stringify(bodyJSON);
+
+    const fetchProjects = async () => {
+      const response = await fetch(
+        Path.buildPath("api/project/searchProjects", true),
+        {
+          method: "POST",
+          body: bodyJSONStr,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+
+      const json = await response.json();
+
+      if (response.ok) {
+        setProjects(json);
+      }
+    };
+
+    fetchProjects();
+    console.log("Ran");
+  }
+
+  // API request
+  useEffect(() => {
+    getProjects(search, semester, year);
+  }, []);
+
+  // Search and filter setters
+  function giveSearch(searchQuery) {
+    setSearch(searchQuery);
+    if (timer != "") {
+      clearTimeout(timer);
+    }
+    setTimer(
+      setTimeout(() => {
+        getProjects(searchQuery, semester, year);
+      }, 750)
+    );
+    clearTimeout(timer);
+  }
+
+  async function giveTerm(term) {
+    let termArr = term.split(" ");
+    setSemester(termArr[0]);
+    setYear(termArr[1]);
+    getProjects(search, termArr[0], termArr[1]);
+  }
+
+  // Getters
+  function getUser() {
+    return user;
+  }
+
+  function getTable() {
+    if (projects.length != 0) {
+      return (
+        <table id="tanstackTable" align="center">
+          {/* Table header */}
+          <thead key="Header">
+            {/* For all header rows... (we only have 1) */}
+            {table.getHeaderGroups().map((headerGroup) => {
+              return (
+                <tr key={headerGroup.id}>
+                  {/* For all headers... */}
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <th
+                        id={header.id}
+                        key={header.column.columnDef.header}
+                        className={header.column.columnDef.header + "Col"}
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </th>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </thead>
+
+          {/* Table body */}
+          <tbody>
+            {/* For all rows... */}
+            {table.getRowModel().rows.map((row) => {
+              return (
+                <tr
+                  key={row.original.project_id + "_" + row.original.group_id}
+                  onClick={() => rowClick(row.original.project_id)}
+                >
+                  {/* For all cells... */}
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <td
+                        key={
+                          cell.getValue() +
+                          "_" +
+                          row.original.name +
+                          "_" +
+                          row.original.group_id +
+                          "_" +
+                          cell.column.id
+                        }
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      );
+    } else {
+      return <p>Sorry, that query returned no results</p>;
+    }
+  }
+
+  // Handles clicks (in a function because putting debug prints in here on click is really nice)
+  function rowClick(project) {
+    window.open("/project?id=" + project);
+  }
+
+  // Creates a list of possible terms to filter by, somewhat lazily
+  function getTerms() {
+    let arr = new Array();
+    let date = new Date();
+    for (let i = 0; i <= date.getFullYear() - 2016; i++) {
+      arr = arr.concat([
+        "Spring " + (i + 2016).toString(),
+        "Summer " + (i + 2016).toString(),
+        "Fall " + (i + 2016).toString(),
+      ]);
+    }
+
+    arr = arr.concat(" ");
+    arr = arr.reverse();
+
+    return (
+      <select name="Term" id="Term" onChange={(e) => giveTerm(e.target.value)}>
+        {arr.map((term) => {
+          return (
+            <option value={term} key={term}>
+              {term}
+            </option>
+          );
+        })}
+      </select>
+    );
+  }
+
+  return (
+    <>
+      <GenericHeader background={true} user={getUser()} />
+
+      <div className="PageBody">
+        <br />
+
+        {/* Title */}
+        <h1 className="Title">Project Lookup</h1>
+        <br />
+
+        {/* Drop downs */}
+        <div className="GridContainer">
+          {/* Term */}
+          <div className="TermBox">
+            <h3>Term: </h3>
+            {getTerms()}
+          </div>
+
+          {/* Key words */}
+          <div className="KeyWordsBox">
+            <h3>Key Words: </h3>
+            <select name="KeyWords" id="KeyWords">
+              <option value="Unity">Unity</option>
+              <option value="MERN">MERN</option>
+              <option value="Web">Web</option>
+              <option value="Simulation">Simulation</option>
+            </select>
+          </div>
+
+          {/* Search */}
+          <div className="SearchTextBox">
+            <h3>Search: </h3>
+            <input
+              type="text"
+              name="Search"
+              placeholder="Search..."
+              onChange={(e) => giveSearch(e.target.value)}
+            />
+          </div>
+        </div>
+        <br />
+
+        {/* Table */}
+        <div align="center">{getTable()}</div>
+
+        {/* Nav buttons */}
+        <div className="GridContainer">
+          <div className="leftButtons">
+            {/* First */}
+            <button
+              onClick={() => table.firstPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<<"}
+            </button>
+            {/* Prev */}
+            <button
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
+              {"<"}
+            </button>
+          </div>
+          {/* Next */}
+          <div className="rightButtons">
+            <button
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">"}
+            </button>
+            {/* Last */}
+            <button
+              onClick={() => table.lastPage()}
+              disabled={!table.getCanNextPage()}
+            >
+              {">>"}
+            </button>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+      </div>
+      <CsFooter />
+    </>
+  );
+}
+export default Search;
