@@ -1,3 +1,6 @@
+/* * * * * * * * * *
+ *     Imports     *
+ * * * * * * * * * */
 import React from "react";
 import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
@@ -5,22 +8,16 @@ import "../css/Project.css";
 import { useState, useEffect } from "react";
 import Path from "../components/Path";
 
+/* * * * * * * * * *
+ *     Project     *
+ * * * * * * * * * */
 function Project() {
-  const urlInfo = new URLSearchParams(window.location.search);
-  var projectId;
-  if (urlInfo.has("id")) {
-    projectId = urlInfo.get("id");
-  } else {
-    projectId = "";
-  }
-
+  // Sets up variables we're using
   const [user, setUser] = useState("public");
-  const [projectName, setProjectName] = useState("Name");
-  const [description, setDescription] = useState("Description");
-  const [sponsor, setSponsor] = useState("Sponsor");
-  const [show, setShow] = useState(
-    "http://localhost:3000/Files/2018/Fall/Projects/402/DesignDocument.pdf"
-  );
+  const [projectName, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [sponsor, setSponsor] = useState("");
+  const [show, setShow] = useState("");
   const [tags, setTags] = useState(["tag1", "tag2", "tag3"]);
   const [students, setStudents] = useState([
     "Student1",
@@ -29,100 +26,15 @@ function Project() {
     "Student4",
     "Student5",
   ]);
-
-  function displayTags() {
-    if (Array.isArray(tags)) {
-      return tags.map((tag) => (
-        <>
-          <span className="Tag" key={tag}>
-            {tag}
-          </span>
-        </>
-      ));
-    } else {
-      return <></>;
-    }
+  const urlInfo = new URLSearchParams(window.location.search);
+  var projectId = "";
+  if (urlInfo.has("id")) {
+    projectId = urlInfo.get("id");
   }
 
-  function mapStudents() {
-    if (Array.isArray(students)) {
-      return students.map((student) => <p key={student}>{student}</p>);
-    } else {
-      return <></>;
-    }
-  }
-
-  function displayStudents() {
-    return (
-      <>
-        <h3>Students</h3>
-        <br />
-        {mapStudents()}
-      </>
-    );
-  }
-
-  function displaySponsor() {
-    if(sponsor != ""){
-      return(
-        <>
-        <br />
-        <h3>Sponsor</h3>
-        <br />
-        {sponsor}
-      </>
-      )
-    }
-  }
-
-  function displayPeople() {
-    return(
-      <>
-      {displayStudents()}
-      {displaySponsor()}
-      </>
-    )
-  }
-
-  function getName() {
-    return projectName;
-  }
-
-  function getDescription() {
-    return description;
-  }
-
-  function getPDF() {
-    console.log(show);
-    if (show != "") {
-      return (
-        <>
-          <div className="PDF">
-            <object
-              data={show}
-              type="application/pdf"
-              width="100%"
-              height="1000px"
-            ></object>
-          </div>
-          <br />
-          <br />
-          <br />
-        </>
-      );
-    } else {
-      return <p>Nope</p>;
-    }
-  }
-
-  function getUser() {
-    return user;
-  }
-
-  useEffect(() => {
-    getProject();
-  }, []);
-
+  /* * * * * * * * * *
+   *   API + basic   *
+   * * * * * * * * * */
   function getProject() {
     const fetchProject = async () => {
       let url =
@@ -157,34 +69,155 @@ function Project() {
     console.log("Ran");
   }
 
+  function getUser() {
+    return user;
+  }
+
+  function getName() {
+    return (
+      <>
+        <br />
+        <h1 className="Title">{projectName}</h1>
+        <br />
+      </>
+    );
+  }
+
+  /* * * * * * * * * *
+   *    Text Info    *
+   * * * * * * * * * */
+  function displayTextInfo() {
+    return (
+      <div className="GridContainer">
+        {displayDetails()}
+        {displayPeople()}
+      </div>
+    );
+  }
+
+  function displayDetails() {
+    return (
+      <div className="Details">
+        {displayTags()}
+        {getDescription()}
+      </div>
+    );
+  }
+
+  function displayTags() {
+    if (Array.isArray(tags)) {
+      return (
+        <figure className="Tags">
+          {tags.map((tag) => (
+            <>
+              <span className="Tag" key={tag}>
+                {tag}
+              </span>
+            </>
+          ))}
+        </figure>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
+  function getDescription() {
+    return <p className="Description">{description}</p>;
+  }
+
+  /* * * * * * * * * *
+   *     People      *
+   * * * * * * * * * */
+  function displaySponsor() {
+    if (sponsor != "") {
+      return (
+        <>
+          <br />
+          <h3>Sponsor</h3>
+          <br />
+          {sponsor}
+        </>
+      );
+    }
+  }
+
+  function mapStudents() {
+    if (Array.isArray(students)) {
+      return students.map((student) => <p key={student}>{student}</p>);
+    } else {
+      return <></>;
+    }
+  }
+
+  function displayStudents() {
+    return (
+      <>
+        <h3>Students</h3>
+        <br />
+        {mapStudents()}
+      </>
+    );
+  }
+
+  function displayPeople() {
+    return (
+      <div className="People">
+        {displayStudents()}
+        {displaySponsor()}
+      </div>
+    );
+  }
+
+  /* * * * * * * * * *
+   *       PDF       *
+   * * * * * * * * * */
+  function getPDF() {
+    console.log(show);
+    if (show != "") {
+      return (
+        <>
+          <br />
+          <div className="PDF">
+            <object
+              data={show}
+              type="application/pdf"
+              width="100%"
+              height="1000px"
+            ></object>
+          </div>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    } else {
+      return <p>Nope</p>;
+    }
+  }
+
+  /* * * * * * * * * *
+   *   Update Data   *
+   * * * * * * * * * */
+  useEffect(() => {
+    getProject();
+  }, []);
+
+  /* * * * * * * * * *
+   *   Design Page   *
+   * * * * * * * * * */
   return (
     <>
       <GenericHeader background={true} user={getUser()} />
 
       <div className="PageBody">
-        <br />
-
-        <h1 className="Title">{getName()}</h1>
-        <br />
-
-        <div className="GridContainer">
-          <div className="Details">
-            <figure className="Tags">{displayTags()}</figure>
-            <p className="Description">{getDescription()}</p>
-          </div>
-
-          <div className="Students">{displayPeople()}</div>
-        </div>
-
-        <div className="Spacer"></div>
-
-        <br />
-
+        {getName()}
+        {displayTextInfo()}
         {getPDF()}
       </div>
+
       <CsFooter />
     </>
   );
 }
-
 export default Project;
