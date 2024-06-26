@@ -59,9 +59,11 @@ function Project() {
         json.hasOwnProperty("sponsor")
           ? setSponsor(json.sponsor)
           : setSponsor("");
-        json.hasOwnProperty("documents")
-          ? setShow(Path.buildPath(json.documents[0].filepath, false))
-          : setShow("");
+        try {
+          setShow(Path.buildPath(json.documents[0].filepath, false));
+        } catch {
+          setShow("");
+        }
       }
     };
 
@@ -192,7 +194,17 @@ function Project() {
         </>
       );
     } else {
-      return <p>Nope</p>;
+      return (
+        <>
+          <br />
+          <br />
+          <br />
+          <p>No PDF provided</p>
+          <br />
+          <br />
+          <br />
+        </>
+      );
     }
   }
 
