@@ -40,8 +40,21 @@ exports.getProject = async (req, res) => {
   try {
       const project_id = req.query.project_id
       const project = await Project.findOne({
-        where: { project_id: project_id}
-      });
+        where: { project_id: project_id},
+        include: [
+          {
+            model: Group,
+            include: User
+          },
+          {
+            
+            model: Tags,
+            through: {
+              attributes: []
+            },
+          },
+        ]
+      })
     
       if (!project) {
         return res.status(404).json({ message: "Project not found" });
