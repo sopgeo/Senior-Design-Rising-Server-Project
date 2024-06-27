@@ -18,14 +18,8 @@ function Project() {
   const [description, setDescription] = useState("");
   const [sponsor, setSponsor] = useState("");
   const [show, setShow] = useState("");
-  const [tags, setTags] = useState(["tag1", "tag2", "tag3"]);
-  const [students, setStudents] = useState([
-    "Student1",
-    "Student2",
-    "Student3",
-    "Student4",
-    "Student5",
-  ]);
+  const [tags, setTags] = useState([]);
+  const [students, setStudents] = useState([]);
   const urlInfo = new URLSearchParams(window.location.search);
   var projectId = "";
   if (urlInfo.has("id")) {
@@ -39,7 +33,6 @@ function Project() {
     const fetchProject = async () => {
       let url =
         Path.buildPath("api/project/getProject?project_id=", true) + projectId;
-      console.log(url);
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -49,7 +42,7 @@ function Project() {
       const json = await response.json();
 
       if (response.ok) {
-        console.log(json);
+        //console.log(json);
         json.hasOwnProperty("name")
           ? setProjectName(json.name)
           : setProjectName("");
@@ -64,11 +57,20 @@ function Project() {
         } catch {
           setShow("");
         }
+        try {
+          setStudents(json.group.users);
+        } catch {
+          setStudents([]);
+        }
+        try {
+          setTags(json.tags);
+        } catch {
+          setTags([]);
+        }
       }
     };
 
     fetchProject();
-    console.log("Ran");
   }
 
   function getUser() {
@@ -111,11 +113,9 @@ function Project() {
       return (
         <figure className="Tags">
           {tags.map((tag) => (
-            <>
-              <span className="Tag" key={tag}>
-                {tag}
+              <span className="Tag" key={tag.name}>
+                {tag.name}
               </span>
-            </>
           ))}
         </figure>
       );
@@ -146,7 +146,9 @@ function Project() {
 
   function mapStudents() {
     if (Array.isArray(students)) {
-      return students.map((student) => <p key={student}>{student}</p>);
+      return students.map((student) => (
+        <p key={student.user_id}>{student.first_name + " " + student.last_name}</p>
+      ));
     } else {
       return <></>;
     }
@@ -175,7 +177,7 @@ function Project() {
    *       PDF       *
    * * * * * * * * * */
   function getPDF() {
-    console.log(show);
+    //console.log(show);
     if (show != "") {
       return (
         <>
