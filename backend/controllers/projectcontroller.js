@@ -129,6 +129,7 @@ exports.projectSearch = async (req, res) => {
     const queryString = req.body.query || '';
     const yearFilter = req.body.year || '';
     const semesterFilter = req.body.semester || '';
+    const tagFilter = req.body.tags || []
 
     const projects = await Project.findAll({
       order: [["end_year", "DESC"]],
@@ -159,6 +160,9 @@ exports.projectSearch = async (req, res) => {
         },
         end_year: {
           [Op.substring]: yearFilter
+        },
+        '$tags.name$': {
+          [Op.in]: tagFilter
         }
       },
       include: [
