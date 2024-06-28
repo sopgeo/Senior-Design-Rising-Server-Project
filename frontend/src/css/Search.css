@@ -1,0 +1,100 @@
+.PageBody {
+    align-items: center;
+    min-height: 58vh;
+}
+
+.Title {
+    color: #000;
+    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
+    text-align: left;
+    padding-left: 5%;
+}
+
+.GridContainer {
+    display: grid;
+    grid-template-columns: 20% auto 20%;
+    gap: 10px;
+    text-align: center;
+}
+
+.TermBox {
+    grid-column: 1;
+}
+
+.KeyWordsBox {
+    grid-column: 2 / 3;
+}
+
+.SearchTextBox {
+    grid-column: 4 / 5;
+}
+
+h3 {
+    display: inline;
+}
+
+select {
+    height: 50px;
+    font-size: large;
+}
+
+input {
+    height: 50px;
+    font-size: large;
+}
+
+table, th, td {
+    border: 1px solid #3e3e3e;
+    border-collapse: collapse;
+    text-align: left;
+    height: 40px;
+    padding-left: 1%;
+}
+
+th {
+    background-color: #FFC904;
+}
+
+tr:hover {
+    background-color: #E4E4E4;
+}
+
+table {
+    width: 90%;
+}
+
+.TitleCol {
+    width: 30%;
+}
+
+.TermCol {
+    width: 15%;
+}
+
+.SponsorCol {
+    width: 20%;
+}
+
+.KeyWordsCol {
+    width: 35%;
+}
+
+button{
+    width: 25%;
+    aspect-ratio: 1/1;
+    background-color: #FFC904;
+    font-size: large;
+    font-weight: bold;
+}
+
+button:disabled{
+    background-color: #EAB700;
+}
+
+.leftButtons{
+    grid-column: 1;
+}
+
+.rightButtons{
+    grid-column: 3;
+}
