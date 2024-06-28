@@ -131,8 +131,8 @@ exports.projectSearch = async (req, res) => {
     const semesterFilter = req.body.semester || '';
     const tagFilter = req.body.tags || []
 
-    
-    const filteredProjects = await Project.findAll({
+    let filteredProjects
+    if (tagFilter && tagFilter.length > 0) filteredProjects = await Project.findAll({
       include: [
         {
           model: Tags,
@@ -141,11 +141,14 @@ exports.projectSearch = async (req, res) => {
               [Op.in]: tagFilter
             }
           }
-        },
+        },  
       ],
       group: ['Project.project_id'],
       having: Sequelize.literal(`COUNT(\`Tags\`.\`tag_id\`) = ${tagFilter.length}`)
     })
+    else {
+      filteredProjects = await Project.findAll()
+    }
 
     const filteredProjectIds = filteredProjects.map(project => project.project_id);
 
