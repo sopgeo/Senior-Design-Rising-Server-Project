@@ -4,7 +4,8 @@ const User = db.users
 
 exports.getGroups = async (req, res) => {
     try {
-        const groups = await Group.findAll({
+        let groups
+        if (groups && groups !== '') groups = await Group.findAll({
             order: [["title"]],
             where: {
                 semester: req.body.semester
@@ -18,6 +19,8 @@ exports.getGroups = async (req, res) => {
                 
             
         })
+        else groups = await Group.findAll()
+        
         res.status(200).json(groups);
     } catch (error) {
       console.log(error);
