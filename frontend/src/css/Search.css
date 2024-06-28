@@ -1,5 +1,6 @@
 .PageBody {
     align-items: center;
+    min-height: 58vh;
 }
 
 .Title {
