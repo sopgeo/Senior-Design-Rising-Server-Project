@@ -125,11 +125,13 @@ button:disabled {
 
     .leftButtons {
         grid-column: 1;
-        min-width: 2%;
+        min-width: 20vw;
+        min-height: 20vw;
     }
     
     .rightButtons {
         grid-column: 3;
-        min-width: 5%;
+        min-width: 15vw;
+        min-height: 15vw;
     }
 }
