@@ -38,7 +38,6 @@ export default function Login() {
                 {
                     method: 'POST',
                     body: JSON.stringify({ ucf_id, password }),
-                    // body: bodyJSONStr,
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -113,15 +112,7 @@ export default function Login() {
         <div className="loginpage">
             <Header/>
             <div className="loginbox">
-                {/* <form 
-                    action="/api/user/loginUser"
-                    method="POST" 
-                    enctype="multipart/form-data"
-                    onSubmit={handleSubmit}
-                    > */}
                     <form className="ml-6 w-5/6 max-h-fit p-10 bg-stone-600 shadow-2xl rounded-2xl" onSubmit={handleSubmit}>
-                    
-                    
                     <h2 className="logintext">Log In</h2>
 
                     <div className="mb-6">

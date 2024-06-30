@@ -38,3 +38,36 @@
 .home {
     grid-column: 2;
 }
+
+.loginButton {
+  background-color: #FFC904;
+  float: right;
+  margin-right: 20px;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 70px;
+  height: 30px;
+}
+
+.loginButton:hover {
+  background-color: #f7fafa;
+}
+
+.loginButton:focus {
+  border-color: #008296;
+  /* box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0; */
+  outline: 0;
+}

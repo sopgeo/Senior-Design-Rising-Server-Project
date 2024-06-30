@@ -6,6 +6,9 @@ function GenericHeader({ background, user }) {
     return (
       <div className="Header">
         Computer Science Senior Design Projects
+        <a className="loginLink" href="/login">
+          <button className="loginButton">Login</button>
+        </a>
       </div>
     );
   }
