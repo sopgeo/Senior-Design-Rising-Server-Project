@@ -46,7 +46,7 @@ export default function Login() {
             console.log("body: " + JSON.stringify({ ucf_id, password }));
             if (!response.ok) {
                 console.log("response: " + !response.ok)
-                throw new Error("Login failed due to server error");
+                throw new Error("Login failed");
             }
             
             const data = await response.json();
@@ -57,7 +57,6 @@ export default function Login() {
                     password: data.password,
                 }));
                 navigate('/');
-                console.log("hereee")
             }
             navigate('/');
         } catch (error) {
@@ -110,52 +109,43 @@ export default function Login() {
 
     return (
         <div className="loginpage">
-            <Header/>
+            {/* <Header/> */}
             <div className="loginbox">
-                    <form className="ml-6 w-5/6 max-h-fit p-10 bg-stone-600 shadow-2xl rounded-2xl" onSubmit={handleSubmit}>
-                    <h2 className="logintext">Log In</h2>
+                    <form className="loginform" onSubmit={handleSubmit}>
+                        <div className="logintext">
+                            <h1 className="logintext1">Sign in</h1>
+                            <br></br>
+                            <h4 className="logintext2">to continue to the SD portal</h4>
+                        </div>
+                    
 
-                    <div className="mb-6">
-                    <label htmlFor="ucf_id" className="mb-2 block font-medium text-white text-xl">UCF NID</label>
-                    <Tooltip title="Please fill out this field" open={showTooltip.ucf_id} placement="top" arrow>
-                        <input type="ucf_id" name="ucf_id" id="ucf_id"
-                               className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-900 p-4 focus:border-blue-500 focus:ring-blue-500"
-                               placeholder="e.g. ab148302"/>
-                    </Tooltip>
+                    <div className="loginform">
+                        <label htmlFor="ucf_id" className="ucf_idlabel">UCF NID</label>
+                            {/* <Tooltip title="Please fill out this field" open={showTooltip.ucf_id} placement="top" arrow> */}
+                                <input type="ucf_id" name="ucf_id" id="ucf_id"
+                                    className="ucf_idinput"
+                                    placeholder="e.g. ab148302"/>
+                            {/* </Tooltip> */}
                     </div> 
 
                     {/* Password input */}
-                    <div className="mb-6">
-                        <label htmlFor="password" className="mb-2 block text-xl font-medium text-white">Password</label>
-                        <Tooltip title="Please fill out this field" open={showTooltip.password} placement="top" arrow>
+                    <div className="loginform">
+                        <label htmlFor="password" className="passwordlabel">Password</label>
+                        {/* <Tooltip title="Please fill out this field" open={showTooltip.password} placement="top" arrow> */}
                             <input type="password" name="password" id="password"
-                                className="block w-full rounded-lg border border-gray-300 bg-gray-50 text-gray-900 p-4 focus:border-blue-500 focus:ring-blue-500"
+                                className="passwordinput"
                                 placeholder="•••••••••"/>
-                        </Tooltip>
+                        {/* </Tooltip> */}
                     </div>
-                    {/* <Tooltip title="Please fill out this field" open={showTooltip.ucf_id} placement="top" arrow>
-                        <div class="inputbox1">
-                            <i class = "fas fa-caret-square-right"></i>
-                            <input type="user" id="loginUser" name="ucf_id" placeholder="ucf_id"
-                            />
-                        </div>
-                    </Tooltip>
 
-
-                    <Tooltip title="Please fill out this field" open={showTooltip.password} placement="top" arrow>
-                        <div class = "inputbox2">
-                            <i class = "fa fa-lock"></i>
-                            <i class="fa fa-user" ></i>
-                            <input type = "password" id = "loginPassword" name = "password" placeholder = "Password"
-                            />
-                        </div>
-                    </Tooltip> */}
-
-                
-                    <button type="submit" id="loginButton" >LOGIN</button> 
+                    <div className="forgotpasswordbutton">
+                        <button type="fp" id="forgotPassword" onClick={handleOpen}>Forgot Password?</button> 
+                    </div>
+                    
+                    <button type="submit" id="loginButton">Continue</button> 
+                    
                     <pre id="loginResult"></pre>
 
-                    <button type="fp" id="forgotPassword" onClick={handleOpen}>Forgot Password?</button> 
                     
                 </form>
                 <Snackbar
