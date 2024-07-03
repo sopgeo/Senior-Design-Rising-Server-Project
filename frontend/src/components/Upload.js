@@ -47,131 +47,15 @@ function Upload() {
         {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
         
         <div className="upload-header">
-            <h1>Upload your project</h1>
-            <h3>Enter metadata about your project and submit it for admin approval</h3>
+            <h1>Hello, </h1>
+            <h3>Your project is: </h3>
+            <h4>Thank you for your hard work this semester! 
+                Please upload your technical document to the 
+                server by filling out the form below.</h4>
         </div>
-
-        {/* first member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* second member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* third member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* fourth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* fifth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* sixth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-        
 
         <div className="project-info">
             <div className="line1">
-                <div className="project-name-field">
-                    <div id="project-name">Project Name</div>
-                    <input type="text" id="proj-name-input" placeholder="Type project name here..."/>
-                </div>
                 
                 <div className="tags-field">
                     <div id="tags">Tags</div>
