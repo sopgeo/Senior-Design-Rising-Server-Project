@@ -2,7 +2,7 @@ import React from "react";
 import "../css/GenericHeader.css";
 import Login from "./Login.js";
 
-export function GenericHeader({ background, user }) {
+export function GenericHeader({ background }) {
   function Header() {
     return (
       <div className="Header">
@@ -18,8 +18,8 @@ export function GenericHeader({ background, user }) {
     let user = localStorage.getItem("user")
     let ud = JSON.parse(user)
     let usertype = ud.type
-
     let css = "background";
+
     if (background == false) {
       css = "see-through";
     } 
