@@ -7,7 +7,8 @@
     padding-bottom: 1%;
     padding-left: 5%;
     font-size: larger;
-    width: 100vw;
+    width: 100%;
+    height: 6vh;
 }
 
 .background {
@@ -33,6 +34,8 @@
     text-align: center;
     padding-top: 20px;
     padding-bottom: 20px;
+    width: 100%;
+    height: 8vh;
 }
 
 .home {

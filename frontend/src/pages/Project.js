@@ -1,53 +1,187 @@
+/* * * * * * * * * *
+ *     Imports     *
+ * * * * * * * * * */
 import React from "react";
 import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import "../css/Project.css";
 import { useState, useEffect } from "react";
+import Path from "../components/Path";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
+/* * * * * * * * * *
+ *     Project     *
+ * * * * * * * * * */
 function Project() {
+  // Sets up variables we're using
+  const [user, setUser] = useState("public");
+  const [projectName, setProjectName] = useState("");
+  const [description, setDescription] = useState("");
+  const [sponsor, setSponsor] = useState("");
+  const [show, setShow] = useState("");
+  const [tags, setTags] = useState([]);
+  const [students, setStudents] = useState([]);
   const urlInfo = new URLSearchParams(window.location.search);
-  var projectId;
-  if (urlInfo.has("projectId")) {
-    projectId = urlInfo.get("projectId");
-  } else {
-    projectId = "";
+  var projectId = "";
+  if (urlInfo.has("id")) {
+    projectId = urlInfo.get("id");
   }
 
-  const [user, setUser] = useState("public");
-  const [projectName, setProjectName] = useState("Placeholder name");
-  const [description, setDescription] = useState(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis mollis enim eu sollicitudin posuere. Integer bibendum molestie sem quis pretium. Pellentesque neque leo, volutpat tristique ante in, elementum commodo turpis. Phasellus eleifend vulputate rutrum. Nunc sed lacus a nibh volutpat tempor. Etiam dignissim, lacus eget commodo dictum, quam elit aliquet ex, non auctor leo risus ultricies ipsum. In vulputate sapien rhoncus urna bibendum imperdiet. Pellentesque varius risus id sapien hendrerit cursus."
-  );
-  const [show, setShow] = useState(
-    "http://localhost:3000/Files/2018/Fall/Projects/402/DesignDocument.pdf"
-  );
-  const [tags, setTags] = useState([
-    "test",
-    "this is another tag",
-    "need to fill out space",
-    "hi",
-    "text",
-    "more text",
-    "continuing",
-    "other things",
-    "hoping this wraps",
-    "very long piece of text to fill up space",
-    "this shouldn't overflow please",
-  ]);
-  const [students, setStudents] = useState([
-    "Salvador Felipe Jacinto Dalí y Domenech",
-    "Student2",
-    "Student3",
-    "Student4",
-    "Student5",
-  ]);
+  /* * * * * * * * * *
+   *   API + basic   *
+   * * * * * * * * * */
+  function getProject() {
+    const fetchProject = async () => {
+      let url =
+        Path.buildPath("api/project/getProject?project_id=", true) + projectId;
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch projects");
+      }
+
+      const json = await response.json();
+
+      if (response.ok) {
+        //console.log(json);
+        json.hasOwnProperty("name")
+          ? setProjectName(json.name)
+          : setProjectName("");
+        json.hasOwnProperty("description")
+          ? setDescription(json.description)
+          : setDescription("");
+        json.hasOwnProperty("sponsor")
+          ? setSponsor(json.sponsor)
+          : setSponsor("");
+        try {
+          setShow(Path.buildPath(json.documents[0].filepath, false));
+        } catch {
+          setShow("");
+        }
+        try {
+          setStudents(json.group.users);
+        } catch {
+          setStudents([]);
+        }
+        try {
+          setTags(json.tags);
+        } catch {
+          setTags([]);
+        }
+      }
+    };
+
+    fetchProject();
+  }
+
+  function getUser() {
+    return user;
+  }
+
+  function getName() {
+    if(projectName != ""){
+      return (
+        <>
+          <br />
+          <h1 className="Title">{projectName}</h1>
+          <br />
+        </>
+      );
+    }else{
+      return (
+        <>
+          <br />
+          <h1 className="Title"><Skeleton/></h1>
+          <br />
+        </>
+      );
+    }
+  }
+
+  /* * * * * * * * * *
+   *    Text Info    *
+   * * * * * * * * * */
+  function displayTextInfo() {
+    return (
+      <div className="GridContainer">
+        {displayDetails()}
+        {displayPeople()}
+      </div>
+    );
+  }
+
+  function displayDetails() {
+    return (
+      <div className="Details">
+        {displayTags()}
+        {getDescription()}
+      </div>
+    );
+  }
 
   function displayTags() {
     if (Array.isArray(tags)) {
-      return tags.map((tag) => (
+      return (
+        <figure className="Tags">
+          {tags.map((tag) => (
+              <span className="Tag" key={tag.name}>
+                {tag.name}
+              </span>
+          ))}
+        </figure>
+      );
+    } else {
+      return <></>;
+    }
+  }
+
+  function getDescription() {
+    if(projectName != ""){
+      return <p className="Description">{description}</p>;
+    }else{
+      return <p className="Description"><Skeleton count={3}/></p>;
+    }
+  }
+
+  /* * * * * * * * * *
+   *     People      *
+   * * * * * * * * * */
+  function displayPeople() {
+    return (
+      <div className="People">
+        {displayStudents()}
+        {displaySponsor()}
+      </div>
+    );
+  }
+
+  function displaySponsor() {
+    if (projectName != "") {
+      return (
         <>
-          <span className="Tag">{tag}</span>
+          <br />
+          <h3>Sponsor</h3>
+          <br />
+          {sponsor}
         </>
+      );
+    }else{
+      return (
+        <>
+          <br />
+          <h3>Sponsor</h3>
+          <br />
+          <Skeleton/>
+        </>
+      );
+    }
+  }
+
+  function mapStudents() {
+    if (Array.isArray(students)) {
+      return students.map((student) => (
+        <p key={student.user_id}>{student.first_name + " " + student.last_name}</p>
       ));
     } else {
       return <></>;
@@ -55,80 +189,96 @@ function Project() {
   }
 
   function displayStudents() {
-    if (Array.isArray(students)) {
-      return students.map((student) => (
+    if(projectName != ""){
+      return (
         <>
-          {student}
+          <h3>Students</h3>
           <br />
+          {mapStudents()}
         </>
-      ));
-    } else {
-      return <></>;
+      );
+    }else{
+      return (
+        <>
+          <h3>Students</h3>
+          <br />
+          <Skeleton count={5}/>
+        </>
+      );
     }
   }
 
-  function getName() {
-    return projectName;
-  }
-
-  function getDescription() {
-    return description;
-  }
-
+  /* * * * * * * * * *
+   *       PDF       *
+   * * * * * * * * * */
   function getPDF() {
-    return show;
+    //console.log(show);
+    if (projectName == ""){
+      return (
+        <>
+          <br />
+          <br />
+          <br />
+          <Skeleton count={20}/>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    }else if (show != "") {
+      return (
+        <>
+          <br />
+          <div className="PDF">
+            <object
+              data={show}
+              type="application/pdf"
+              width="100%"
+              height="1000px"
+            ></object>
+          </div>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <br />
+          <br />
+          <br />
+          <p>No PDF provided</p>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    }
   }
 
-  function getUser() {
-    return user;
-  }
-
+  /* * * * * * * * * *
+   *   Update Data   *
+   * * * * * * * * * */
   useEffect(() => {
-    // May be needed to run functions in the return if they give loading issues
+    getProject();
   }, []);
 
+  /* * * * * * * * * *
+   *   Design Page   *
+   * * * * * * * * * */
   return (
     <>
       <GenericHeader background={true} user={getUser()} />
 
       <div className="PageBody">
-        <br />
-
-        <h1 className="Title">{getName()}</h1>
-        <br />
-
-        <div class="GridContainer">
-          <div className="Details">
-            <figure className="Tags">{displayTags()}</figure>
-            <p class="Description">{getDescription()}</p>
-          </div>
-
-          <div className="Students">
-            <h3>Students</h3>
-            <br/>
-            {displayStudents()}
-          </div>
-        </div>
-
-        <br />
-
-        <div classname="PDF">
-          <object
-            data={getPDF()}
-            type="application/pdf"
-            width="100%"
-            height="1000px"
-          >
-            WHYYYYYY
-          </object>
-        </div>
-        <br />
-        <br />
-        <br />
+        {getName()}
+        {displayTextInfo()}
+        {getPDF()}
       </div>
+
       <CsFooter />
     </>
   );
 }
-
 export default Project;

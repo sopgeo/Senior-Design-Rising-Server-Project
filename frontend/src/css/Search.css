@@ -1,3 +1,8 @@
+.PageBody {
+    align-items: center;
+    min-height: 58vh;
+}
+
 .Title {
     color: #000;
     font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
@@ -38,7 +43,9 @@ input {
     font-size: large;
 }
 
-table, th, td {
+table,
+th,
+td {
     border: 1px solid #3e3e3e;
     border-collapse: collapse;
     text-align: left;
@@ -74,7 +81,7 @@ table {
     width: 35%;
 }
 
-button{
+button {
     width: 25%;
     aspect-ratio: 1/1;
     background-color: #FFC904;
@@ -82,14 +89,49 @@ button{
     font-weight: bold;
 }
 
-button:disabled{
+button:disabled {
     background-color: #EAB700;
 }
 
-.leftButtons{
+.leftButtons {
     grid-column: 1;
 }
 
-.rightButtons{
+.rightButtons {
     grid-column: 3;
+}
+
+@media only screen and (max-width: 600px) {
+    .TermBox {
+        grid-row: 1;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+    
+    .KeyWordsBox {
+        grid-row: 2;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+    
+    .SearchTextBox {
+        grid-row: 3;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+
+    .leftButtons {
+        grid-column: 1;
+        min-width: 20vw;
+        min-height: 20vw;
+    }
+    
+    .rightButtons {
+        grid-column: 3;
+        min-width: 15vw;
+        min-height: 15vw;
+    }
 }
