@@ -43,14 +43,16 @@ export default function Login() {
                     },
                 }
             );
-            console.log("body: " + JSON.stringify({ ucf_id, password }));
+
+            // console.log("body: " + JSON.stringify({ ucf_id, password }));
             if (!response.ok) {
                 console.log("response: " + !response.ok)
                 throw new Error("Login failed");
             }
             
             const data = await response.json();
-            
+            console.log("data: " + data + " " + "data.type: " + data.type)
+
             if (data && data.id) {
                 localStorage.setItem('user', JSON.stringify({
                     id: data.ucf_id,

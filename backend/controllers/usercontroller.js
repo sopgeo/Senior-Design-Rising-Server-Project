@@ -44,6 +44,10 @@ exports.login = async (req, res) => {
         if (!user) {
             throw Error("Incorrect UCF ID or password")
         }
+
+        // if (req.body.ucf_id == undefined && user.password == undefined) {
+        //     throw Error("Please enter a username or password")
+        // }
         
         if (user.password == undefined){
             throw Error("Stored password is null")
