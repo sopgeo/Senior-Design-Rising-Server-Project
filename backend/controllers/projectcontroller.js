@@ -40,8 +40,21 @@ exports.getProject = async (req, res) => {
   try {
       const project_id = req.query.project_id
       const project = await Project.findOne({
-        where: { project_id: project_id}
-      });
+        where: { project_id: project_id},
+        include: [
+          {
+            model: Group,
+            include: User
+          },
+          {
+            
+            model: Tags,
+            through: {
+              attributes: []
+            },
+          },
+        ]
+      })
     
       if (!project) {
         return res.status(404).json({ message: "Project not found" });
@@ -116,10 +129,35 @@ exports.projectSearch = async (req, res) => {
     const queryString = req.body.query || '';
     const yearFilter = req.body.year || '';
     const semesterFilter = req.body.semester || '';
+    const tagFilter = req.body.tags || []
+
+    let filteredProjects
+    if (tagFilter && tagFilter.length > 0) filteredProjects = await Project.findAll({
+      include: [
+        {
+          model: Tags,
+          where: {
+            name: {
+              [Op.in]: tagFilter
+            }
+          }
+        },  
+      ],
+      group: ['Project.project_id'],
+      having: Sequelize.literal(`COUNT(\`Tags\`.\`tag_id\`) = ${tagFilter.length}`)
+    })
+    else {
+      filteredProjects = await Project.findAll()
+    }
+
+    const filteredProjectIds = filteredProjects.map(project => project.project_id);
 
     const projects = await Project.findAll({
       order: [["end_year", "DESC"]],
       where: {
+        project_id: {
+          [Op.in]: filteredProjectIds
+        },
         [Op.or]: [
           {
             name: {
@@ -136,9 +174,6 @@ exports.projectSearch = async (req, res) => {
               [Op.substring]: queryString
             }
           },
-          {
-            '$tags.name$': { [Op.substring]: queryString }
-          },
           Sequelize.where(Sequelize.fn("concat", Sequelize.col('group.users.first_name'), ' ', Sequelize.col('group.users.last_name')), { [Op.substring]: queryString })
         ],
         end_semester: {
@@ -146,7 +181,7 @@ exports.projectSearch = async (req, res) => {
         },
         end_year: {
           [Op.substring]: yearFilter
-        }
+        },
       },
       include: [
         {
