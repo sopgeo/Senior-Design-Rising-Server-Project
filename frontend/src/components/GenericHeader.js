@@ -1,25 +1,30 @@
 import React from "react";
 import "../css/GenericHeader.css";
+import Login from "./Login.js";
 
-function GenericHeader({ background, user }) {
+export function GenericHeader({ background, user }) {
   function Header() {
     return (
       <div className="Header">
         Computer Science Senior Design Projects
         <a className="loginLink" href="/login">
           <button className="loginButton">Login</button>
-        </a>
+        </a> 
       </div>
     );
   }
 
   function NavBar() {
+    let user = localStorage.getItem("user")
+    let ud = JSON.parse(user)
+    let usertype = ud.type
+
     let css = "background";
     if (background == false) {
       css = "see-through";
-    }
+    } 
 
-    if (user === "admin") {
+    if (usertype === "admin") {
       return (
         <div className={css}>
           <div className="navbar">
@@ -30,7 +35,7 @@ function GenericHeader({ background, user }) {
           </div>
         </div>
       );
-    } else if (user === "student") {
+    } else if (usertype === "student") {
       return (
         <div className={css}>
           <div className="navbar">

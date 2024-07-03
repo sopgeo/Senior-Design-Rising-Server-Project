@@ -47,14 +47,6 @@
     /* bottom: 0; */
 }
 
-.forgotpasswordbutton {
-    /* float: left; */
-}
-
-#forgotpassword {
-    /* bottom: 0; */
-}
-
 .loginform, .ucf_idlabel, .ucf_id, .logintext, .logintext1, .logintext2, .passwordinput, .ucf_idinput, .passwordlabel, .forgotpasswordbutton {
     background-color: white; 
 }

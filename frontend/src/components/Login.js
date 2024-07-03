@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import "../css/Login.css";
-import Header from './GenericHeader.js'
+import GenericHeader, {Header} from './GenericHeader.js'
 import { useNavigate } from "react-router-dom";
 import { Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField, Snackbar, Alert, createTheme, ThemeProvider } from "@mui/material";
 
@@ -51,16 +51,19 @@ export default function Login() {
             }
             
             const data = await response.json();
-            console.log("data: " + data + " " + "data.type: " + data.type)
-
-            if (data && data.id) {
+            
+            if (data && data.ucf_id) {
                 localStorage.setItem('user', JSON.stringify({
                     id: data.ucf_id,
                     password: data.password,
-                }));
+                    type: data.type,
+                    firstname: data.first_name,
+                    lastname: data.last_name
+                }
+            ));
                 navigate('/');
             }
-            navigate('/');
+            
         } catch (error) {
             setSnackbarInfo({ open: true, message: error.message, severity: 'error' });
         }
