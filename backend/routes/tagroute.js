@@ -7,4 +7,8 @@ router.post('/createTag', tagController.createTag)
 
 router.post('/deleteTag', tagController.deleteTag)
 
+router.post('/assignTag', tagController.assignTag)
+
+router.post('/unassignTag', tagController.unassignTag)
+
 module.exports = router
