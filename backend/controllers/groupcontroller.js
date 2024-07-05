@@ -1,7 +1,7 @@
 const db = require('../models');
 const Group = db.groups
 const User = db.users
-
+/*
 //will need to install csv-parse node module
 const fs = require('fs'); //look into using ES modules
 const csvParser = require('csv-parser');
@@ -50,6 +50,7 @@ async function parseGroupInfo( path ){
     }
 
 }
+    */
 
 exports.getGroups = async (req, res) => {
     try {
