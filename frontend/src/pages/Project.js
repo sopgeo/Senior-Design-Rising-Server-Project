@@ -7,6 +7,8 @@ import GenericHeader from "../components/GenericHeader";
 import "../css/Project.css";
 import { useState, useEffect } from "react";
 import Path from "../components/Path";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 /* * * * * * * * * *
  *     Project     *
@@ -78,13 +80,23 @@ function Project() {
   }
 
   function getName() {
-    return (
-      <>
-        <br />
-        <h1 className="Title">{projectName}</h1>
-        <br />
-      </>
-    );
+    if(projectName != ""){
+      return (
+        <>
+          <br />
+          <h1 className="Title">{projectName}</h1>
+          <br />
+        </>
+      );
+    }else{
+      return (
+        <>
+          <br />
+          <h1 className="Title"><Skeleton/></h1>
+          <br />
+        </>
+      );
+    }
   }
 
   /* * * * * * * * * *
@@ -125,20 +137,42 @@ function Project() {
   }
 
   function getDescription() {
-    return <p className="Description">{description}</p>;
+    if(projectName != ""){
+      return <p className="Description">{description}</p>;
+    }else{
+      return <p className="Description"><Skeleton count={3}/></p>;
+    }
   }
 
   /* * * * * * * * * *
    *     People      *
    * * * * * * * * * */
+  function displayPeople() {
+    return (
+      <div className="People">
+        {displayStudents()}
+        {displaySponsor()}
+      </div>
+    );
+  }
+
   function displaySponsor() {
-    if (sponsor != "") {
+    if (projectName != "") {
       return (
         <>
           <br />
           <h3>Sponsor</h3>
           <br />
           {sponsor}
+        </>
+      );
+    }else{
+      return (
+        <>
+          <br />
+          <h3>Sponsor</h3>
+          <br />
+          <Skeleton/>
         </>
       );
     }
@@ -155,22 +189,23 @@ function Project() {
   }
 
   function displayStudents() {
-    return (
-      <>
-        <h3>Students</h3>
-        <br />
-        {mapStudents()}
-      </>
-    );
-  }
-
-  function displayPeople() {
-    return (
-      <div className="People">
-        {displayStudents()}
-        {displaySponsor()}
-      </div>
-    );
+    if(projectName != ""){
+      return (
+        <>
+          <h3>Students</h3>
+          <br />
+          {mapStudents()}
+        </>
+      );
+    }else{
+      return (
+        <>
+          <h3>Students</h3>
+          <br />
+          <Skeleton count={5}/>
+        </>
+      );
+    }
   }
 
   /* * * * * * * * * *
@@ -178,7 +213,19 @@ function Project() {
    * * * * * * * * * */
   function getPDF() {
     //console.log(show);
-    if (show != "") {
+    if (projectName == ""){
+      return (
+        <>
+          <br />
+          <br />
+          <br />
+          <Skeleton count={20}/>
+          <br />
+          <br />
+          <br />
+        </>
+      );
+    }else if (show != "") {
       return (
         <>
           <br />

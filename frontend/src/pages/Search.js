@@ -332,7 +332,7 @@ function Search() {
               onClick={() => table.firstPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              {"<<"}
+              {"| <"}
             </button>
             {/* Prev */}
             <button
@@ -355,7 +355,7 @@ function Search() {
               onClick={() => table.lastPage()}
               disabled={!table.getCanNextPage()}
             >
-              {">>"}
+              {"> |"}
             </button>
           </div>
         </div>

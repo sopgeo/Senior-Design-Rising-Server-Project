@@ -1,6 +1,7 @@
 .PageBody {
     padding-left: 5%;
     padding-right: 5%;
+    min-height: 58vh;
 }
 
 .Title {
@@ -47,3 +48,22 @@ p {
     color: black;
     line-height: 150%;
 }
+
+@media only screen and (max-width: 600px) {
+    .Details {
+        grid-column: span 10;
+        grid-row: 1;
+        max-width: 100%;
+        
+    }
+    
+    .People {
+        grid-column: span 10;
+        grid-row: 2;
+        padding-left: 3vw;
+        padding-right: 8vw;
+        text-align: left;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+  }
