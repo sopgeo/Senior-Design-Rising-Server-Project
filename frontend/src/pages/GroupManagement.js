@@ -3,6 +3,7 @@ import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import { useState, useEffect } from "react";
 import "../css/GroupManagement.css";
+import CsvUpload from "../components/CsvUpload";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -17,7 +18,7 @@ function GroupManagement() {
 
   function renderSemester(semInfo) {
     return(
-      <div className="SemesterBar">AAAAA</div>
+      <div className="SemesterBar">AAA</div>
     )
   }
 
@@ -32,6 +33,11 @@ function GroupManagement() {
 
         <h1 className="Title">Group Management</h1>
         <br />
+
+        <div className="App">
+        <h2>Upload CSV</h2>
+        <CsvUpload />
+        </div>
 
         {renderSemester()}
       </div>
