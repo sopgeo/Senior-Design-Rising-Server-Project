@@ -4,6 +4,7 @@ import GenericHeader from "../components/GenericHeader";
 import { useState, useEffect } from "react";
 import "../css/GroupManagement.css";
 import CsvUpload from "../components/CsvUpload";
+import TagGet from "../components/TagGet";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -17,9 +18,9 @@ function GroupManagement() {
   }, []);
 
   function renderSemester(semInfo) {
-    return(
+    return (
       <div className="SemesterBar">AAA</div>
-    )
+    );
   }
 
   function renderGroup(groupInfo) {}
@@ -35,8 +36,9 @@ function GroupManagement() {
         <br />
 
         <div className="App">
-        <h2>Upload CSV</h2>
-        <CsvUpload />
+          <h2>Upload CSV</h2>
+          <CsvUpload />
+          <TagGet />
         </div>
 
         {renderSemester()}
