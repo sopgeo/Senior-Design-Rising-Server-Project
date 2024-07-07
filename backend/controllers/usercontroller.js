@@ -53,14 +53,11 @@ exports.login = async (req, res) => {
             throw Error("Stored password is null")
         }
         
-        const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(user.password, salt)
-        
         // console.log("req.body.password: " + req.body.password)
         // console.log("user.password " + user.password)
         // console.log("hash: " + hash)
         
-        const match = await bcrypt.compare(req.body.password, hash)
+        const match = await bcrypt.compare(req.body.password, user.password)
         // console.log(match)
 
         if (!match) {
@@ -80,7 +77,7 @@ exports.deleteUser = async (req, res) => {
     try {
         const result = await User.destroy({
             where: {
-                user_id: req.body.user_id
+                ucf_id: req.body.ucf_id
             }
         })
 
@@ -92,5 +89,26 @@ exports.deleteUser = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred deleting user"})
+    }
+}
+
+exports.resetPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({where: {ucf_id: req.body.ucf_id}})
+
+        if (!user) {
+            throw Error("No user found");
+        }
+
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(req.body.password, salt)
+
+        user.password = hash
+        await user.save()
+
+        res.status(200).json(user)
+    }
+    catch (error) {
+        res.status(500).json({error: error.message, message: "Error occurred resetting password"})
     }
 }
