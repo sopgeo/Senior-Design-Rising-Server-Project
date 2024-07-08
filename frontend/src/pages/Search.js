@@ -13,7 +13,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import Path from "../components/Path";
-import ReactDropdown from "summer-ui-react-dropdown";
+import { TurboSelect } from "react-turbo-select";
 
 /* * * * * * * * * *
  *     Search      *
@@ -25,9 +25,15 @@ function Search() {
   const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
-  const [allKeyWords, setAllKeyWords] = useState("");
+  const [allKeyWords, setAllKeyWords] = useState([]);
   const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([]);
+  const options = [
+    { value: "1", label: "Option 1" },
+    { value: "2", label: "Option 2" },
+    { value: "3", label: "Option 3" },
+    // Add more options as needed
+  ];
 
   /* * * * * * * * * *
    * API Req + Basic *
@@ -79,10 +85,8 @@ function Search() {
         let kwl = [];
         json.forEach((val) => {
           let temp = {};
-
-          temp["displayName"] = val.name;
-
           temp["value"] = val.name;
+          temp["label"] = val.name;
           kwl.push(temp);
         });
         console.log(kwl);
@@ -163,18 +167,7 @@ function Search() {
       <div className="KeyWordsBox">
         <h3>Key Words: </h3>
 
-        <form>
-        <ReactDropdown
-          options={allKeyWords} //The select options must be [{displayName:'name', value:'value'}] format
-          multipleSelect={true} //A multiple choices list
-          selectedValues={keyWords} //Selected values
-          setSelectedValues={setKeyWords} //A UseState to set selectedValues variable
-          textbarPlaceHolder={"Favorite fruits"} //The placeholder text for the select input
-          //textbarStyle={"mytextBar"} //Adding a class name to style select input
-          //searchbarStyle={"mysearchBar"} //Adding a class name to style search bar
-          //styleDropDownMenu={"mydropDown"} //Adding a class name to style dropdown menu
-        />
-        </form>
+        <TurboSelect options={allKeyWords} isMultiple="true" />
       </div>
     );
   }
