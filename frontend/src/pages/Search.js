@@ -6,7 +6,6 @@ import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import "../css/Search.css";
 import { useState, useEffect } from "react";
-import ProjectDetails from "../components/ProjectDetails";
 import {
   useReactTable,
   getCoreRowModel,
@@ -14,6 +13,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import Path from "../components/Path";
+import { MultiSelect } from "react-multi-select-component";
 
 /* * * * * * * * * *
  *     Search      *
@@ -25,6 +25,7 @@ function Search() {
   const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
+  const [allKeyWords, setAllKeyWords] = useState("");
   const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([]);
 
@@ -68,6 +69,29 @@ function Search() {
     };
 
     fetchProjects();
+  }
+
+  function getAllKeyWords() {
+    const fetchTags = async () => {
+      const response = await fetch("http://localhost:5000/api/tag/tags");
+      const json = await response.json();
+      if (response.ok) {
+        let kwl = [];
+        json.forEach((val) => {
+          let temp = {};
+
+          temp["label"] = val.name;
+
+          temp["value"] = val.name;
+          kwl.push(temp);
+        });
+        console.log(kwl);
+        console.log(json);
+        setAllKeyWords(kwl);
+      }
+    };
+
+    fetchTags();
   }
 
   function getUser() {
@@ -138,12 +162,13 @@ function Search() {
     return (
       <div className="KeyWordsBox">
         <h3>Key Words: </h3>
-        <select name="KeyWords" id="KeyWords">
-          <option value="Unity">Unity</option>
-          <option value="MERN">MERN</option>
-          <option value="Web">Web</option>
-          <option value="Simulation">Simulation</option>
-        </select>
+        <MultiSelect
+          options={allKeyWords}
+          value={keyWords}
+          onChange={setKeyWords}
+          labelledBy="Select"
+          disableSearch="false"
+        />
       </div>
     );
   }
@@ -371,6 +396,7 @@ function Search() {
    *   Update Data   *
    * * * * * * * * * */
   useEffect(() => {
+    getAllKeyWords();
     getProjects(search, semester, year);
   }, []);
 
