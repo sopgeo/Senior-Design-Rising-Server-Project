@@ -13,7 +13,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import Path from "../components/Path";
-import { MultiSelect } from "react-multi-select-component";
+import ReactDropdown from "summer-ui-react-dropdown";
 
 /* * * * * * * * * *
  *     Search      *
@@ -80,7 +80,7 @@ function Search() {
         json.forEach((val) => {
           let temp = {};
 
-          temp["label"] = val.name;
+          temp["displayName"] = val.name;
 
           temp["value"] = val.name;
           kwl.push(temp);
@@ -162,13 +162,19 @@ function Search() {
     return (
       <div className="KeyWordsBox">
         <h3>Key Words: </h3>
-        <MultiSelect
-          options={allKeyWords}
-          value={keyWords}
-          onChange={setKeyWords}
-          labelledBy="Select"
-          disableSearch="false"
+
+        <form>
+        <ReactDropdown
+          options={allKeyWords} //The select options must be [{displayName:'name', value:'value'}] format
+          multipleSelect={true} //A multiple choices list
+          selectedValues={keyWords} //Selected values
+          setSelectedValues={setKeyWords} //A UseState to set selectedValues variable
+          textbarPlaceHolder={"Favorite fruits"} //The placeholder text for the select input
+          //textbarStyle={"mytextBar"} //Adding a class name to style select input
+          //searchbarStyle={"mysearchBar"} //Adding a class name to style search bar
+          //styleDropDownMenu={"mydropDown"} //Adding a class name to style dropdown menu
         />
+        </form>
       </div>
     );
   }
