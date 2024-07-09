@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useDropzone } from 'react-dropzone'
 import Header from './GenericHeader.js'
 import TagsInput from "../components/TagsInput"
+import CsFooter from "../components/CsFooter";
 
 function Upload() {
     const fetchData = async() => {
@@ -110,7 +111,7 @@ function Upload() {
             <br/>
             <button id="done-button">Done</button>
         </div>
-
+        <CsFooter/>
     </div>
 );
 }

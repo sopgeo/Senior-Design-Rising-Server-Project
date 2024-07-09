@@ -39,43 +39,46 @@ body {
 
 /* main sections of content sectioned off by color! */
 .white-rect {
+    max-height: 350px;
     display: flex;
     width: 100%;
-    height: 5%;
     background: white;
-    justify-content: space-between;
-    padding: 5%;
+    justify-content: center;
+    padding: 50px;
 }
 
 .white-rect p {
+    font-size: 18px;
     width: 80%;
 }
 
 .yellow-rect {
+    max-height: 350px;
     display: flex;
     width: 100%;
-    height: 5%;
     background-color: #FFC904;
-    justify-content: space-between;
-    padding: 5%;
+    padding: 50px;
 }
 
 .yellow-rect p {
+    font-size: 18px;
     width: 80%;
     max-width: 80%;
 }
 
 .black-rect {
+    max-height: 350px;
+    display: flex;
+    padding: 50px;
     color: white;
     display: flex;
     width: 100%;
-    height: 5%;
     background-color: black;
     justify-content: space-between;
-    padding: 5%;
 }
 
 .black-rect p {
+    font-size: 18px;
     color: white;
     width: 100%;
     max-width: 80%;
@@ -91,30 +94,28 @@ body {
 }
 
 .white-rect2 p {
+    font-size: 18px;
     width: 80%;
     max-width: 80%;
 }
 
 /* images on home page */
 .about-img {
-    width: 5%;
-    height: 5%;
-    align-self: center;
-    margin: 50px;
+    width: 350px;
+    height: 250px;
+    margin-right: 120px;
 }
 
 .pres-img {
-    width: 200px;
-    height: 100px;
-    align-self: center;
-    margin: 50px;
+    width: 350px;
+    height: 250px;
+    margin-left: 120px;
 }
 
 .sponsor-img {
-    width: 200px;
-    height: 100px;
-    align-self: center;
-    margin: 50px;
+    width: 350px;
+    height: 250px;
+    margin-left: 120px;
 }
 
 /* horizontal underlines under section headers */
@@ -149,6 +150,11 @@ body {
     color: #FFC904;
     width: 280px;
     text-align: left;
+}
+
+.about, .presentations, .sponsors {
+    margin: 40px;
+    justify-content: center;
 }
 
 .about, .presentations, .sponsors, .sd1, .sd2 {
