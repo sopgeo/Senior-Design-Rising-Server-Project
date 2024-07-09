@@ -44,7 +44,7 @@ export default function Login() {
                 }
             );
 
-            // console.log("body: " + JSON.stringify({ ucf_id, password }));
+            console.log("body: " + JSON.stringify({ ucf_id, password }));
             if (!response.ok) {
                 console.log("response: " + !response.ok)
                 throw new Error("Login failed");
@@ -117,15 +117,16 @@ export default function Login() {
             {/* <Header/> */}
             <div className="loginbox">
                     <form className="loginform" onSubmit={handleSubmit}>
-                        <div className="logintext">
-                            <h1 className="logintext1">Sign in</h1>
-                            <br></br>
-                            <h4 className="logintext2">to continue to the SD portal</h4>
-                        </div>
                     
 
                     <div className="loginform">
-                        <label htmlFor="ucf_id" className="ucf_idlabel">UCF NID</label>
+                        <div className="logintext">
+                            <h1 className="logintext1">Sign in</h1>
+                            <h4 className="logintext2">to continue to the SD portal</h4>
+                            <p className="lt3">If you're a first time-user, please use your NID as both your username and password.</p>
+                        </div>
+                        
+                        <label htmlFor="ucf_id" className="ucf_idlabel">UCF NID </label>
                             {/* <Tooltip title="Please fill out this field" open={showTooltip.ucf_id} placement="top" arrow> */}
                                 <input type="ucf_id" name="ucf_id" id="ucf_id"
                                     className="ucf_idinput"
@@ -143,9 +144,9 @@ export default function Login() {
                         {/* </Tooltip> */}
                     </div>
 
-                    <div className="forgotpasswordbutton">
+                    {/* <div className="forgotpasswordbutton">
                         <button type="fp" id="forgotPassword" onClick={handleOpen}>Forgot Password?</button> 
-                    </div>
+                    </div> */}
                     
                     <button type="submit" id="loginButton">Continue</button> 
                     
