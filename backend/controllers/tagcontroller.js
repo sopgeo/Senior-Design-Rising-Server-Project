@@ -5,7 +5,7 @@ const TagMap = db.tagmap
 
 exports.createTag = async (req, res) => {
     try {
-      const newTag = Tag.create({
+      const newTag = Tags.create({
         name: req.body.name
       })
   
@@ -18,7 +18,7 @@ exports.createTag = async (req, res) => {
 
   exports.deleteTag = async (req, res) => {
     try {
-        const result = await Tag.destroy({
+        const result = await Tags.destroy({
             where: {
                 tag_id: req.body.tag_id
             }
