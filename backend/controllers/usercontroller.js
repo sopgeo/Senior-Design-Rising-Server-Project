@@ -65,6 +65,9 @@ exports.login = async (req, res) => {
             throw Error("Incorrect UCF ID or password")
         }
         
+        if (await bcrypt.compare((user.ucf_id).toString(), user.password)) user.dataValues.defaultPassword = 1
+        else user.dataValues.defaultPassword = 0
+        
         res.status(200).json(user)
     }
     catch (error) {
