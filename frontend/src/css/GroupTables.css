@@ -1,0 +1,25 @@
+.group-member-list{
+    list-style-type: none;
+    padding:0; 
+}
+
+.group-list{
+    margin:10px;
+}
+
+.semester {
+    background-color: #FFC904;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.group-name{
+    background-color: black;
+    text-align: left;
+    padding:8px;
+}
+
+.group-name h3{
+    color:white;
+}

@@ -47,12 +47,12 @@ function GroupManagement() {
           <div style={containerStyle}>
             <TagGet />
             <CsvUpload />
-
-            <GroupTables />
           </div>
+          <GroupTables />
+
         </div>
 
-        {renderSemester()}
+        
       </div>
       <CsFooter />
     </>
