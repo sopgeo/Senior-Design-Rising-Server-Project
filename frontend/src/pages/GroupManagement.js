@@ -2,6 +2,8 @@ import React from "react";
 import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import { useState, useEffect } from "react";
+//import faker from 'faker';
+//const faker = require('faker');
 import "../css/GroupManagement.css";
 import Path from '../components/Path';
 
@@ -89,6 +91,28 @@ function GroupManagement() {
 
   }
 
+  function createDummyData(numGroups, year){
+  
+      const returnData = [];
+  
+      const semesterArr = ["Summer", "Fall", "Spring"]; //see if this is right
+  
+      for(let i =0; i < numGroups; i++){
+  
+          for (let j = 0; j < 3; j++){ //for each semester
+  
+              for(let k = 0; k < 5; k++){//each member in group
+              
+                  const firstName = faker.name.firstName();
+                  const lastName = faker.name.lastName();
+                  const semester = semesterArr[j] + " " + year; //check if right
+                  returnData.push({firstName, lastName, semester});
+              }
+          }
+      }
+      return returnData;
+  }
+
   return (
     <>
       <GenericHeader background={true} user={getUser()} />
@@ -100,6 +124,8 @@ function GroupManagement() {
         <br />
 
         {renderSemesters()}
+        {console.log(createDummyData(2, "2024"))}
+
       </div>
       <CsFooter />
     </>
