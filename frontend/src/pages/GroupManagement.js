@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import "../css/GroupManagement.css";
 import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
+import GroupTables from "../components/GroupTables";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -46,6 +47,8 @@ function GroupManagement() {
           <div style={containerStyle}>
             <TagGet />
             <CsvUpload />
+
+            <GroupTables />
           </div>
         </div>
 
