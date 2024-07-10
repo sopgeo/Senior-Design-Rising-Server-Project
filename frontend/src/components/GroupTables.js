@@ -7,21 +7,22 @@ function GroupTables () {
   
         const returnData = [];
     
-        const semesterArr = ["Summer", "Fall", "Spring"]; //see if this is right
-    
-        for(let i =0; i < numGroups; i++){
-    
-            for (let j = 0; j < 3; j++){ //for each semester
-    
-                for(let k = 0; k < 5; k++){//each member in group
-                
+        const semesterArr = ["Summer", "Fall", "Spring"]; 
+
+        for(let i = 0; i < 3; i++){
+
+            for(let j = 0; j < numGroups; j++){
+
+                for(let k = 0; k < 5; k++){
+
                     let firstName = "Bobby"
                     let lastName = "Johnson"
-                    let semester = semesterArr[j] + " " + year; //check if right
+                    let semester = semesterArr[i] + " " + year; 
                     returnData.push({firstName, lastName, semester});
                 }
             }
         }
+
         return returnData;
     }
 
