@@ -40,34 +40,23 @@ exports.login = async (req, res) => {
         const user = await User.findOne({
             where: {ucf_id: req.body.ucf_id}
         })
-
-        user.ucf_id.toString();
         
         if (!user) {
             throw Error("Incorrect UCF ID or password")
         }
 
-        // if (req.body.ucf_id == undefined && user.password == undefined) {
-        //     throw Error("Please enter a username or password")
-        // }
         
         if (user.password == undefined){
             throw Error("Stored password is null")
         }
         
-        console.log("req.body.password: " + req.body.password)
-        console.log("user.password " + user.password)
-        // console.log("hash: " + hash)
-        
         const match = await bcrypt.compare(req.body.password, user.password)
-        console.log("match: ")
-        console.log(match)
-
+        
         if (!match) {
             throw Error("Incorrect UCF ID or password")
         }
-        
-        if (await bcrypt.compare((user.ucf_id).toString(), user.password)) user.dataValues.defaultPassword = 1
+
+        if (await bcrypt.compare((user.ucf_id).toString(), user.password)) user.dataValues.defaultPassword = 1 
         else user.dataValues.defaultPassword = 0
         
         res.status(200).json(user)

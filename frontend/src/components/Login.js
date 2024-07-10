@@ -9,8 +9,11 @@ export default function Login() {
     const navigate = useNavigate();
     const [showTooltip, setShowTooltip] = useState({ username: false, password: false });
     const [openDialog, setOpenDialog] = useState(false);
-    const [emailForReset, setEmailForReset] = useState('');
+    const [passwordForReset, setPasswordForReset] = useState('');
+    const [idForReset, setIdForReset] = useState('')
     const [snackbarInfo, setSnackbarInfo] = useState({ open: false, message: '', severity: 'info' });
+    
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
     const handleSubmit = async (event) => {
         event.preventDefault();  
@@ -44,23 +47,32 @@ export default function Login() {
                 }
             );
 
-            console.log("body: " + JSON.stringify({ ucf_id, password }));
+            // console.log("body: " + JSON.stringify({ ucf_id, password }));
             if (!response.ok) {
-                console.log("response: " + !response.ok)
                 throw new Error("Login failed");
             }
             
             const data = await response.json();
-            
-            if (data && data.ucf_id) {
-                localStorage.setItem('user', JSON.stringify({
-                    id: data.ucf_id,
-                    password: data.password,
-                    type: data.type,
-                    firstname: data.first_name,
-                    lastname: data.last_name
-                }
-            ));
+
+            if (data && (data.defaultPassword === 1)) {
+                    localStorage.setItem('newuser', JSON.stringify({
+                        id: data.ucf_id,
+                        password: data.password,
+                        value: data.defaultPassword
+                }));
+                handleOpen();
+                handleResetPassword();
+            }
+
+            if (data && (data.defaultPassword === 0)) {
+                    localStorage.setItem('user', JSON.stringify({
+                        id: data.ucf_id,
+                        password: data.password,
+                        value: data.defaultPassword,
+                        type: data.type,
+                        firstname: data.first_name,
+                        lastname: data.last_name
+                }))
                 navigate('/');
             }
             
@@ -77,33 +89,35 @@ export default function Login() {
         setOpenDialog(false);
     };
 
-    // const handleResetPassword = async () => {
-    //     // test for valid ucf_id format
-    //     // if (!emailRegex.test(emailForReset)) {
-    //     //     setSnackbarInfo({ open: true, message: 'Invalid email format.', severity: 'error' });
-    //     //     return;
-    //     // }
+    const handleResetPassword = async () => {
+        // test for valid ucf_id format
+        if (!passwordRegex.test(passwordForReset)) {
+            setSnackbarInfo({ open: true, message: 'Invalid password format.', severity: 'error' });
+            return;
+        }
+        
+        try {
 
-    //     try {
-    //         const response = await fetch('/api/user/forgetpassword', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({ email: emailForReset }),
-    //         });
+            const response = await fetch('http://localhost:5000/api/user/resetPassword', {
+                method: 'POST',
+                body: JSON.stringify({ ucf_id: idForReset, password: passwordForReset }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-    //         if (response.ok) {
-    //             setSnackbarInfo({ open: true, message: 'Reset link sent to your email.', severity: 'success' });
-    //         } else {
-    //             throw new Error('Failed to send reset email, please try again.');
-    //         }
-    //     } catch (error) {
-    //         setSnackbarInfo({ open: true, message: error.message, severity: 'error' });
-    //     }
+            if (response.ok) {
+                setSnackbarInfo({ open: true, message: 'Password successfully reset. Please log in with your new password.', severity: 'success' });
+            } else {
+                throw new Error('Failed to reset password.');
+            }
 
-    //     handleClose();
-    // };
+        } catch (error) {
+            setSnackbarInfo({ open: true, message: error.message, severity: 'error' });
+        }
+
+        handleClose();
+    };
 
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
@@ -143,8 +157,8 @@ export default function Login() {
                                 placeholder="•••••••••"/>
                         {/* </Tooltip> */}
                     </div>
-
-                    {/* <div className="forgotpasswordbutton">
+{/* 
+                    <div className="forgotpasswordbutton">
                         <button type="fp" id="forgotPassword" onClick={handleOpen}>Forgot Password?</button> 
                     </div> */}
                     
@@ -154,6 +168,44 @@ export default function Login() {
 
                     
                 </form>
+
+                <Dialog open={openDialog} onClose={handleClose} BackdropProps={{ style: { backgroundColor: 'transparent', boxShadow: 'none' } }}>
+                    <DialogTitle>Reset Password</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            To reset your password, please enter your new password twice.
+                            It must have a Minimum eight characters, at least one uppercase letter, one lowercase letter and one number.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="UCF NID"
+                            type="ucf_id"
+                            fullWidth
+                            variant="standard"
+                            value={idForReset}
+                            onChange={(e) => setIdForReset(e.target.value)}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="New password"
+                            type="password"
+                            fullWidth
+                            variant="standard"
+                            value={passwordForReset}
+                            onChange={(e) => setPasswordForReset(e.target.value)}
+                        />
+                    </DialogContent>
+
+                    <DialogActions>
+                        <Button onClick={handleClose}>Cancel</Button>
+                        <Button onClick={handleResetPassword}>Submit</Button>
+                    </DialogActions>
+                </Dialog>
+
                 <Snackbar
                     open={snackbarInfo.open}
                     autoHideDuration={6000}
