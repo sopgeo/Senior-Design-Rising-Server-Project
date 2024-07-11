@@ -52,7 +52,7 @@ function TagsInput(){
           color: 'black',
           borderColor: 'black',
           backgroundColor: 'black',
-          backgroundColor: state.isSelected ? 'black' : 'white', // Change background color for selected options
+          backgroundColor: state.isSelected ? 'black' : 'white',
         }),
       };
 
