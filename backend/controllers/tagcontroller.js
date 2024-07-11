@@ -31,7 +31,7 @@ exports.createTag = async (req, res) => {
           }
     }
     catch (error) {
-        res.status(500).json({error: error.message, message: "Error occurred deleting user"})
+        res.status(500).json({error: error.message, message: "Error occurred deleting tag"})
     }
 }
 

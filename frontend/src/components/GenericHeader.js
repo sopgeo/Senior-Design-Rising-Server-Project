@@ -65,7 +65,7 @@ export function GenericHeader({ background }) {
             <div className="home"><a className="navItem" href="/">Home</a></div>
             <a className="navItem" href="/search">Projects</a>
             <a className="navItem" href="/upload">Upload</a>
-            <a className="navItem" href="/manage">Manage</a>
+            <a className="navItem" href="/groupManagement">Manage</a>
           </div>
         </div>
       );
