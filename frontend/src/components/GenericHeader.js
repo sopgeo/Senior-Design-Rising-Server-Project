@@ -1,30 +1,64 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/GenericHeader.css";
 import Login from "./Login.js";
 
 export function GenericHeader({ background }) {
-  function Header() {
-    return (
-      <div className="Header">
-        Computer Science Senior Design Projects
-        <a className="loginLink" href="/login">
-          <button className="loginButton">Login</button>
-        </a> 
-      </div>
-    );
+  const logout = () => {
+    localStorage.removeItem("user")
   }
+
+  function Header() {
+    let user = localStorage.getItem("user")
+
+    if (user === null) {
+      return (
+        <div className="Header">
+          Computer Science Senior Design Projects
+          <a className="loginLink" href="/login">
+            <button className="loginButton">Login</button>
+          </a> 
+
+        </div>
+      );
+    }
+
+    else {
+      return (
+        <div className="Header">
+          Computer Science Senior Design Projects
+          <a className="logoutLink" href="/">
+            <button className="loginButton" onClickCapture={logout}>Logout</button>
+          </a> 
+
+        </div>
+      );
+    }
+    }
 
   function NavBar() {
     let user = localStorage.getItem("user")
+    let css = "background";
+    
+    if (user === null) {
+      return (
+        <div className={css}>
+          <div className="navbar">
+          <div className="home"><a className="navItem" href="/">Home</a></div>
+            <a className="navItem" href="/search">Projects</a>
+          </div>
+        </div>
+      );
+    }
+    
     let ud = JSON.parse(user)
     let usertype = ud.type
-    let css = "background";
+
 
     if (background == false) {
       css = "see-through";
     } 
 
-    if (usertype === "coordinator") {
+    else if (usertype === "coordinator") {
       return (
         <div className={css}>
           <div className="navbar">
@@ -45,16 +79,7 @@ export function GenericHeader({ background }) {
           </div>
         </div>
       );
-    } else {
-      return (
-        <div className={css}>
-          <div className="navbar">
-          <div className="home"><a className="navItem" href="/">Home</a></div>
-            <a className="navItem" href="/search">Projects</a>
-          </div>
-        </div>
-      );
-    }
+    } 
   }
 
   return (

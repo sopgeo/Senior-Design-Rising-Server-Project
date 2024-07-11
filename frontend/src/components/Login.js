@@ -55,10 +55,12 @@ export default function Login() {
             const data = await response.json();
 
             if (data && (data.defaultPassword === 1)) {
-                    localStorage.setItem('newuser', JSON.stringify({
+                    localStorage.setItem('user', JSON.stringify({
                         id: data.ucf_id,
                         password: data.password,
-                        value: data.defaultPassword
+                        value: data.defaultPassword,
+                        type: data.type,
+                        firstname: data.first_name,
                 }));
                 handleOpen();
                 handleResetPassword();
@@ -71,7 +73,6 @@ export default function Login() {
                         value: data.defaultPassword,
                         type: data.type,
                         firstname: data.first_name,
-                        lastname: data.last_name
                 }))
                 navigate('/');
             }
