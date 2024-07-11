@@ -1,17 +1,38 @@
+.semester-list{
+    margin:50px 75px;
+    
+}
+
+.group{
+    padding-left:35px;
+}
+
 .group-member-list{
     list-style-type: none;
-    padding:0; 
+    text-align: left;
 }
 
-.group-list{
-    margin:10px;
+.group-member-list li{
+    padding: 10px 20px 10px;
 }
 
-.semester {
+.group-member-list li:nth-child(odd){
+    background-color: hsl(0, 0%, 90%);
+}
+
+.group-member-list li:nth-child(even){
+    background-color: hsl(0, 0%, 80%);
+}
+
+.semester-title {
     background-color: #FFC904;
     padding: 12px;
     border-radius: 5px;
     text-align: left;
+}
+
+.semester-title h2{
+    padding-left: 20px;
 }
 
 .group-name{
@@ -22,4 +43,5 @@
 
 .group-name h3{
     color:white;
+    padding-left: 20px;
 }

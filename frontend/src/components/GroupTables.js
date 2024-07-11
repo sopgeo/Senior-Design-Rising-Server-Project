@@ -40,21 +40,23 @@ function GroupTables ({semester, groups}) {
         <div>
             {console.log(createDummyData(2, "2024"))}
 
-            <div className="group-list">
+            <div className="semester-list">
 
-                <div className="semester">
+                <div className="semester-title">
                     <h2>{testGroup.semester}</h2>
                 </div>
-                <div className="group">
-                    <div className="group-name">
-                    <h3>{testGroup.groupName}</h3>
+                {dummyData.map((group, index) => (
+                    <div className="group">
+                        <div className="group-name">
+                        <h3>{group.groupName}</h3>
+                        </div>
+                        <ul className="group-member-list">
+                            {group.members.map((member, idx) => (
+                                <li key={idx}>{member}</li>
+                            ))}
+                        </ul>
                     </div>
-                    <ul className="group-member-list">
-                        {testGroup.members.map((member, idx) => (
-                            <li key={idx}>{member}</li>
-                        ))}
-                    </ul>
-                </div>
+                ))}
 
             </div>
 

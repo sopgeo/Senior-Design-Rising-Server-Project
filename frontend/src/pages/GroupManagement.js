@@ -49,6 +49,7 @@ function GroupManagement() {
             <CsvUpload />
           </div>
           <GroupTables />
+          <GroupTables />
 
         </div>
 
