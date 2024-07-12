@@ -60,6 +60,8 @@ function GroupTables ({semester, groups}) {
 
         if( confirmed ) {
             setGroupData(prevGroupData => {
+                const newGroupData = [...prevGroupData];
+                newGroupData[groupIndex].members.splice(memberIndex, 1);
                 return newGroupData;
             });
         }
