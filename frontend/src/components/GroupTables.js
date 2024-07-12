@@ -53,11 +53,16 @@ function GroupTables ({semester, groups}) {
     };
 
     const deleteMember = (groupIndex, memberIndex) => {
-        setGroupData(prevGroupData => {
-            const newGroupData = [...prevGroupData];
-            newGroupData[groupIndex].members.splice(memberIndex, 1);
-            return newGroupData;
-        });
+
+        const groupMemberName = groupData[groupIndex].members[memberIndex];
+        const groupName = groupData[groupIndex].groupName;
+        const confirmed = window.confirm(`Are you sure you want to delete ${groupMemberName} from ${groupName}?`);
+
+        if( confirmed ) {
+            setGroupData(prevGroupData => {
+                return newGroupData;
+            });
+        }
     }; 
 
     return(
@@ -73,7 +78,7 @@ function GroupTables ({semester, groups}) {
                         ▶
                     </button>
                 </div>
-                {isSemesterExpanded && dummyData.map((group, index) => (
+                {isSemesterExpanded && groupData.map((group, index) => (
                     <div className="group" key={index}>
                         <div className="group-name">
                         <h3>{group.groupName}</h3>
