@@ -1,13 +1,14 @@
 // import React from "react";
 import "../css/Upload.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDropzone } from 'react-dropzone'
 import Header from './GenericHeader.js'
 import TagsInput from "../components/TagsInput"
 import CsFooter from "../components/CsFooter";
+import Path from "../components/Path";
 
 function Upload() {
-    const fetchData = async() => {
+    /*const fetchData = async() => {
         try {
             const response = await fetch('http://localhost:5000/api/file/upload');
             if (!response.ok) {
@@ -19,7 +20,7 @@ function Upload() {
             console.error("Error fetching data: ", error);
         }
     }
-    fetchData();
+    fetchData();*/
 
     const [uploadedURL, setUploadedURL] = useState(null)
 
@@ -39,6 +40,45 @@ function Upload() {
     const selectedFile = acceptedFiles[0]
     console.log(selectedFile)
 
+    const [groupTitle, setGroupTitle] =  useState(null)
+    const [userStorage, setUserStorage] = useState(null)
+
+    const createProject = async() => {
+
+    }
+
+    const getGroupInformation = async(group_id) => {
+        try {
+            const response = await fetch(
+                Path.buildPath("api/group/getGroupById", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({ group_id: group_id }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+        
+              if (!response.ok) {
+                throw new Error("Failed to fetch group information");
+              }
+
+              const json = await response.json();
+
+              if (response.ok) {
+                setGroupTitle(json.title);
+              }
+
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+    }
+
+    useEffect (() => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        getGroupInformation(user.group_id)
+    }, [])
 
   return (
       <div className="upload-page">
@@ -49,7 +89,7 @@ function Upload() {
         
         <div className="upload-header">
             <h1>Hello, </h1>
-            <h3>Your project is: </h3>
+            <h3>Your group is: {groupTitle}</h3>
             <h4>Thank you for your hard work this semester! 
                 Please upload your technical document to the 
                 server by filling out the form below.</h4>

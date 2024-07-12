@@ -69,6 +69,7 @@ export default function Login() {
             if (data && (data.defaultPassword === 0)) {
                     localStorage.setItem('user', JSON.stringify({
                         id: data.ucf_id,
+                        group_id: data.group_id,
                         password: data.password,
                         value: data.defaultPassword,
                         type: data.type,
