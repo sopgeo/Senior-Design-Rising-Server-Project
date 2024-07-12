@@ -75,7 +75,7 @@ function GroupTables ({semester}) {
                     <button 
                     className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
                     onClick={toggleSemester}>
-                        ▶
+                        <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
                     </button>
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
@@ -85,18 +85,20 @@ function GroupTables ({semester}) {
                         <button 
                         className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
                         onClick={() => toggleGroup(index)}> 
-                            ▶
+                            <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                         </button>
                     </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
-                                <li key={idx}>{member}
-                                    <button className="edit-button">
-                                        <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
-                                    <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
-                                        <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
-                                    </button>
+                                <li key={idx} className="member-row" >{member} 
+                                    <div className="member-button-container">
+                                        <button className="edit-button">
+                                            <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
+                                        <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
+                                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                                        </button>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
