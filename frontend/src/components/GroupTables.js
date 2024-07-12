@@ -90,7 +90,7 @@ function GroupTables ({semester, groups}) {
                                     <button className="edit-button">
                                         <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
                                     <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
-                                        <img className="delete-button" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                                        <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                     </button>
                                 </li>
                             ))}
