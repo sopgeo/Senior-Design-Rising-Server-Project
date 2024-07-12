@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
 
-function GroupTables ({semester, groups}) {
+function GroupTables ({semester}) {
 
     function createDummyData(numGroups, year){
   
@@ -68,8 +68,6 @@ function GroupTables ({semester, groups}) {
     }; 
 
     return(
-        <div>
-
             <div className="semester-list">
 
                 <div className="semester-title" >
@@ -108,7 +106,6 @@ function GroupTables ({semester, groups}) {
 
             </div>
 
-        </div>
     );
 }
 
