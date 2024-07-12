@@ -106,6 +106,39 @@ function Upload() {
             <br/>
 
             <div className="line2">
+                <div className="project-name-field">
+                <div id="project-name">Project Name</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-name" placeholder="Type project name here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-year-field">
+                <div id="project-year">Project Year</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-year" placeholder="Type project year here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-semester-field">
+                <div id="project-semester">Project Semester</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-semester" placeholder="Type project semester here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-sponsor-field">
+                <div id="project-sponsor">Project Sponsor</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-sponsor" placeholder="Type project sponsor here..."> </textarea>
+                        </span>
+                </div>
+            </div>
+
+            
+
+
+            <div className="line3">
                 <div className="tech-doc-field">
                 <label id="tech-doc">Upload your technical document</label>
                 <form
@@ -142,7 +175,7 @@ function Upload() {
 
                 <div className="proj-desc-field">
                     <div id="project-description">Project description</div>
-                    <span contenteditable="true">
+                    <span contenteditable="false">
                         <textarea type="text" id="proj-desc" placeholder="Type project description here..."> </textarea>
                     </span>
                 </div>
