@@ -73,3 +73,15 @@
 .dropdown-button.group-button.rotated {
     transform: rotate(90deg);
 }
+
+.edit-button {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+}
+
+.delete-member-button {
+    width: 30px;
+    height: 30px;
+    background-color: white;
+}

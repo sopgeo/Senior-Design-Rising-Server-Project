@@ -39,6 +39,7 @@ function GroupTables ({semester, groups}) {
 
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
+    const [groupData, setGroupData] = useState(dummyData);
 
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
@@ -51,9 +52,16 @@ function GroupTables ({semester, groups}) {
         }));
     };
 
+    const deleteMember = (groupIndex, memberIndex) => {
+        setGroupData(prevGroupData => {
+            const newGroupData = [...prevGroupData];
+            newGroupData[groupIndex].members.splice(memberIndex, 1);
+            return newGroupData;
+        });
+    }; 
+
     return(
         <div>
-            {console.log(createDummyData(2, "2024"))}
 
             <div className="semester-list">
 
@@ -78,7 +86,10 @@ function GroupTables ({semester, groups}) {
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
-                                <li key={idx}>{member}</li>
+                                <li key={idx}>{member}
+                                    <button className="edit-button"></button>
+                                    <button className="delete-member-button" onClick={() => deleteMember(index, idx)}></button>
+                                </li>
                             ))}
                         </ul>
                         )}
