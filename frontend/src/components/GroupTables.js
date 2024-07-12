@@ -59,15 +59,21 @@ function GroupTables ({semester, groups}) {
 
                 <div className="semester-title" >
                     <h2>{testGroup.semester}</h2>
-                    <button className="dropdown-button" onClick={toggleSemester}></button>
+                    <button 
+                    className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
+                    onClick={toggleSemester}>
+                        ▶
+                    </button>
                 </div>
                 {isSemesterExpanded && dummyData.map((group, index) => (
                     <div className="group" key={index}>
                         <div className="group-name">
                         <h3>{group.groupName}</h3>
-                        <div className="flex-end">
-                            <button className="dropdown-button" onClick={() => toggleGroup(index)}></button>
-                        </div>
+                        <button 
+                        className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                        onClick={() => toggleGroup(index)}> 
+                            ▶
+                        </button>
                     </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">

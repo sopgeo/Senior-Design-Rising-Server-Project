@@ -1,6 +1,7 @@
 .semester-list{
     margin:50px 75px;
-    
+    width: 100%;
+    max-width: 1200px;
 }
 
 .group{
@@ -53,14 +54,22 @@
 .dropdown-button{
     width: 30px;
     height: 30px;
-    background-color: white;
+    background-color: transparent;
     cursor: pointer;
     margin:10px;
+    border: none;
+    outline:none;
+    box-shadow: none;
 }
-/*
-.flex-end{
-    display: flex;
-    justify-content: flex-end; 
-    
+
+.dropdown-button.rotated {
+    transform: rotate(90deg);
 }
-    */
+
+.dropdown-button.group-button {
+    color:white;
+}
+
+.dropdown-button.group-button.rotated {
+    transform: rotate(90deg);
+}
