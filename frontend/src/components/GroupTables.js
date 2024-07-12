@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
 
 function GroupTables ({semester, groups}) {
@@ -23,7 +24,6 @@ function GroupTables ({semester, groups}) {
                     members.push(name);
                 }
 
-                //let groupNumAsString = groupCount.toString
                 let groupName = "Group" + " " + groupCount.toString();
                 let semester = semesterArr[i] + " " + year;
                 groups.push({groupName, members, semester});
@@ -36,25 +36,46 @@ function GroupTables ({semester, groups}) {
     const dummyData = createDummyData(1, "2024");
     const testGroup = dummyData[0];
 
+
+    const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
+    const [expandedGroups, setExpandedGroups] = useState({});
+
+    const toggleSemester = () => {
+        setIsSemesterExpanded(!isSemesterExpanded);
+    };
+
+    const toggleGroup = (index) => {
+        setExpandedGroups(prevState => ({
+            ...prevState, 
+            [index]:!prevState[index]
+        }));
+    };
+
     return(
         <div>
             {console.log(createDummyData(2, "2024"))}
 
             <div className="semester-list">
 
-                <div className="semester-title">
+                <div className="semester-title" >
                     <h2>{testGroup.semester}</h2>
+                    <button className="dropdown-button" onClick={toggleSemester}></button>
                 </div>
-                {dummyData.map((group, index) => (
-                    <div className="group">
+                {isSemesterExpanded && dummyData.map((group, index) => (
+                    <div className="group" key={index}>
                         <div className="group-name">
                         <h3>{group.groupName}</h3>
+                        <div className="flex-end">
+                            <button className="dropdown-button" onClick={() => toggleGroup(index)}></button>
                         </div>
+                    </div>
+                        {expandedGroups[index] && (
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
                                 <li key={idx}>{member}</li>
                             ))}
                         </ul>
+                        )}
                     </div>
                 ))}
 
