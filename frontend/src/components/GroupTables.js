@@ -87,8 +87,11 @@ function GroupTables ({semester, groups}) {
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
                                 <li key={idx}>{member}
-                                    <button className="edit-button"></button>
-                                    <button className="delete-member-button" onClick={() => deleteMember(index, idx)}></button>
+                                    <button className="edit-button">
+                                        <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
+                                    <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
+                                        <img className="delete-button" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                                    </button>
                                 </li>
                             ))}
                         </ul>

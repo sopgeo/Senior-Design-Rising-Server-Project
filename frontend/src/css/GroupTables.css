@@ -77,11 +77,15 @@
 .edit-button {
     width: 30px;
     height: 30px;
-    background-color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
 
 .delete-member-button {
     width: 30px;
     height: 30px;
-    background-color: white;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
 }
