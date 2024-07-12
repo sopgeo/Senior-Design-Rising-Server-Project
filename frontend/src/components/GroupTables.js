@@ -20,7 +20,8 @@ function GroupTables ({semester}) {
 
                 for(let k = 0; k < 5; k++){
 
-                    let name = "Bobby Johnson"; 
+                    let memberCount = (k+1).toString();
+                    let name = "Bobby Johnson" + memberCount;
                     members.push(name);
                 }
 
@@ -61,6 +62,10 @@ function GroupTables ({semester}) {
         if( confirmed ) {
             setGroupData(prevGroupData => {
                 const newGroupData = [...prevGroupData];
+                newGroupData[groupIndex] = {
+                    ...newGroupData[groupIndex], 
+                    members: [...newGroupData[groupIndex].members]
+                };
                 newGroupData[groupIndex].members.splice(memberIndex, 1);
                 return newGroupData;
             });
