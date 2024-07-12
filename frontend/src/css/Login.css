@@ -4,48 +4,86 @@
     box-sizing: border-box;
     outline: none;
     font-family: arial, sans-serif;
-    /* display: inline-block; */
+    /* background-color: #FFF8DC; */
+    /* background-color: #F3E5AB; */
+    /* background-color: #EEDC82; */
 }
 
-.loginbox {
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    position: relative;
+.loginpage {
+    background-color: #F3E5AB;
     display: inline-flex;
-    /* flex-direction: column; */
-    background-color: #EBEBEB;
-    border: 1px solid black;
-    border-radius: 3px;
-    width: 400px;
-    height: 500px;
-    margin: 5rem;
+    height: 100vh;
+    width: 100vw;
+    align-items: center; 
+    justify-content: center;
 }
 
 .logintext {
-    margin: 20px;
+    /* position: absolute; */
+    top: 5px;
+    /* justify-content: center; */
+    /* text-align: center; */
+    margin: 40px;
 }
 
-.inputbox1, .inputbox2 {
-    margin: 10px;
+.logintext1, .logintext2 {  
+    margin: 12px;
 }
 
-#loginName, #loginPassword {
+.ucf_idinput, .passwordinput {
+    font-size: 20px;
+    width: 250px;
+    height: 57px;
+    border: 1px solid grey;
+    border-radius: 4px;
     padding: 10px;
-
-    /* width: 100%; */
+    margin: 6px;
+    /* margin-right: 40px; */
 }
 
+.ucf_idlabel, .passwordlabel {
+    font-size: 20px;
+    margin-right: 15px;
+}
 
+.loginform {
+    border-radius: 5px;
+}
+
+.loginform, .ucf_idlabel, .ucf_id, .logintext, .logintext1, .logintext2, .passwordinput, .ucf_idinput, .passwordlabel, .forgotpasswordbutton {
+    background-color: white; 
+}
+
+.loginbox {
+    background-color: white; 
+    justify-content: center;
+    align-content: center;
+    /* padding: 100px; */
+    position: relative;
+    align-items: center; 
+    background-color: white; 
+    /* padding: 30px; */
+    border-radius: 26px;
+
+    height: 530px;
+    max-width: 500px;
+    width: 400vw;
+    margin: 10rem; 
+    margin-top: 10em;
+}
 
 #loginButton {
     font-family: arial, sans-serif;
-    width: 100%;
+    font-size: 17px;
+    width: 150px;
+    height: 45px;
     align-items: center;
-    margin: 10px 10px 10px 0px;
+    margin-top: 50px;
+    /* margin-right: 50px; */
     background-color: #FFC904;
+    border-radius: 50px;
     padding: 10px;
-    border: 1px solid black;
+    border: 1px ;
     cursor: pointer;
 }
 
@@ -54,16 +92,23 @@
 }
 
 #forgotPassword {
-    align-items: right;
+    width: 175px;
+    max-height: 25px;
+    font-size: 15px;
+    margin-left: 220px;
     background: none!important;
     border: none;
-    margin: 5px;
+    margin: 5x;
     padding: 0!important;
     /*optional*/
     font-family: arial, sans-serif;
     /*input has OS specific font-family*/
     color: #069;
-    text-decoration: underline;
+    
     cursor: pointer;
-    float: right;
+    /* float: right; */
+}
+
+#forgotPassword:hover {
+    text-decoration: underline;
 }

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import "../css/GroupManagement.css";
 import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
+import GroupTables from "../components/GroupTables";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -25,6 +26,13 @@ function GroupManagement() {
 
   function renderGroup(groupInfo) {}
 
+  const containerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '20px',
+    marginBottom: '20px',
+  };
+
   return (
     <>
       <GenericHeader background={true} user={getUser()} />
@@ -36,12 +44,16 @@ function GroupManagement() {
         <br />
 
         <div className="App">
-          <h2>Upload CSV</h2>
-          <CsvUpload />
-          <TagGet />
+          <div style={containerStyle}>
+            <TagGet />
+            <CsvUpload />
+          </div>
+          <GroupTables />
+          <GroupTables />
+
         </div>
 
-        {renderSemester()}
+        
       </div>
       <CsFooter />
     </>
