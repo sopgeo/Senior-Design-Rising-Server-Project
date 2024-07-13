@@ -34,7 +34,7 @@ function Search() {
    * API Req + Basic *
    * * * * * * * * * */
   function getProjects(query, semester, year, keys) {
-    console.log(keys)
+    console.log(keys);
     let bodyJSON = {};
     if (query != "") {
       bodyJSON["query"] = query;
@@ -45,7 +45,7 @@ function Search() {
     if (year != "") {
       bodyJSON["year"] = year;
     }
-    if (keys.length > 0){
+    if (keys.length > 0) {
       bodyJSON["tags"] = keys;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
@@ -129,13 +129,11 @@ function Search() {
     );
   }
 
-  function  listTerms() {
+  function listTerms() {
     let date = new Date();
     let termsArr = [];
 
-
     for (let i = 0; i <= date.getFullYear() - 2016; i++) {
-
       let tempSpring = {};
       tempSpring["value"] = "Spring " + (i + 2016).toString();
       tempSpring["label"] = "Spring " + (i + 2016).toString();
@@ -158,13 +156,11 @@ function Search() {
     termsArr.push(temp);
 
     termsArr.reverse();
-    
+
     setTerms(termsArr);
   }
 
   function getTerms() {
-  
-
     return (
       <>
         <div className="TermTitle">
@@ -172,7 +168,7 @@ function Search() {
         </div>
         <div className="TermBox">
           <Select
-            defaultValue={{value:"", label:"All"}}
+            defaultValue={{ value: "", label: "All" }}
             onChange={giveTerm}
             options={terms}
           />
@@ -233,6 +229,8 @@ function Search() {
     if (timer != "") {
       clearTimeout(timer);
     }
+    /* This time delay was chosen via testing so peck typing does
+    not overload the api limits, increase if too many api calls */
     setTimer(
       setTimeout(() => {
         getProjects(searchQuery, semester, year, keyWords);
@@ -243,7 +241,7 @@ function Search() {
 
   function giveKeyWords(selected) {
     let keyWordsArr = [];
-    selected.forEach(word => {
+    selected.forEach((word) => {
       keyWordsArr.push(word.value);
     });
     setKeyWords(keyWordsArr);
