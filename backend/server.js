@@ -7,6 +7,7 @@ const fileRoutes = require('./routes/fileroute')
 const userRoutes = require('./routes/userroute')
 const tagRoutes = require('./routes/tagroute')
 const groupRoutes = require('./routes/grouproute')
+const sectionRoutes = require('./routes/sectionroute')
 
 const app = express();
 app.use(cors());
@@ -32,5 +33,6 @@ app.use('/api/file', fileRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/tag', tagRoutes)
 app.use('/api/group', groupRoutes)
+app.use('/api/section', sectionRoutes)
 
 app.listen(5000); // start Node + Express server on port 5000

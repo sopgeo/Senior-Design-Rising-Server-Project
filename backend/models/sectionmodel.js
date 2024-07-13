@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         
       },
       {
-        tableName: "section",
+        tableName: "sections",
         timestamps: false,
       }
     );

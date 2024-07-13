@@ -58,3 +58,22 @@ exports.createGroup = async (req, res) => {
         res.status(500).json({error: error.message, message: "Error occurred creating group"})
     }
 }
+
+exports.deleteGroup = async (req, res) => {
+    try {
+        const result = await Group.destroy({
+            where: {
+                group_id: req.body.group_id
+            }
+        })
+
+        if (result > 0) {
+            res.status(200).json({ message: `Group deleted`})
+          } else {
+            res.status(200).json({ message: `No group found with group_id${req.body.group_id}`});
+          }
+    }
+    catch (error) {
+        res.status(500).json({error: error.message, message: "Error occurred deleting group"})
+    }
+}
