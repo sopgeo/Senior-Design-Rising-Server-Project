@@ -105,7 +105,7 @@ exports.getMembers = async (req, res) => {
 
 exports.createProject = async (req, res) => {
   try {
-    const newProject = Project.create({
+    const newProject = await Project.create({
       group_id: req.body.group_id,
       name: req.body.name,
       sponsor: req.body.sponsor,
@@ -116,7 +116,7 @@ exports.createProject = async (req, res) => {
       documents: 0
     })
 
-    res.send({ message: 'Project created'})
+    res.status(200).send(newProject)
   }
   catch (error) {
     res.status(500).json({error: error.message, message: "Error occurred creating project"})
