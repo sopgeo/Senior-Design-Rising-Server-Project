@@ -1,6 +1,6 @@
 // import React from "react";
 import "../css/Upload.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDropzone } from 'react-dropzone'
 import Header from './GenericHeader.js'
 import TagsInput from "../components/TagsInput"
@@ -88,11 +88,55 @@ function Upload() {
 
               const json = await response.json();
 
+              //if (!json.project_id) throw new Error("Project did not create")
+              const project_id = json.project_id
+              const tags = getTagState()
+              assignTags(project_id, tags)
+
               
 
         } catch (error) {
             console.error("Error creating project: ", error);
         }
+    }
+
+    const assignTags = async (project_id, tags) => {
+        try {
+          const requests = tags.map(async tag => {
+            let tagData = {
+              tag_id: tag.value,
+              project_id: project_id
+            };
+      
+            const response = await fetch(
+              Path.buildPath("api/tag/assignTag", true),
+              {
+                method: "POST",
+                body: JSON.stringify(tagData),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+      
+            return response.json();
+          });
+      
+          const results = await Promise.all(requests);
+          console.log('All tags assigned successfully:', results)
+        } catch (error) {
+          console.error('Error assigning tags:', error)
+        }
+      }
+
+    const tagStateRef = useRef()
+
+    const getTagState = () => {
+        return tagStateRef.current.getOptions()
     }
 
     useEffect (() => {
@@ -121,7 +165,7 @@ function Upload() {
                 
                 <div className="tags-field">
                     <div id="tags">Tags</div>
-                    <TagsInput />
+                    <TagsInput ref={tagStateRef}/>
                 </div>
             </div>
             <br/>

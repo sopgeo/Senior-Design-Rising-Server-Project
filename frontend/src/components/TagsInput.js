@@ -1,13 +1,19 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react'
 import Select from "react-select";
 import "../css/TagsInput.css";
 import Path from "../components/Path";
 
 
 
-function TagsInput(){
+const TagsInput = forwardRef((props, _ref) => {
     const [selectedOptions, setSelectedOptions] = useState([])
     const [options, setOptions] = useState([])
+
+    useImperativeHandle(_ref, () => ({
+      getOptions: () => {
+        return selectedOptions
+      }
+    }))
 
     const handleChange = (selectedOption) => {
         setSelectedOptions(selectedOption);
@@ -77,5 +83,6 @@ function TagsInput(){
         </div>
     )
 }
+)
 
-export default TagsInput
+export default React.memo(TagsInput)
