@@ -8,6 +8,6 @@ router.post('/getGroupById', groupController.getGroupById)
 
 router.post('/createGroup', groupController.createGroup)
 
-router.post('deleteGroup', groupController.deleteGroup)
+router.post('/deleteGroup', groupController.deleteGroup)
 
 module.exports = router
