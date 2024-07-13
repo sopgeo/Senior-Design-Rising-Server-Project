@@ -41,6 +41,7 @@ function GroupTables ({semester}) {
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
     const [groupData, setGroupData] = useState(dummyData);
+    const [editingMember, setEditingMember] = useState({groupIndex: null, memberIndex: null, editedName: "", originalName: ""});
 
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
@@ -70,7 +71,44 @@ function GroupTables ({semester}) {
                 return newGroupData;
             });
         }
-    }; 
+    };
+    
+    const startEditingMember = (groupIndex, memberIndex, memberName) => {
+        if(editingMember.groupIndex!== null || editingMember.memberIndex !== null){
+            cancelEdit(editingMember.groupIndex, editingMember.memberIndex);
+    }
+        setEditingMember({ groupIndex, memberIndex, editedName: memberName, originalName: memberName });
+    };
+
+    const handleMemberNameChange = (e) => {
+        setEditingMember((prev) => ({...prev, editedName: e.target.value}));
+    };
+
+    const saveMemberName = (groupIndex, memberIndex) => {
+        setGroupData((prevGroupData) => {
+            const newGroupData = [...prevGroupData];
+            newGroupData[groupIndex] = {
+                ...newGroupData[groupIndex], 
+                members: [...newGroupData[groupIndex].members],
+            };
+            newGroupData[groupIndex].members[memberIndex] = editingMember.editedName;
+            return newGroupData;
+        });
+        setEditingMember({groupIndex:null, memberIndex:null, editedName:"", originalName:""});
+    };
+
+    const cancelEdit = (groupIndex, memberIndex) => {
+        setGroupData((prevGroupData) => {
+            const newGroupData = [...prevGroupData];
+            newGroupData[groupIndex] = {
+                ...newGroupData[groupIndex], 
+                members: [...newGroupData[groupIndex].members],
+            };
+            newGroupData[groupIndex].members[memberIndex] = editingMember.originalName;
+            return newGroupData;
+        });
+        setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
+    };
 
     return(
             <div className="semester-list">
@@ -96,14 +134,32 @@ function GroupTables ({semester}) {
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
-                                <li key={idx} className="member-row" >{member} 
+                                <li key={idx} className="member-row">
+                                    {editingMember.groupIndex === index && editingMember.memberIndex == idx ? (
+                                        <input
+                                        type="text"
+                                        value={editingMember.editedName}
+                                        onChange={handleMemberNameChange}
+                                        onBlur={() => cancelEdit(index, idx)}
+                                        onKeyDown={(e) => {
+                                            if(e.key === "Enter") {
+                                                saveMemberName(index, idx);
+                                            }
+                                        }}
+                                        autoFocus
+                                    />
+                                    ) : (
+                                    <>
+                                    {member} 
                                     <div className="member-button-container">
-                                        <button className="edit-button">
+                                        <button className="edit-button" onClick={() => startEditingMember(index, idx, member)}>
                                             <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
                                         <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
                                     </div>
+                                    </>
+                                    )}
                                 </li>
                             ))}
                         </ul>
