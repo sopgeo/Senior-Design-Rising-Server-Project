@@ -42,6 +42,9 @@ function GroupTables ({semester}) {
     const [expandedGroups, setExpandedGroups] = useState({});
     const [groupData, setGroupData] = useState(dummyData);
     const [editingMember, setEditingMember] = useState({groupIndex: null, memberIndex: null, editedName: "", originalName: ""});
+    const [newGroupName, setNewGroupName] = useState("");
+    const [isAddingNewGroup, setIsAddingNewGroup] = useState(false); //keeps track of if a new group is being added and saved
+    
 
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
@@ -110,11 +113,43 @@ function GroupTables ({semester}) {
         setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
     };
 
+    const addGroup = () => {
+
+        if(!isAddingNewGroup){
+            const newGroup = {
+                groupName: `Group ${groupData.length + 1}`,
+                members: [], 
+                semester: dummyData[0].semester 
+            };
+            setGroupData([...groupData, newGroup]);
+            setIsAddingNewGroup(true);
+            setNewGroupName(newGroup.groupName);
+            setExpandedGroups({...expandedGroups, [groupData.length]: true});
+
+        }
+        else{
+            alert("Can not add two groups at a time");
+        }
+    };
+
+    const saveNewGroupName = (index) => {
+        if (newGroupName.trim() !== "") {
+            setGroupData(prevGroupData => {
+                const newGroupData = [...prevGroupData];
+                newGroupData[index].groupName = newGroupName;
+                return newGroupData;
+            });
+            setNewGroupName("");
+            setIsAddingNewGroup(false);
+        }
+    };
+
     return(
             <div className="semester-list">
 
                 <div className="semester-title" >
-                    <h2>{testGroup.semester}</h2>
+                    <h2>{groupData[0].semester}</h2>
+                    <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
                     <button 
                     className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
                     onClick={toggleSemester}>
@@ -124,13 +159,32 @@ function GroupTables ({semester}) {
                 {isSemesterExpanded && groupData.map((group, index) => (
                     <div className="group" key={index}>
                         <div className="group-name">
-                        <h3>{group.groupName}</h3>
-                        <button 
-                        className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
-                        onClick={() => toggleGroup(index)}> 
-                            <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
-                        </button>
-                    </div>
+
+                            {isAddingNewGroup && index === groupData.length -1 ? (
+                                <input 
+                                    type="text"
+                                    value={newGroupName}
+                                    onChange={(e) => setNewGroupName(e.target.value)}
+                                    onBlur={() => saveNewGroupName(index)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            saveNewGroupName(index);
+                                        }
+                                    }}
+                                    autoFocus
+                                />
+                            ) : (
+                                <>
+
+                            <h3>{group.groupName}</h3>
+                            <button 
+                            className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                            onClick={() => toggleGroup(index)}> 
+                                <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
+                            </button>
+                            </>
+                            )}
+                        </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
                             {group.members.map((member, idx) => (
