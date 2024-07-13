@@ -8,20 +8,6 @@ import CsFooter from "../components/CsFooter";
 import Path from "../components/Path";
 
 function Upload() {
-    /*const fetchData = async() => {
-        try {
-            const response = await fetch('http://localhost:5000/api/file/upload');
-            if (!response.ok) {
-                throw new Error ('Network response was not ok');
-            }
-            const data = await response.json();
-            console.log('Data from backend:', data);
-        } catch (error) {
-            console.error("Error fetching data: ", error);
-        }
-    }
-    fetchData();*/
-
     const [uploadedURL, setUploadedURL] = useState(null)
 
     const {
@@ -41,11 +27,8 @@ function Upload() {
     console.log(selectedFile)
 
     const [groupTitle, setGroupTitle] =  useState(null)
+    const [groupId, setGroupId] =  useState(null)
     const [userStorage, setUserStorage] = useState(null)
-
-    const createProject = async() => {
-
-    }
 
     const getGroupInformation = async(group_id) => {
         try {
@@ -68,6 +51,7 @@ function Upload() {
 
               if (response.ok) {
                 setGroupTitle(json.title);
+                setGroupId(group_id)
               }
 
         } catch (error) {
@@ -75,10 +59,47 @@ function Upload() {
         }
     }
 
+    const uploadProject = async() => {
+        try {
+            const projectData = {
+                group_id: groupId,
+                name: document.getElementById("proj-name").value,
+                sponsor: document.getElementById("proj-sponsor").value,
+                sponsor_contact: null,
+                description: document.getElementById("proj-desc").value,
+                end_semester: document.getElementById("proj-semester").value,
+                end_year: document.getElementById("proj-year").value,
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/project/createProject", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(projectData),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+        
+              if (!response.ok) {
+                throw new Error("Failed to create project!");
+              }
+
+              const json = await response.json();
+
+              
+
+        } catch (error) {
+            console.error("Error creating project: ", error);
+        }
+    }
+
     useEffect (() => {
         let user = JSON.parse(localStorage.getItem("user"))
         getGroupInformation(user.group_id)
     }, [])
+    
 
   return (
       <div className="upload-page">
@@ -182,7 +203,7 @@ function Upload() {
             </div>
 
             <br/>
-            <button id="done-button">Done</button>
+            <button id="done-button" onClick={uploadProject}>Done</button>
         </div>
         <CsFooter/>
     </div>
