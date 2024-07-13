@@ -6,4 +6,6 @@ router.post('/getGroups', groupController.getGroups)
 
 router.post('/getGroupById', groupController.getGroupById)
 
+router.post('/createGroup', groupController.createGroup)
+
 module.exports = router
