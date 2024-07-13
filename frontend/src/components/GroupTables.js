@@ -34,17 +34,23 @@ function GroupTables ({semester}) {
         return groups;
     }
 
-    const dummyData = createDummyData(1, "2024");
+    const dummyData = createDummyData(2, "2024");
     const testGroup = dummyData[0];
 
-
+    const [groupData, setGroupData] = useState(dummyData); //Holds all of the data being displayed in this component
+    //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
-    const [groupData, setGroupData] = useState(dummyData);
+    //For editing group member
     const [editingMember, setEditingMember] = useState({groupIndex: null, memberIndex: null, editedName: "", originalName: ""});
+    //For adding a new Group
     const [newGroupName, setNewGroupName] = useState("");
     const [isAddingNewGroup, setIsAddingNewGroup] = useState(false); //keeps track of if a new group is being added and saved
-    
+    //For adding a new member
+    const [newMemberName, setNewMemberName] = useState("");
+    const [groupToAddMember, setGroupToAddMember] = useState(null);
+    const initAddingMemberState = Array.from({length: groupData.length}, () => false);// initializes the isAddingNewMember to be all false at the start
+    const [isAddingNewMember, setIsAddingNewMember] = useState(initAddingMemberState);
 
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
@@ -144,6 +150,64 @@ function GroupTables ({semester}) {
         }
     };
 
+    const addGroupMember = (groupIndex) => {
+
+        //console.log("group index is " + groupIndex);
+        //console.log(  isAddingNewMember);
+
+        if(!isAddingNewMember[groupIndex]) {
+            setGroupData(prevGroupData => {
+                const newGroupData = [...prevGroupData];
+                newGroupData[groupIndex] = {
+                    ...newGroupData[groupIndex],
+                    members: [...newGroupData[groupIndex].members, "tempvalue"]
+                };
+
+                //console.log("new mem array "+ newGroupData[groupIndex].members);
+
+                return newGroupData;
+            });
+            
+            //setIsAddingNewMember(prevState => ({ ...prevState, [groupIndex]: true }));
+            setIsAddingNewMember(prevState => {
+                const newState = [...prevState];
+                newState[groupIndex] = true;
+                return newState
+            });
+
+           //console.log("IANM after " + isAddingNewMember);
+        }
+        else{
+            alert("Can not add two members at the same time");
+        }
+    };
+
+    //Similar to saveMember name, except this one is used when it is saving a new members name
+    //This is so that the edit hook is not altered
+    const saveNewMemberName = (groupIndex, memberIndex) => {
+        if(newMemberName.trim() !== "") {
+            setGroupData((prevGroupData) => {
+                const newGroupData = [...prevGroupData];
+                newGroupData[groupIndex] = {
+                    ...newGroupData[groupIndex], 
+                    members: [...newGroupData[groupIndex].members],
+                };
+                newGroupData[groupIndex].members[memberIndex] = newMemberName;
+                return newGroupData;
+            });
+            //setIsAddingNewMember(prevState => ({ ...prevState, [groupIndex]: false }));
+            setIsAddingNewMember(prevState => {
+                const newState = [...prevState];
+                newState[groupIndex] = false;
+                return newState
+            });
+            setNewMemberName("");
+        }
+        else{
+            alert(`New group member for ${groupData[groupIndex].groupName} must have a valid name`);
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -159,7 +223,6 @@ function GroupTables ({semester}) {
                 {isSemesterExpanded && groupData.map((group, index) => (
                     <div className="group" key={index}>
                         <div className="group-name">
-
                             {isAddingNewGroup && index === groupData.length -1 ? (
                                 <input 
                                     type="text"
@@ -177,6 +240,7 @@ function GroupTables ({semester}) {
                                 <>
 
                             <h3>{group.groupName}</h3>
+                            <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
                             <button 
                             className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
                             onClick={() => toggleGroup(index)}> 
@@ -202,6 +266,23 @@ function GroupTables ({semester}) {
                                         }}
                                         autoFocus
                                     />
+
+                                    ) : (
+                                        <>
+                                            {isAddingNewMember[index] && idx === group.members.length -1 ? (
+                                                <input 
+                                                type="text"
+                                                value={newMemberName}
+                                                onChange={(e) => setNewMemberName(e.target.value)}
+                                                //onBlur={() => saveNewMemberName(index, idx)}
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        saveNewMemberName(index, idx);
+                                                    }
+                                                }}
+                                                autoFocus
+                                                placeholder="Enter member name"
+                                            />
                                     ) : (
                                     <>
                                     {member} 
@@ -212,6 +293,8 @@ function GroupTables ({semester}) {
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
                                     </div>
+                                    </>
+                                    )}
                                     </>
                                     )}
                                 </li>
