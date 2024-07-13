@@ -17,16 +17,36 @@
     text-align: center;
 }
 
+.DropDownContainer {
+    display: grid;
+    grid-template-columns: 5% auto auto auto auto auto auto auto auto;
+    gap: 10px;
+    text-align: center;
+}
+
+.TermTitle {
+    grid-column: 2;
+}
+
 .TermBox {
-    grid-column: 1;
+    grid-column: 3;
+}
+
+.KeyWordsTitle {
+    grid-column: 4;
 }
 
 .KeyWordsBox {
-    grid-column: 2 / 3;
+    grid-column: 5 / 6;
 }
 
-.SearchTextBox {
-    grid-column: 4 / 5;
+.SearchTitle {
+    text-align: right;
+    grid-column: 7;
+}
+
+.SearchBox {
+    grid-column: 8 / 9;
 }
 
 h3 {
@@ -40,7 +60,15 @@ select {
 
 input {
     height: 50px;
-    font-size: large;
+    font-size: medium;
+    border-style: solid;
+    border-color: #CCCCCC;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+input:hover {
+    border-color: #808080;
 }
 
 table,

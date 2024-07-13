@@ -6,7 +6,6 @@ import CsFooter from "../components/CsFooter";
 import GenericHeader from "../components/GenericHeader";
 import "../css/Search.css";
 import { useState, useEffect } from "react";
-import ProjectDetails from "../components/ProjectDetails";
 import {
   useReactTable,
   getCoreRowModel,
@@ -14,6 +13,7 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import Path from "../components/Path";
+import Select from "react-select";
 
 /* * * * * * * * * *
  *     Search      *
@@ -25,13 +25,16 @@ function Search() {
   const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
+  const [allKeyWords, setAllKeyWords] = useState([]);
   const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [terms, setTerms] = useState([]);
 
   /* * * * * * * * * *
    * API Req + Basic *
    * * * * * * * * * */
-  function getProjects(query, semester, year, keyWords) {
+  function getProjects(query, semester, year, keys) {
+    console.log(keys)
     let bodyJSON = {};
     if (query != "") {
       bodyJSON["query"] = query;
@@ -42,7 +45,11 @@ function Search() {
     if (year != "") {
       bodyJSON["year"] = year;
     }
+    if (keys.length > 0){
+      bodyJSON["tags"] = keys;
+    }
     let bodyJSONStr = JSON.stringify(bodyJSON);
+    console.log(bodyJSONStr);
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -70,6 +77,27 @@ function Search() {
     fetchProjects();
   }
 
+  function getAllKeyWords() {
+    const fetchTags = async () => {
+      const response = await fetch("http://localhost:5000/api/tag/tags");
+      const json = await response.json();
+      if (response.ok) {
+        let kwl = [];
+        json.forEach((val) => {
+          let temp = {};
+          temp["value"] = val.name;
+          temp["label"] = val.name;
+          kwl.push(temp);
+        });
+        console.log(kwl);
+        console.log(json);
+        setAllKeyWords(kwl);
+      }
+    };
+
+    fetchTags();
+  }
+
   function getUser() {
     return user;
   }
@@ -90,7 +118,7 @@ function Search() {
   function getDropDowns() {
     return (
       <>
-        <div className="GridContainer">
+        <div className="DropDownContainer">
           {getTerms()}
           {getKeyWords()}
           {getSearchBar()}
@@ -100,65 +128,92 @@ function Search() {
     );
   }
 
-  function getTerms() {
-    let arr = new Array();
+  function  listTerms() {
     let date = new Date();
+    let termsArr = [];
+
+
     for (let i = 0; i <= date.getFullYear() - 2016; i++) {
-      arr = arr.concat([
-        "Spring " + (i + 2016).toString(),
-        "Summer " + (i + 2016).toString(),
-        "Fall " + (i + 2016).toString(),
-      ]);
+
+      let tempSpring = {};
+      tempSpring["value"] = "Spring " + (i + 2016).toString();
+      tempSpring["label"] = "Spring " + (i + 2016).toString();
+      termsArr.push(tempSpring);
+
+      let tempSummer = {};
+      tempSummer["value"] = "Summer " + (i + 2016).toString();
+      tempSummer["label"] = "Summer " + (i + 2016).toString();
+      termsArr.push(tempSummer);
+
+      let tempFall = {};
+      tempFall["value"] = "Fall " + (i + 2016).toString();
+      tempFall["label"] = "Fall " + (i + 2016).toString();
+      termsArr.push(tempFall);
     }
 
-    arr = arr.concat(" ");
-    arr = arr.reverse();
+    let temp = {};
+    temp["value"] = "";
+    temp["label"] = "All";
+    termsArr.push(temp);
+
+    termsArr.reverse();
+    
+    setTerms(termsArr);
+  }
+
+  function getTerms() {
+  
 
     return (
-      <div className="TermBox">
-        <h3>Term: </h3>
-        <select
-          name="Term"
-          id="Term"
-          onChange={(e) => giveTerm(e.target.value)}
-        >
-          {arr.map((term) => {
-            return (
-              <option value={term} key={term}>
-                {term}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      <>
+        <div className="TermTitle">
+          <h3>Term: </h3>
+        </div>
+        <div className="TermBox">
+          <Select
+            defaultValue={{value:"", label:"All"}}
+            onChange={giveTerm}
+            options={terms}
+          />
+        </div>
+      </>
     );
   }
 
   function getKeyWords() {
     return (
-      <div className="KeyWordsBox">
-        <h3>Key Words: </h3>
-        <select name="KeyWords" id="KeyWords">
-          <option value="Unity">Unity</option>
-          <option value="MERN">MERN</option>
-          <option value="Web">Web</option>
-          <option value="Simulation">Simulation</option>
-        </select>
-      </div>
+      <>
+        <div className="KeyWordsTitle">
+          <h3>Key Words: </h3>
+        </div>
+
+        <div className="KeyWordsBox">
+          <Select
+            defaultValue={keyWords}
+            onChange={giveKeyWords}
+            options={allKeyWords}
+            isMulti="true"
+          />
+        </div>
+      </>
     );
   }
 
   function getSearchBar() {
     return (
-      <div className="SearchTextBox">
-        <h3>Search: </h3>
-        <input
-          type="text"
-          name="Search"
-          placeholder="Search..."
-          onChange={(e) => giveSearch(e.target.value)}
-        />
-      </div>
+      <>
+        <div className="SearchTitle">
+          <h3>Search: </h3>
+        </div>
+        <div className="SearchBox">
+          <input
+            type="text"
+            name="Search"
+            placeholder="Search..."
+            onChange={(e) => giveSearch(e.target.value)}
+          />
+        </div>
+      </>
     );
   }
 
@@ -166,10 +221,10 @@ function Search() {
    * Search Function *
    * * * * * * * * * */
   function giveTerm(term) {
-    let termArr = term.split(" ");
+    let termArr = term.value.split(" ");
     setSemester(termArr[0]);
     setYear(termArr[1]);
-    getProjects(search, termArr[0], termArr[1]);
+    getProjects(search, termArr[0], termArr[1], keyWords);
   }
 
   function giveSearch(searchQuery) {
@@ -179,10 +234,19 @@ function Search() {
     }
     setTimer(
       setTimeout(() => {
-        getProjects(searchQuery, semester, year);
+        getProjects(searchQuery, semester, year, keyWords);
       }, 750)
     );
     clearTimeout(timer);
+  }
+
+  function giveKeyWords(selected) {
+    let keyWordsArr = [];
+    selected.forEach(word => {
+      keyWordsArr.push(word.value);
+    });
+    setKeyWords(keyWordsArr);
+    getProjects(search, semester, year, keyWordsArr);
   }
 
   /* * * * * * * * * *
@@ -371,7 +435,9 @@ function Search() {
    *   Update Data   *
    * * * * * * * * * */
   useEffect(() => {
-    getProjects(search, semester, year);
+    listTerms();
+    getAllKeyWords();
+    getProjects(search, semester, year, keyWords);
   }, []);
 
   /* * * * * * * * * *
