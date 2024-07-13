@@ -21,6 +21,7 @@ const Projects = db.projects
   const upload = multer({ storage: storage });
   
   const uploadFile = (req, res) => {
+    try {
     // Call multer as middleware here, inside the route handler
     upload.single('pdf')(req, res, function (err) {
       if (err instanceof multer.MulterError) {
@@ -61,7 +62,12 @@ const Projects = db.projects
   
         res.send({ message: 'File uploaded successfully', path: finalPath });
       });
+    
     });
+      }
+      catch (error) {
+        res.status(500).json({error: error.message, message: "Error occurred uploading file"})
+      }
   };
 
   module.exports = {

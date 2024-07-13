@@ -9,22 +9,25 @@ import Path from "../components/Path";
 
 function Upload() {
     const [uploadedURL, setUploadedURL] = useState(null)
+    const [selectedFile, setSelectedFile] = useState(null)
 
+    const onDrop = acceptedFiles => {
+      setSelectedFile(acceptedFiles[0])
+    }
+    
     const {
         getRootProps,
         getInputProps,
         acceptedFiles,
         isDragActive,
-    } = useDropzone({})
+    } = useDropzone({onDrop, accept: 'application/pdf'})
+
 
     const files = acceptedFiles.map((file) => (
         <li key={file.path}>
           {file.path} - {file.size} bytes
         </li>
       ));
-
-    const selectedFile = acceptedFiles[0]
-    console.log(selectedFile)
 
     const [groupTitle, setGroupTitle] =  useState(null)
     const [groupId, setGroupId] =  useState(null)
@@ -92,6 +95,7 @@ function Upload() {
               const project_id = json.project_id
               const tags = getTagState()
               assignTags(project_id, tags)
+              uploadPDF(project_id, json.end_year, json.end_semester)
 
               
 
@@ -130,6 +134,34 @@ function Upload() {
           console.log('All tags assigned successfully:', results)
         } catch (error) {
           console.error('Error assigning tags:', error)
+        }
+      }
+
+      const uploadPDF = async (project_id, year, semester) => {
+        try {
+          const formData = new FormData()
+          formData.append('pdf', selectedFile)
+          formData.append('projectId', project_id)
+          formData.append('year', year)
+          formData.append('semester', semester)
+
+          console.log(formData)
+
+          const response = await fetch(
+            Path.buildPath("api/file/upload", true),
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+    
+          if (!response.ok) {
+            throw new Error(`${response.status}`);
+          }
+          
+        }
+        catch (error) {
+          console.error('Error uploading pdf' + error.message)
         }
       }
 
