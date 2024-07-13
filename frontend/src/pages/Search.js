@@ -64,7 +64,8 @@ function Search() {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch projects");
+        //throw new Error("Failed to fetch projects" + response);
+        setProjects([]);
       }
 
       const json = await response.json();
