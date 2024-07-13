@@ -48,8 +48,10 @@ function GroupManagement() {
             <TagGet />
             <CsvUpload />
           </div>
-          <GroupTables />
-          <GroupTables />
+          <div className="semester-container">
+            <GroupTables />
+            <GroupTables />
+          </div>
 
         </div>
 

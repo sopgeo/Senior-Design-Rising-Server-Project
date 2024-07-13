@@ -1,6 +1,7 @@
 .semester-list{
     margin:50px 75px;
-    
+    width: 100%;
+    max-width: 1200px;
 }
 
 .group{
@@ -29,6 +30,8 @@
     padding: 12px;
     border-radius: 5px;
     text-align: left;
+    display: flex;
+    justify-content: space-between;
 }
 
 .semester-title h2{
@@ -39,9 +42,67 @@
     background-color: black;
     text-align: left;
     padding:8px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .group-name h3{
     color:white;
     padding-left: 20px;
+}
+
+.dropdown-button{
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    cursor: pointer;
+    margin:10px 30px 10px 10px;
+    border: none;
+    outline:none;
+    box-shadow: none;
+    transform: rotate(270deg);
+}
+
+.dropdown-button.rotated {
+    transform:none;
+}
+
+.dropdown-button.group-button {
+    color:white;
+}
+
+.dropdown-button.group-button.rotated {
+    transform: none;
+}
+
+.edit-button {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.delete-member-button {
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.member-row{
+    display: flex;
+    justify-content:space-between;
+}
+
+.member-button-container {
+    width:100px;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px 50px 10px 10px;
 }
