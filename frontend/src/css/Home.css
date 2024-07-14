@@ -1,3 +1,165 @@
-.white-rect {
-    width: auto;
+* {
+    box-sizing: border-box;
 }
+
+body {
+    margin: 0;
+}
+
+.header {
+    display: flex;
+}
+
+/* home page image of l3 harris */
+.header-logo {
+    display: flex;
+    z-index: 1;
+    position: absolute;
+    padding: 10px;
+    margin: 10%;
+    margin-left: 13%;
+    background-color: rgba(255, 201, 4, 0.8);
+    color: black;
+    font-weight: 700;
+    font-size: 3vw;
+    width: 60%;
+    max-width: 40vw;
+}
+
+.img {
+    position: relative;
+    width: 100%;
+    display: grid;
+    height:100%;
+    max-width:100%;
+    max-height: 100vh;
+    margin: auto;
+} 
+
+
+/* main sections of content sectioned off by color! */
+.white-rect {
+    max-height: 350px;
+    display: flex;
+    width: 100%;
+    background: white;
+    justify-content: center;
+    padding: 50px;
+}
+
+.white-rect p {
+    font-size: 1.2vw;
+    width: 80%;
+}
+
+.yellow-rect {
+    max-height: 350px;
+    display: flex;
+    width: 100%;
+    background-color: #FFC904;
+    padding: 50px;
+}
+
+.yellow-rect p {
+    font-size: 18px;
+    width: 80%;
+    max-width: 80%;
+}
+
+.black-rect {
+    max-height: 350px;
+    display: flex;
+    padding: 50px;
+    color: white;
+    display: flex;
+    width: 100%;
+    background-color: black;
+    justify-content: space-between;
+}
+
+.black-rect p {
+    font-size: 18px;
+    color: white;
+    width: 100%;
+    max-width: 80%;
+}
+
+.white-rect2 {
+    display: flex;
+    width: 100%;
+    height: 5%;
+    background: white;
+    justify-content: space-between;
+    padding: 5%;
+}
+
+.white-rect2 p {
+    font-size: 18px;
+    width: 80%;
+    max-width: 80%;
+}
+
+/* images on home page */
+.about-img {
+    width: 350px;
+    height: 250px;
+    margin-right: 120px;
+}
+
+.pres-img {
+    width: 350px;
+    height: 250px;
+    margin-left: 120px;
+}
+
+.sponsor-img {
+    width: 350px;
+    height: 250px;
+    margin-right: 120px;
+}
+
+/* horizontal underlines under section headers */
+.about hr {
+    margin-left: 0;
+    border: 2px solid #FFC904;
+    opacity: 100%;
+    color: #FFC904;
+    width: 100px;
+}
+
+.presentations hr {
+    margin-left: 0;
+    border: 2px solid;
+    opacity: 100%;
+    color: white;
+    width: 240px;
+}
+
+.sponsors hr {
+    margin-left: 0;
+    border: 2px solid;
+    opacity: 100%;
+    color: #FFC904;
+    width: 165px;
+}
+
+.sd1 hr, .sd2 hr {
+    margin-left: 0;
+    border: 2px solid;
+    opacity: 100%;
+    color: #FFC904;
+    width: 280px;
+    text-align: left;
+}
+
+.about, .presentations, .sponsors {
+    margin: 40px;
+    justify-content: center;
+}
+
+.about, .presentations, .sponsors, .sd1, .sd2 {
+    text-align: left;
+}
+
+
+

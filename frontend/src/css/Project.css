@@ -1,59 +1,69 @@
+.PageBody {
+    padding-left: 5%;
+    padding-right: 5%;
+    min-height: 58vh;
+}
+
 .Title {
     color: #000;
-    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
     text-align: left;
     padding-left: 5%;
 }
 
 .GridContainer {
     display: grid;
-    grid-template-columns: 70% auto;
     gap: 10px;
     text-align: left;
+    justify-items: stretch;
 }
 
 .Details {
-    padding-left: 5%;
-    padding-right: 5%;
-    color: black;
+    grid-column: 1 / span 6;
+    grid-row: 1;
+    max-width: 100%;
+    
 }
 
-.Students {
-    padding-left: 5%;
+.People {
+    grid-column: 7 / span 3;
+    grid-row: 1;
+    padding-left: 3vw;
+    padding-right: 8vw;
+    text-align: left;
 }
 
 .Tag {
     background-color: #FFC904;
     color: #000;
     padding: .1% 1% .5%;
-    border-radius: 5%;
+    border-radius: 5px;
     margin-right: 2%;
     margin-bottom: 10px;
     word-wrap: normal;
     display: inline-block;
+    font-weight: 600;
 }
 
 p {
     color: black;
+    line-height: 150%;
 }
 
-
-
-
-
-
-.FooterBody {
-    background-color: #3e3e3e;
-    box-sizing: border-box;
-    display: block;
-    margin: 0;
-    padding: 45px 15px;
-    text-align: center;
-    width: 100%
-}
-
-@media (min-width:768px) {
-    .FooterTitle {
-        font-size: 15px
+@media only screen and (max-width: 600px) {
+    .Details {
+        grid-column: span 10;
+        grid-row: 1;
+        max-width: 100%;
+        
     }
-}
+    
+    .People {
+        grid-column: span 10;
+        grid-row: 2;
+        padding-left: 3vw;
+        padding-right: 8vw;
+        text-align: left;
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+  }

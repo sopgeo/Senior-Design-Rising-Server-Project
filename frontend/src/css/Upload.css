@@ -1,3 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.upload-page {
+    /* display: flex; */
+    /* margin: 5rem; */
+    align-items: center;
+    /* flex-direction: column; */
+    
+}
+
+.upload-header h1, .upload-header h2{
+    margin: 10px;
+}
+
+#full-name-header, #linked-in-header, #project-role-header, #project-name, #tags, #project-description, #project-year, #project-semester, #project-sponsor{
+    margin-left: 3px;
+    margin-bottom: 8px;
+}
+
+#proj-desc {
+    height: 250em;
+    width: 400px;
+}
+
+.user-info {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    text-align: left;
+}
+
+#full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc, #proj-name, #proj-sponsor {
+    border: 1px solid #555555;
+    border-radius: 3px;
+    height: 3.63rem;
+    padding: .5em;
+    flex-wrap: wrap;
+}
+
+
+
+#proj-desc {
+    width: 450px;
+    height: 200px;
+    font-size: 16px;
+}
+
+#proj-name {
+    width: 300px;
+    height: 40px;
+    font-size: 16px;
+}
+
+#proj-year {
+    width: 100px;
+    height: 40px;
+    font-size: 16px
+}
+
+#proj-semester, #proj-sponsor {
+    width: 200px;
+    height: 40px;
+    font-size: 16px
+}
+
+
+
+#full-name-input, #linked-in-input, #project-role-input {
+    width: 214px;
+}
+
+.full-name-field, .linked-in-field, .project-role-field, .project-name-field, .project-sponsor-field, .project-year-field, .project-semester-field, .tags-field, .tech-doc-field, .proj-desc-field {
+    margin: 10px 15px;
+}
+
+
+.line1 {
+    padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    text-align: left;
+}
+
+.line2 {
+    display: flex;
+    justify-content: center;
+}
+
+.line3 {
+    display: inline-flex;
+    text-align: left;
+}
+
+/* upload section */
+.tech-doc-field {
+    max-width: 800;
+    width: 100%;
+}
+
+.drag-area, .drop-files {
+    cursor: pointer;
+    width: 450px;
+    height: 200px;
+    /* height: 200px; */
+
+    border-radius: 10px;
+    border-style: dashed;
+    border-width: 1.9px;
+    padding: 20px;
+    border-color: grey;
+    background: white;
+    box-shadow: rgba(147, 157, 165, 0.2) 0px 8px 24px;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 10px auto;
+}
+
+.drag-area .icon, .drop-files {
+    font-size: 25px;
+}
+
+.drag-area .span, .drop-files {
+    white-space: pre;
+}
+
+.drag-area .header, .drop-files {
+    margin: 5px;
+    white-space: pre;
+}
+
+.drag-area .support, .drop-files {
+   font-size: 12px;
+   color: grey;
+   margin: 10px 0 15px 0;
+}
+
+.drag-area .button, .drop-files {
+    font-weight: 700;
+}
+
 #done-button {
     width: 100px;
     margin: 20px;
@@ -5,37 +153,14 @@
     padding: 10px;
     border-radius: 10px;
     border: 2px solid black;
+    cursor: pointer;
 }
 
-/* #done-button:hover {
-    background-color: ;
-} */
+#done-button:hover {
+    background-color:#EAB906;
+}
 
 /* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
     margin: 5px;
 } */
 
-.user-info {
-    margin: 10px;
-    display: inline-flex;
-    align-items: center;
-    text-align: left;
-}
-
-.full-name-field, .linked-in-field, .project-role-field, .project-name-field, .tags-field, .tech-doc-field, .proj-desc-field {
-    margin: 10px 15px;
-}
-
-
-
-.line1 {
-    margin: 10px;
-    display: inline-flex;
-    text-align: left;
-}
-
-.line2 {
-    margin: 10px;
-    display: inline-flex;
-    text-align: left;
-}

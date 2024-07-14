@@ -1,0 +1,165 @@
+.PageBody {
+    align-items: center;
+    min-height: 58vh;
+}
+
+.Title {
+    color: #000;
+    font-family: "Gotham SSm A", "Gotham SSm B", "UCF Sans Serif Alt", "Helvetica Neue", Arial, sans-serif;
+    text-align: left;
+    padding-left: 5%;
+}
+
+.GridContainer {
+    display: grid;
+    grid-template-columns: 20% auto 20%;
+    gap: 10px;
+    text-align: center;
+}
+
+.DropDownContainer {
+    display: grid;
+    grid-template-columns: 5% auto auto auto auto auto auto auto auto;
+    gap: 10px;
+    text-align: center;
+}
+
+.TermTitle {
+    grid-column: 2;
+}
+
+.TermBox {
+    grid-column: 3;
+}
+
+.KeyWordsTitle {
+    grid-column: 4;
+}
+
+.KeyWordsBox {
+    grid-column: 5 / 6;
+}
+
+.SearchTitle {
+    text-align: right;
+    grid-column: 7;
+}
+
+.SearchBox {
+    grid-column: 8 / 9;
+}
+
+h3 {
+    display: inline;
+}
+
+select {
+    height: 50px;
+    font-size: large;
+}
+
+input {
+    height: 50px;
+    font-size: medium;
+    border-style: solid;
+    border-color: #CCCCCC;
+    border-width: 1px;
+    border-radius: 4px;
+}
+
+input:hover {
+    border-color: #B5B5B5;
+}
+
+table,
+th,
+td {
+    border: 1px solid #3e3e3e;
+    border-collapse: collapse;
+    text-align: left;
+    height: 40px;
+    padding-left: 1%;
+}
+
+th {
+    background-color: #FFC904;
+}
+
+tr:hover {
+    background-color: #E4E4E4;
+}
+
+table {
+    width: 90%;
+}
+
+.TitleCol {
+    width: 30%;
+}
+
+.TermCol {
+    width: 15%;
+}
+
+.SponsorCol {
+    width: 20%;
+}
+
+.KeyWordsCol {
+    width: 35%;
+}
+
+button {
+    width: 25%;
+    aspect-ratio: 1/1;
+    background-color: #FFC904;
+    font-size: large;
+    font-weight: bold;
+}
+
+button:disabled {
+    background-color: #EAB700;
+}
+
+.leftButtons {
+    grid-column: 1;
+}
+
+.rightButtons {
+    grid-column: 3;
+}
+
+@media only screen and (max-width: 600px) {
+    .TermBox {
+        grid-row: 1;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+    
+    .KeyWordsBox {
+        grid-row: 2;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+    
+    .SearchTextBox {
+        grid-row: 3;
+        grid-column: 1 / 5;
+        padding-bottom: 1em;
+        text-align: left;
+    }
+
+    .leftButtons {
+        grid-column: 1;
+        min-width: 20vw;
+        min-height: 20vw;
+    }
+    
+    .rightButtons {
+        grid-column: 3;
+        min-width: 15vw;
+        min-height: 15vw;
+    }
+}
