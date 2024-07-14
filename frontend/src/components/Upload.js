@@ -10,6 +10,7 @@ import Path from "../components/Path";
 function Upload() {
     const [uploadedURL, setUploadedURL] = useState(null)
     const [selectedFile, setSelectedFile] = useState(null)
+    const [projectId, setProjectId] = useState(null)
 
     const onDrop = acceptedFiles => {
       setSelectedFile(acceptedFiles[0])
@@ -92,15 +93,24 @@ function Upload() {
               const json = await response.json();
 
               //if (!json.project_id) throw new Error("Project did not create")
-              const project_id = json.project_id
+              setProjectId(json.project_id)
+              console.log(json.project_id)
               const tags = getTagState()
-              assignTags(project_id, tags)
-              uploadPDF(project_id, json.end_year, json.end_semester)
+              assignTags(projectId, tags)
+              uploadPDF(projectId, json.end_year, json.end_semester)
 
               
 
         } catch (error) {
             console.error("Error creating project: ", error);
+        }
+
+        alert("You've submitted your project!");
+        //window.open("/project?id=" + project);
+        if(projectId == null){
+          window.open("/search", "_self");
+        }else{
+          window.open("/project/" + projectId, "_self");
         }
     }
 
