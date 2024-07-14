@@ -9,4 +9,6 @@ router.post('/loginUser', userController.login)
 
 router.post('/deleteUser', userController.deleteUser)
 
+router.post('/resetPassword', userController.resetPassword)
+
 module.exports = router

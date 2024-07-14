@@ -1,33 +1,27 @@
 // import React from "react";
 import "../css/Upload.css";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDropzone } from 'react-dropzone'
 import Header from './GenericHeader.js'
 import TagsInput from "../components/TagsInput"
+import CsFooter from "../components/CsFooter";
+import Path from "../components/Path";
 
 function Upload() {
-    // const [dataURL, setDataURL] = useState(null)}
     const [uploadedURL, setUploadedURL] = useState(null)
+    const [selectedFile, setSelectedFile] = useState(null)
 
-    // const onDrop = useCallback(acceptedFiles => {
-    //     acceptedFiles.forEach(file => {
-    //         const reader = new FileReader()
-    //         reader.onabort = () => console.log("file reading was aborted")
-    //         reader.onerror = () => console.log("file reading has an error")
-    //         // reader.onload = () => {
-    //         //     const binaryStr = reader.result
-    //         //     setDataURL(binaryStr)
-    //         // }
-    //         // reader.readAsDataURL(file)
-    //     })
-    // }, [])
-
+    const onDrop = acceptedFiles => {
+      setSelectedFile(acceptedFiles[0])
+    }
+    
     const {
         getRootProps,
         getInputProps,
         acceptedFiles,
         isDragActive,
-    } = useDropzone({})
+    } = useDropzone({onDrop, accept: 'application/pdf'})
+
 
     const files = acceptedFiles.map((file) => (
         <li key={file.path}>
@@ -35,9 +29,153 @@ function Upload() {
         </li>
       ));
 
-    const selectedFile = acceptedFiles[0]
-    console.log(selectedFile)
+    const [groupTitle, setGroupTitle] =  useState(null)
+    const [groupId, setGroupId] =  useState(null)
+    const [userStorage, setUserStorage] = useState(null)
 
+    const getGroupInformation = async(group_id) => {
+        try {
+            const response = await fetch(
+                Path.buildPath("api/group/getGroupById", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({ group_id: group_id }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+        
+              if (!response.ok) {
+                throw new Error("Failed to fetch group information");
+              }
+
+              const json = await response.json();
+
+              if (response.ok) {
+                setGroupTitle(json.title);
+                setGroupId(group_id)
+              }
+
+        } catch (error) {
+            console.error("Error fetching data: ", error);
+        }
+    }
+
+    const uploadProject = async() => {
+        try {
+            const projectData = {
+                group_id: groupId,
+                name: document.getElementById("proj-name").value,
+                sponsor: document.getElementById("proj-sponsor").value,
+                sponsor_contact: null,
+                description: document.getElementById("proj-desc").value,
+                end_semester: document.getElementById("proj-semester").value,
+                end_year: document.getElementById("proj-year").value,
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/project/createProject", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(projectData),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+        
+              if (!response.ok) {
+                throw new Error("Failed to create project!");
+              }
+
+              const json = await response.json();
+
+              //if (!json.project_id) throw new Error("Project did not create")
+              const project_id = json.project_id
+              const tags = getTagState()
+              assignTags(project_id, tags)
+              uploadPDF(project_id, json.end_year, json.end_semester)
+
+              
+
+        } catch (error) {
+            console.error("Error creating project: ", error);
+        }
+    }
+
+    const assignTags = async (project_id, tags) => {
+        try {
+          const requests = tags.map(async tag => {
+            let tagData = {
+              tag_id: tag.value,
+              project_id: project_id
+            };
+      
+            const response = await fetch(
+              Path.buildPath("api/tag/assignTag", true),
+              {
+                method: "POST",
+                body: JSON.stringify(tagData),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+      
+            return response.json();
+          });
+      
+          const results = await Promise.all(requests);
+          console.log('All tags assigned successfully:', results)
+        } catch (error) {
+          console.error('Error assigning tags:', error)
+        }
+      }
+
+      const uploadPDF = async (project_id, year, semester) => {
+        try {
+          const formData = new FormData()
+          formData.append('pdf', selectedFile)
+          formData.append('projectId', project_id)
+          formData.append('year', year)
+          formData.append('semester', semester)
+
+          console.log(formData)
+
+          const response = await fetch(
+            Path.buildPath("api/file/upload", true),
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+    
+          if (!response.ok) {
+            throw new Error(`${response.status}`);
+          }
+          
+        }
+        catch (error) {
+          console.error('Error uploading pdf' + error.message)
+        }
+      }
+
+    const tagStateRef = useRef()
+
+    const getTagState = () => {
+        return tagStateRef.current.getOptions()
+    }
+
+    useEffect (() => {
+        let user = JSON.parse(localStorage.getItem("user"))
+        getGroupInformation(user.group_id)
+    }, [])
+    
 
   return (
       <div className="upload-page">
@@ -47,180 +185,103 @@ function Upload() {
         {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
         
         <div className="upload-header">
-            <h1>Upload your project</h1>
-            <h3>Enter metadata about your project and submit it for admin approval</h3>
+            <h1>Hello, </h1>
+            <h3>Your group is: {groupTitle}</h3>
+            <h4>Thank you for your hard work this semester! 
+                Please upload your technical document to the 
+                server by filling out the form below.</h4>
         </div>
-
-        {/* first member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* second member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* third member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* fourth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* fifth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-
-        {/* sixth member field */}
-        <div className="user-info">
-            <div className="full-name-field">
-                <div id="full-name-header">Full Name</div>
-                {/* <br/> */}
-                <input type="text" id="full-name-input" placeholder="Type name here..."/>
-            </div>
-
-            <div className="linked-in-field">
-                <div id="linked-in-header">LinkedIn</div>
-                <input type="text" id="linked-in-input" placeholder="Type LinkedIn here..."/>
-            </div>
-
-            <div className="project-role-field">
-                <div id="project-role-header">Project Role</div>
-                <input type="text" id="project-role-input" placeholder="Type Project Role here..."/>
-            </div>
-        </div>
-        
 
         <div className="project-info">
             <div className="line1">
-                <div className="project-name-field">
-                    <div id="project-name">Project Name</div>
-                    <input type="text" id="proj-name-input" placeholder="Type project name here..."/>
-                </div>
                 
                 <div className="tags-field">
                     <div id="tags">Tags</div>
-                    <TagsInput />
+                    <TagsInput ref={tagStateRef}/>
                 </div>
             </div>
             <br/>
 
             <div className="line2">
+                <div className="project-name-field">
+                <div id="project-name">Project Name</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-name" placeholder="Type project name here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-year-field">
+                <div id="project-year">Project Year</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-year" placeholder="Type project year here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-semester-field">
+                <div id="project-semester">Project Semester</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-semester" placeholder="Type project semester here..."> </textarea>
+                        </span>
+                </div>
+
+                <div className="project-sponsor-field">
+                <div id="project-sponsor">Project Sponsor</div>
+                <span contenteditable="false">
+                            <textarea type="text" id="proj-sponsor" placeholder="Type project sponsor here..."> </textarea>
+                        </span>
+                </div>
+            </div>
+
+            
+
+
+            <div className="line3">
                 <div className="tech-doc-field">
                 <label id="tech-doc">Upload your technical document</label>
-                <div className="drop-zone" {...getRootProps({className: "dropzone"})} >
-                    <input accept="application/pdf" className="input-zone" {...getInputProps() } />
-                    {isDragActive ? (
-                        <div className="drop-files">
-                             <p>Release to drop the file here</p>
+                <form
+                    action="/upload"
+                    method="POST" 
+                    enctype="multipart/form-data"
+                >
+                    <div className="drop-zone" {...getRootProps({className: "dropzone"})} >
+                        <input name="file" accept="application/pdf" className="input-zone" {...getInputProps() } />
+                        {isDragActive ? (
+                            <div className="drop-files">
+                                <p>Release to drop the file here</p>
+                            </div>
+        
+                        ) : 
+                        <div className='drag-area' >
+                            <span className="header">Drag and drop a file here</span>
+                            <span className="header">or <span class="button">select a file</span> <span className="header2"> from your computer </span> </span>
+                            <span class="support">Supports: PDF only</span>
+                            <div className="icon">
+                                <i class="fas fa-upload"></i>
+                                {/* <i class="fas fa-cloud-upload"></i> */}
+                            </div>
+                            <aside>
+                                <br/>
+                                <ul>{files}</ul>
+                            </aside>
                         </div>
-    
-                    ) : 
-                    <div className='drag-area' >
-                        <span className="header">Drag and drop a file here</span>
-                        <span className="header">or <span class="button">select a file</span> <span className="header2"> from your computer </span> </span>
-                        <span class="support">Supports: PDF only</span>
-                        <div className="icon">
-                            <i class="fas fa-upload"></i>
-                            {/* <i class="fas fa-cloud-upload"></i> */}
+                        }
                         </div>
-                        <aside>
-                            <br/>
-                            <ul>{files}</ul>
-                        </aside>
-                    </div>
-                    }
-                    </div>
+                </form>
                 </div>
 
 
                 <div className="proj-desc-field">
                     <div id="project-description">Project description</div>
-                    <span contenteditable="true">
+                    <span contenteditable="false">
                         <textarea type="text" id="proj-desc" placeholder="Type project description here..."> </textarea>
                     </span>
                 </div>
             </div>
 
             <br/>
-            <button id="done-button">Done</button>
+            <button id="done-button" onClick={uploadProject}>Done</button>
         </div>
-
+        <CsFooter/>
     </div>
 );
 }

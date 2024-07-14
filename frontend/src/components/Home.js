@@ -1,6 +1,7 @@
 import React from "react";
 import "../css/Home.css";
 import Header from './GenericHeader.js'
+import CsFooter from "../components/CsFooter";
 
 function Home() {
   return (
@@ -21,13 +22,13 @@ function Home() {
             <hr class="hr1"/>
             <p class="text">Welcome to the Computer Science Senior Design web portal. This is a central hub for exploring final-year projects in Computer Science department at UCF. Guest access is limited to viewing and searching projects but as a UCF senior design student, you have the opportunity to upload your team’s project. Dive into a collection of the latest ideas fostered by the innovative community of CS@UCF.</p>
           </div>
-          {/* <img className="about-img" src={require('../images/some-logo.png')}/> */}
-          <img className="about-img" src='../images/some-logo.png'/>
+          <img className="about-img" src={require('../images/sdshowcase3.png')}/>
+          {/* <img className="about-img" src='../images/sdshowcase3.png'/> */}
         </div>
 
         <div className="yellow-rect">
-          {/* <img className="pres-img" src={require('../images/some-logo.png')}/> */}
-          <img className="pres-img" src='../images/some-logo.png'/>
+          <img className="pres-img" src={require('../images/sdshowcase1.png')}/>
+          {/* <img className="pres-img" src='../images/some-logo.png'/> */}
           <div class="presentations">
             <h1 id="pres-header">Presentations</h1>
             <hr class="hr2"/>
@@ -41,8 +42,8 @@ function Home() {
             <hr className="hr3"/>
             <p>At the beginning of the SD cycle, sponsors pitch their projects to eager students. These projects include a range of topics from artificial intelligence, frontend design, cyber security, software engineering, database systems, and more, and often projects include a mix of many topics. Teams get the opportunity to pursue a Fall-Spring, Spring-Summer, or Spring-Fall path.</p>
           </div>
-          {/* <img className="sponsor-img" src={require('../images/some-logo.png')}/> */}
-          <img className="sponsor-img" src='../images/some-logo.png'/>
+          <img className="sponsor-img" src={require('../images/sdshowcase2.png')}/>
+          {/* <img className="sponsor-img" src='../images/some-logo.png'/> */}
         </div>
 
         <div className="white-rect2">
@@ -59,6 +60,7 @@ function Home() {
           </div>
         </div>
         
+        <CsFooter/>
     </div>
   );
 }

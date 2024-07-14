@@ -105,7 +105,7 @@ exports.getMembers = async (req, res) => {
 
 exports.createProject = async (req, res) => {
   try {
-    const newProject = Project.create({
+    const newProject = await Project.create({
       group_id: req.body.group_id,
       name: req.body.name,
       sponsor: req.body.sponsor,
@@ -116,7 +116,7 @@ exports.createProject = async (req, res) => {
       documents: 0
     })
 
-    res.send({ message: 'Project created'})
+    res.status(200).send(newProject)
   }
   catch (error) {
     res.status(500).json({error: error.message, message: "Error occurred creating project"})
@@ -129,10 +129,35 @@ exports.projectSearch = async (req, res) => {
     const queryString = req.body.query || '';
     const yearFilter = req.body.year || '';
     const semesterFilter = req.body.semester || '';
+    const tagFilter = req.body.tags || []
+
+    let filteredProjects
+    if (tagFilter && tagFilter.length > 0) filteredProjects = await Project.findAll({
+      include: [
+        {
+          model: Tags,
+          where: {
+            name: {
+              [Op.in]: tagFilter
+            }
+          }
+        },  
+      ],
+      group: ['Project.project_id'],
+      having: Sequelize.literal(`COUNT(\`Tags\`.\`tag_id\`) = ${tagFilter.length}`)
+    })
+    else {
+      filteredProjects = await Project.findAll()
+    }
+
+    const filteredProjectIds = filteredProjects.map(project => project.project_id);
 
     const projects = await Project.findAll({
       order: [["end_year", "DESC"]],
       where: {
+        project_id: {
+          [Op.in]: filteredProjectIds
+        },
         [Op.or]: [
           {
             name: {
@@ -149,9 +174,6 @@ exports.projectSearch = async (req, res) => {
               [Op.substring]: queryString
             }
           },
-          {
-            '$tags.name$': { [Op.substring]: queryString }
-          },
           Sequelize.where(Sequelize.fn("concat", Sequelize.col('group.users.first_name'), ' ', Sequelize.col('group.users.last_name')), { [Op.substring]: queryString })
         ],
         end_semester: {
@@ -159,7 +181,7 @@ exports.projectSearch = async (req, res) => {
         },
         end_year: {
           [Op.substring]: yearFilter
-        }
+        },
       },
       include: [
         {

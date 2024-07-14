@@ -31,7 +31,7 @@ exports.createTag = async (req, res) => {
           }
     }
     catch (error) {
-        res.status(500).json({error: error.message, message: "Error occurred deleting user"})
+        res.status(500).json({error: error.message, message: "Error occurred deleting tag"})
     }
 }
 
@@ -46,3 +46,33 @@ exports.getAllTags = async (req, res) => {
     res.status(500).json({ error: "An error occurred while retrieving tags" });
   }
 };
+
+exports.assignTag = async (req, res) => {
+  try {
+    const newTag = TagMap.create({
+      tag_id: req.body.tag_id,
+      project_id: req.body.project_id
+    })
+    res.status(200).send({ message: `Tag assigned between tag ${req.body.tag_id} and project ${req.body.project_id}`})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred assigning tag"})
+  }
+}
+
+exports.unassignTag = async (req, res) => {
+  try {
+    let tag = await TagMap.destroy({
+      where: {
+        tag_id: req.body.tag_id,
+        project_id: req.body.project_id
+      }
+    })
+
+    if (!tag) throw Error("Tag assignment not found") 
+    res.status(200).send({ message: `Tag deleted`})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred unassigning tag"})
+  }
+}
