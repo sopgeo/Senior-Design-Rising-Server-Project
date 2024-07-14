@@ -18,11 +18,7 @@ function GroupManagement() {
     // May be needed to run functions in the return if they give loading issues
   }, []);
 
-  function renderSemester(semInfo) {
-    return (
-      <div className="SemesterBar">AAA</div>
-    );
-  }
+  const [sections, setSections] = useState([]);
 
   function createDummyData(numGroups, year){
   
@@ -54,6 +50,11 @@ function GroupManagement() {
     return groups;
 }
 
+  const addSection = () => {
+    console.log("adding section");
+    setSections([...sections, {name: "", data:null }]);
+  }
+
   const dummyData = createDummyData(2, "2024");
   const semester = "Spring 2022"
 
@@ -79,8 +80,16 @@ function GroupManagement() {
             <TagGet />
             <CsvUpload />
           </div>
-          <div className="semester-container">
-            <GroupTables semesterName={semester} data={dummyData}/>
+          <div className="section-button-container">
+            <button className="add-section-button" onClick={addSection}>+ Add Section</button>
+          </div>
+          <div className="section-container">
+            <GroupTables sectionName={semester} data={dummyData}/>
+            
+            {sections.map((section, index) => (
+              <GroupTables key={index} sectionName={section.name} data={section.data} />
+            ))}
+
           </div>
 
         </div>

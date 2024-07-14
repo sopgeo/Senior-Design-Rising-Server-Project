@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
 
-function GroupTables ({semesterName, data}) {
+function GroupTables ({sectionName, data}) {
 
     const [groupData, setGroupData] = useState(data || []); //Holds all of the data being displayed in this component
     //For dropdown
@@ -91,7 +91,7 @@ function GroupTables ({semesterName, data}) {
             const newGroup = {
                 groupName: `Group ${groupData.length + 1}`,
                 members: [], 
-                semester: semesterName
+                semester: sectionName
             };
             setGroupData([...groupData, newGroup]);
             setIsAddingNewGroup(true);
@@ -168,7 +168,7 @@ function GroupTables ({semesterName, data}) {
             <div className="semester-list">
 
                 <div className="semester-title" >
-                    <h2>{semesterName}</h2>
+                    <h2>{sectionName}</h2>
                     <div className="semester-buttons-container">
                         <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
                         <button 
