@@ -4,8 +4,8 @@ import "../css/GroupTables.css";
 
 function GroupTables ({section, data}) {
 
-    const [groupData, setGroupData] = useState(data || []); //Holds all of the data being displayed in this component
-    const [sectionName, setSectionName] = useState(section);
+    const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
+    const [sectionName, setSectionName] = useState(section.title);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
@@ -226,7 +226,7 @@ function GroupTables ({section, data}) {
                                 ) : (
                             <>
 
-                            <h3>{group.groupName}</h3>
+                            <h3>{group.title}</h3>
                             <div className="groupName-buttons-container">
                                 <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
                                 <button 
@@ -240,7 +240,7 @@ function GroupTables ({section, data}) {
                         </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
-                            {group.members.map((member, idx) => (
+                            {group.users.map((user, idx) => (
                                 <li key={idx} className="member-row">
                                     {editingMember.groupIndex === index && editingMember.memberIndex == idx ? (
                                         <input
@@ -274,9 +274,9 @@ function GroupTables ({section, data}) {
                                             />
                                     ) : (
                                     <>
-                                    {member} 
+                                    {user.ucf_id} {user.first_name} {user.last_name}
                                     <div className="member-button-container">
-                                        <button className="edit-button" onClick={() => startEditingMember(index, idx, member)}>
+                                        <button className="edit-button" onClick={() => startEditingMember(index, idx, user)}>
                                             <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
                                         <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
