@@ -18,8 +18,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false
         },
-        semester: {
-          type: Sequelize.STRING
+        section_id: {
+          type: Sequelize.INTEGER
         },
         title: {
             type: Sequelize.STRING
