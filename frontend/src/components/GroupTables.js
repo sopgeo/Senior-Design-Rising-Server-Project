@@ -2,42 +2,9 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
 
-function GroupTables ({semester}) {
+function GroupTables ({semesterName, data}) {
 
-    function createDummyData(numGroups, year){
-  
-        const groups = [];  
-        const semesterArr = ["Summer", "Fall", "Spring"];
-        
-        let groupCount = 0;
-
-        for(let i = 0; i < 3; i++){
-
-            for(let j = 0; j < numGroups; j++){
-
-                groupCount++;
-                let members = [];
-
-                for(let k = 0; k < 5; k++){
-
-                    let memberCount = (k+1).toString();
-                    let name = "Bobby Johnson" + memberCount;
-                    members.push(name);
-                }
-
-                let groupName = "Group" + " " + groupCount.toString();
-                let semester = semesterArr[i] + " " + year;
-                groups.push({groupName, members, semester});
-            }
-        }
-
-        return groups;
-    }
-
-    const dummyData = createDummyData(2, "2024");
-    const testGroup = dummyData[0];
-
-    const [groupData, setGroupData] = useState(dummyData); //Holds all of the data being displayed in this component
+    const [groupData, setGroupData] = useState(data || []); //Holds all of the data being displayed in this component
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
@@ -48,7 +15,6 @@ function GroupTables ({semester}) {
     const [isAddingNewGroup, setIsAddingNewGroup] = useState(false); //keeps track of if a new group is being added and saved
     //For adding a new member
     const [newMemberName, setNewMemberName] = useState("");
-    const [groupToAddMember, setGroupToAddMember] = useState(null);
     const initAddingMemberState = Array.from({length: groupData.length}, () => false);// initializes the isAddingNewMember to be all false at the start
     const [isAddingNewMember, setIsAddingNewMember] = useState(initAddingMemberState);
 
@@ -125,7 +91,7 @@ function GroupTables ({semester}) {
             const newGroup = {
                 groupName: `Group ${groupData.length + 1}`,
                 members: [], 
-                semester: dummyData[0].semester 
+                semester: semesterName
             };
             setGroupData([...groupData, newGroup]);
             setIsAddingNewGroup(true);
@@ -152,9 +118,6 @@ function GroupTables ({semester}) {
 
     const addGroupMember = (groupIndex) => {
 
-        //console.log("group index is " + groupIndex);
-        //console.log(  isAddingNewMember);
-
         if(!isAddingNewMember[groupIndex]) {
             setGroupData(prevGroupData => {
                 const newGroupData = [...prevGroupData];
@@ -162,20 +125,14 @@ function GroupTables ({semester}) {
                     ...newGroupData[groupIndex],
                     members: [...newGroupData[groupIndex].members, "tempvalue"]
                 };
-
-                //console.log("new mem array "+ newGroupData[groupIndex].members);
-
                 return newGroupData;
             });
-            
-            //setIsAddingNewMember(prevState => ({ ...prevState, [groupIndex]: true }));
+
             setIsAddingNewMember(prevState => {
                 const newState = [...prevState];
                 newState[groupIndex] = true;
                 return newState
             });
-
-           //console.log("IANM after " + isAddingNewMember);
         }
         else{
             alert("Can not add two members at the same time");
@@ -195,7 +152,6 @@ function GroupTables ({semester}) {
                 newGroupData[groupIndex].members[memberIndex] = newMemberName;
                 return newGroupData;
             });
-            //setIsAddingNewMember(prevState => ({ ...prevState, [groupIndex]: false }));
             setIsAddingNewMember(prevState => {
                 const newState = [...prevState];
                 newState[groupIndex] = false;
@@ -212,13 +168,15 @@ function GroupTables ({semester}) {
             <div className="semester-list">
 
                 <div className="semester-title" >
-                    <h2>{groupData[0].semester}</h2>
-                    <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
-                    <button 
-                    className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
-                    onClick={toggleSemester}>
-                        <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
-                    </button>
+                    <h2>{semesterName}</h2>
+                    <div className="semester-buttons-container">
+                        <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
+                        <button 
+                        className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
+                        onClick={toggleSemester}>
+                            <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
+                        </button>
+                    </div>
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
                     <div className="group" key={index}>
@@ -240,12 +198,14 @@ function GroupTables ({semester}) {
                                 <>
 
                             <h3>{group.groupName}</h3>
-                            <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
-                            <button 
-                            className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
-                            onClick={() => toggleGroup(index)}> 
-                                <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
-                            </button>
+                            
+                                <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
+                                <button 
+                                className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                                onClick={() => toggleGroup(index)}> 
+                                    <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
+                                </button>
+                           
                             </>
                             )}
                         </div>
@@ -274,7 +234,7 @@ function GroupTables ({semester}) {
                                                 type="text"
                                                 value={newMemberName}
                                                 onChange={(e) => setNewMemberName(e.target.value)}
-                                                //onBlur={() => saveNewMemberName(index, idx)}
+                                                onBlur={() => saveNewMemberName(index, idx)}
                                                 onKeyDown={(e) => {
                                                     if (e.key === "Enter") {
                                                         saveNewMemberName(index, idx);

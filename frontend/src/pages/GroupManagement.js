@@ -24,7 +24,38 @@ function GroupManagement() {
     );
   }
 
-  function renderGroup(groupInfo) {}
+  function createDummyData(numGroups, year){
+  
+    const groups = [];  
+    const semesterArr = ["Summer", "Fall", "Spring"];
+    
+    let groupCount = 0;
+
+    for(let i = 0; i < 3; i++){
+
+        for(let j = 0; j < numGroups; j++){
+
+            groupCount++;
+            let members = [];
+
+            for(let k = 0; k < 5; k++){
+
+                let memberCount = (k+1).toString();
+                let name = "Bobby Johnson" + memberCount;
+                members.push(name);
+            }
+
+            let groupName = "Group" + " " + groupCount.toString();
+            let semester = semesterArr[i] + " " + year;
+            groups.push({groupName, members, semester});
+        }
+    }
+
+    return groups;
+}
+
+  const dummyData = createDummyData(2, "2024");
+  const semester = "Spring 2022"
 
   const containerStyle = {
     display: 'flex',
@@ -49,8 +80,7 @@ function GroupManagement() {
             <CsvUpload />
           </div>
           <div className="semester-container">
-            <GroupTables />
-            <GroupTables />
+            <GroupTables semesterName={semester} data={dummyData}/>
           </div>
 
         </div>
