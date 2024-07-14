@@ -1,9 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
+import Path from "../components/Path";
 
 function GroupTables ({section, data}) {
-
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
     const [sectionName, setSectionName] = useState(section.title);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
@@ -176,6 +176,29 @@ function GroupTables ({section, data}) {
         }
     }
 
+    const deleteUser = async(ucf_id, groupIndex, userIndex) => {
+        try {
+            const response = await fetch(
+                Path.buildPath("api/user/deleteUser", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({ucf_id: ucf_id}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              if (response.ok) {
+                /*let updatedGroup = { ...groupData };
+                updatedGroup[groupIndex] = updatedGroup[groupIndex].users.splice(userIndex, 1);
+                setGroupData(updatedGroup);*/
+              }
+        }
+        catch (error) {
+            console.log("failure to delete user with ucf_id " + ucf_id)
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -278,7 +301,7 @@ function GroupTables ({section, data}) {
                                     <div className="member-button-container">
                                         <button className="edit-button" onClick={() => startEditingMember(index, idx, user)}>
                                             <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
-                                        <button className="delete-member-button" onClick={() => deleteMember(index, idx)}>
+                                        <button className="delete-member-button" onClick={() => deleteUser(user.ucf_id, index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
                                     </div>
