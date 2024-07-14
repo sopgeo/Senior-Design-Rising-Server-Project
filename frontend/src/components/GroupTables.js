@@ -189,9 +189,9 @@ function GroupTables ({section, data}) {
                 }
               )
               if (response.ok) {
-                /*let updatedGroup = { ...groupData };
-                updatedGroup[groupIndex] = updatedGroup[groupIndex].users.splice(userIndex, 1);
-                setGroupData(updatedGroup);*/
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup[groupIndex].users.splice(userIndex, 1);
+                setGroupData(updatedGroup);
               }
         }
         catch (error) {
