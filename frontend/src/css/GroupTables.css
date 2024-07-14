@@ -108,26 +108,32 @@
 }
 
 .add-group-button{
-    height: 30px;
+    display: flex;
+    justify-content: center;
+    height: 35px;
     width: 200px;
     color: white;
-    border-color: black;
+    border:none;
     background-color:black;
     border-radius: 25px;
-    border-style: ridge;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 5px;
 }
 
 .add-member-button{
     height: 30px;
+    width: 260px;
     color: black;
-    border-color: black;
+    border-color: transparent;
     background-color: #FFC904;
     border-radius: 25px;
+    margin-right: 75px;
 }
 
 .semester-buttons-container{
     display:flex;
-    width: 350px;
+    width: 340px;
     justify-content: space-between;
 }
 

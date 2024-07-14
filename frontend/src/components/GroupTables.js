@@ -194,18 +194,18 @@ function GroupTables ({semesterName, data}) {
                                     }}
                                     autoFocus
                                 />
-                            ) : (
-                                <>
+                                ) : (
+                            <>
 
                             <h3>{group.groupName}</h3>
-                            
+                            <div className="groupName-buttons-container">
                                 <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
                                 <button 
                                 className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
                                 onClick={() => toggleGroup(index)}> 
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
-                           
+                            </div>
                             </>
                             )}
                         </div>
