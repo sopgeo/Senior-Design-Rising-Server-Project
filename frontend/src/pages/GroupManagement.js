@@ -84,10 +84,10 @@ function GroupManagement() {
             <button className="add-section-button" onClick={addSection}>+ Add Section</button>
           </div>
           <div className="section-container">
-            <GroupTables sectionName={semester} data={dummyData}/>
+            <GroupTables section={semester} data={dummyData}/>
             
             {sections.map((section, index) => (
-              <GroupTables key={index} sectionName={section.name} data={section.data} />
+              <GroupTables key={index} section={section.name} data={section.data} />
             ))}
 
           </div>

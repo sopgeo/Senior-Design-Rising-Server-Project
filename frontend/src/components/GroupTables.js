@@ -2,9 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import "../css/GroupTables.css";
 
-function GroupTables ({sectionName, data}) {
+function GroupTables ({section, data}) {
 
     const [groupData, setGroupData] = useState(data || []); //Holds all of the data being displayed in this component
+    const [sectionName, setSectionName] = useState(section);
+    const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
@@ -164,11 +166,38 @@ function GroupTables ({sectionName, data}) {
         }
     }
 
+    const saveSectionName = () => {
+        if(tempSectionName.trim() !== ""){
+            setSectionName(tempSectionName);
+            setTempSectionName("");
+        }
+        else{
+            alert("New section must have a valid name");
+        }
+    }
+
     return(
             <div className="semester-list">
 
                 <div className="semester-title" >
-                    <h2>{sectionName}</h2>
+                    {sectionName === "" ? (
+                        <input
+                            type="text"
+                            value={tempSectionName}
+                            onChange={(e) => setTempSectionName(e.target.value)}
+                            onBlur={(e) => setTempSectionName(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    saveSectionName();
+                                }
+                            }}
+                            placeholder="Enter Section Name"
+                            autoFocus
+                        />
+ 
+                    ) : ( 
+                        <h2>{sectionName}</h2>
+                    )}
                     <div className="semester-buttons-container">
                         <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
                         <button 
