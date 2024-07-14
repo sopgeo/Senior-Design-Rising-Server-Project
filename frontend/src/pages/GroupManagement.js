@@ -6,6 +6,7 @@ import "../css/GroupManagement.css";
 import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
+import Path from "../components/Path";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -49,6 +50,33 @@ function GroupManagement() {
 
     return groups;
 }
+const fetchSections = async() => {
+  try {
+      const response = await fetch(
+          Path.buildPath("api/section/getSections", true),
+          {
+            method: "GET"
+          }
+        );
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch section information");
+        }
+
+        const json = await response.json();
+
+        if (response.ok) {
+          let sections = JSON.parse(json[0]);
+          //console.log("JSON " +json);
+          //console.log("sections " + sections);
+        }
+
+  } catch (error) {
+      console.error("Error fetching data: ", error);
+  }
+}
+
+  fetchSections();
 
   const addSection = () => {
     console.log("adding section");
@@ -64,6 +92,7 @@ function GroupManagement() {
     gap: '20px',
     marginBottom: '20px',
   };
+
 
   return (
     <>
