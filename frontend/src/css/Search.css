@@ -26,6 +26,7 @@
 
 .TermTitle {
     grid-column: 2;
+    padding-top: 15px;
 }
 
 .TermBox {
@@ -34,6 +35,7 @@
 
 .KeyWordsTitle {
     grid-column: 4;
+    padding-top: 15px;
 }
 
 .KeyWordsBox {
@@ -41,8 +43,8 @@
 }
 
 .SearchTitle {
-    text-align: right;
     grid-column: 7;
+    padding-top: 15px;
 }
 
 .SearchBox {
@@ -130,25 +132,40 @@ button:disabled {
 }
 
 @media only screen and (max-width: 600px) {
+    .TermTitle {
+        grid-row: 1;
+        grid-column: 1 / 3;
+    }
+
     .TermBox {
         grid-row: 1;
-        grid-column: 1 / 5;
         padding-bottom: 1em;
         text-align: left;
+        grid-column: 4 / 8;
     }
-    
+
+    .KeyWordsTitle {
+        grid-row: 2;
+        grid-column: 1 / 3;
+    }
+
     .KeyWordsBox {
         grid-row: 2;
-        grid-column: 1 / 5;
         padding-bottom: 1em;
         text-align: left;
+        grid-column: 4 / 8;
     }
-    
-    .SearchTextBox {
+
+    .SearchTitle {
         grid-row: 3;
-        grid-column: 1 / 5;
+        grid-column: 1 / 3;
+    }
+
+    .SearchBox {
+        grid-row: 3;
         padding-bottom: 1em;
         text-align: left;
+        grid-column: 4 / 8;
     }
 
     .leftButtons {
@@ -156,7 +173,7 @@ button:disabled {
         min-width: 20vw;
         min-height: 20vw;
     }
-    
+
     .rightButtons {
         grid-column: 3;
         min-width: 15vw;
