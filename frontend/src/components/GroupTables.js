@@ -87,7 +87,8 @@ function GroupTables ({section, data}) {
         setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
     };
 
-    const addGroup = () => {
+    const addGroup1
+     = () => {
 
         if(!isAddingNewGroup){
             const newGroup = {
@@ -237,6 +238,70 @@ function GroupTables ({section, data}) {
         }
     }
 
+
+    const groupTitleRef = useRef(null);
+    const addGroup = async() => {
+        try {
+            const groupReq = {
+                section_id: section.section_id,
+                title: groupTitleRef.current.value
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/createGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(groupReq),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.push(json)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to create group with title ")
+        }
+    }
+
+    const deleteGroup = async(group_id, groupIndex) => {
+        try {
+            var result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+            if (!result) {
+                return
+            }
+
+            for (let i = 0; i < groupData[groupIndex].users.length; i++) {
+                await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i)
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/deleteGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({group_id: group_id}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.splice(groupIndex, 1)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to delete group with title " + groupData[groupIndex].title)
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -268,36 +333,31 @@ function GroupTables ({section, data}) {
                         </button>
                     </div>
                 </div>
-                {isSemesterExpanded && groupData.map((group, index) => (
-                    <div className="group" key={index}>
+                <div className="group">
+                    {isSemesterExpanded && (
                         <div className="group-name">
-                            {isAddingNewGroup && index === groupData.length -1 ? (
-                                <input 
-                                    type="text"
-                                    value={newGroupName}
-                                    onChange={(e) => setNewGroupName(e.target.value)}
-                                    onBlur={() => saveNewGroupName(index)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            saveNewGroupName(index);
-                                        }
-                                    }}
-                                    autoFocus
-                                />
-                                ) : (
-                            <>
+                                <input ref={groupTitleRef} placeholder="Enter Group Name" ></input>
+                                <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
+                        </div>
+                    )}
+                </div>
+                {isSemesterExpanded && groupData.map((group, index) => (
 
+                    <div className="group" key={index}>
+                        
+                        <div className="group-name">
                             <h3>{group.title}</h3>
                             <div className="groupName-buttons-container">
-                                <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
+                                <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index)}>
+                                    <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
+                                </button>
                                 <button 
-                                className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
-                                onClick={() => toggleGroup(index)}> 
+                                    className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                                    onClick={() => toggleGroup(index)}> 
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
                             </div>
-                            </>
-                            )}
+                            
                         </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
