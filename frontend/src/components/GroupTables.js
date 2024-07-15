@@ -303,7 +303,7 @@ function GroupTables ({section, data}) {
                 <div className="group">
                     <div className="group-name">
                             <input ref={groupTitleRef}></input>
-                            <button id="add-group"  onClick={() => addGroup()}>Add Group</button>
+                            <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
                     </div>
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
