@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import "../css/GroupTables.css";
 import Path from "../components/Path";
 
@@ -199,6 +199,44 @@ function GroupTables ({section, data}) {
         }
     }
 
+    const ucfIdRef = useRef(null);
+    const firstNameRef = useRef(null);
+    const lastNameRef = useRef(null);
+
+    const addUser = async(groupIndex, group_id, section_id) => {
+        try {
+            const userData = {
+                ucf_id: ucfIdRef.current.value,
+                password: ucfIdRef.current.value,
+                group_id: group_id,
+                first_name: firstNameRef.current.value,
+                last_name: lastNameRef.current.value,
+                type: "student",
+                section: section_id
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/user/createUser", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(userData),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup[groupIndex].users.push(json)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to create user with ucf_id " + ucfIdRef.current.value)
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -265,38 +303,7 @@ function GroupTables ({section, data}) {
                         <ul className="group-member-list">
                             {group.users.map((user, idx) => (
                                 <li key={idx} className="member-row">
-                                    {editingMember.groupIndex === index && editingMember.memberIndex == idx ? (
-                                        <input
-                                        type="text"
-                                        value={editingMember.editedName}
-                                        onChange={handleMemberNameChange}
-                                        onBlur={() => cancelEdit(index, idx)}
-                                        onKeyDown={(e) => {
-                                            if(e.key === "Enter") {
-                                                saveMemberName(index, idx);
-                                            }
-                                        }}
-                                        autoFocus
-                                    />
-
-                                    ) : (
-                                        <>
-                                            {isAddingNewMember[index] && idx === group.members.length -1 ? (
-                                                <input 
-                                                type="text"
-                                                value={newMemberName}
-                                                onChange={(e) => setNewMemberName(e.target.value)}
-                                                onBlur={() => saveNewMemberName(index, idx)}
-                                                onKeyDown={(e) => {
-                                                    if (e.key === "Enter") {
-                                                        saveNewMemberName(index, idx);
-                                                    }
-                                                }}
-                                                autoFocus
-                                                placeholder="Enter member name"
-                                            />
-                                    ) : (
-                                    <>
+                                    
                                     {user.ucf_id} {user.first_name} {user.last_name}
                                     <div className="member-button-container">
                                         <button className="edit-button" onClick={() => startEditingMember(index, idx, user)}>
@@ -305,12 +312,16 @@ function GroupTables ({section, data}) {
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
                                     </div>
-                                    </>
-                                    )}
-                                    </>
-                                    )}
                                 </li>
                             ))}
+                            <li className="member-row">
+                                <input ref={ucfIdRef}></input>
+                                <input ref={firstNameRef}></input>
+                                <input ref={lastNameRef}></input>
+                                <button id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
+                                
+                            </li>
+
                         </ul>
                         )}
                     </div>
