@@ -87,7 +87,8 @@ function GroupTables ({section, data}) {
         setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
     };
 
-    const addGroup = () => {
+    const addGroup1
+     = () => {
 
         if(!isAddingNewGroup){
             const newGroup = {
@@ -237,6 +238,37 @@ function GroupTables ({section, data}) {
         }
     }
 
+
+    const groupTitleRef = useRef(null);
+    const addGroup = async() => {
+        try {
+            const groupReq = {
+                section_id: section.section_id,
+                title: groupTitleRef.current.value
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/createGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(groupReq),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.push(json)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to create group with title ")
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -268,25 +300,17 @@ function GroupTables ({section, data}) {
                         </button>
                     </div>
                 </div>
+                <div className="group">
+                    <div className="group-name">
+                            <input ref={groupTitleRef}></input>
+                            <button id="add-group"  onClick={() => addGroup()}>Add Group</button>
+                    </div>
+                </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
-                    <div className="group" key={index}>
-                        <div className="group-name">
-                            {isAddingNewGroup && index === groupData.length -1 ? (
-                                <input 
-                                    type="text"
-                                    value={newGroupName}
-                                    onChange={(e) => setNewGroupName(e.target.value)}
-                                    onBlur={() => saveNewGroupName(index)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            saveNewGroupName(index);
-                                        }
-                                    }}
-                                    autoFocus
-                                />
-                                ) : (
-                            <>
 
+                    <div className="group" key={index}>
+                        
+                        <div className="group-name">
                             <h3>{group.title}</h3>
                             <div className="groupName-buttons-container">
                                 <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
@@ -296,8 +320,7 @@ function GroupTables ({section, data}) {
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
                             </div>
-                            </>
-                            )}
+                            
                         </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
