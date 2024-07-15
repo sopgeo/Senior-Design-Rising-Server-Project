@@ -170,17 +170,19 @@ button:disabled {
 
     .leftButtons {
         grid-column: 1;
-        min-width: 40vw;
-        min-height: 20vw;
-        max-width: 40vw;
-        max-height: 20vw;
+        min-width: 60vw;
+        min-height: 30vw;
+        max-width: 60vw;
+        max-height: 30vw;
+        grid-column: 1 / 2;
     }
 
     .rightButtons {
         grid-column: 3;
-        min-width: 30vw;
-        min-height: 15vw;
-        max-width: 30vw;
-        max-height: 15vw;
+        min-width: 60vw;
+        min-height: 30vw;
+        max-width: 60vw;
+        max-height: 30vw;
+        grid-column: 7 / 8;
     }
 }
