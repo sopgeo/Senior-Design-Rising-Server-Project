@@ -269,6 +269,39 @@ function GroupTables ({section, data}) {
         }
     }
 
+    const deleteGroup = async(group_id, groupIndex) => {
+        try {
+            var result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+            if (!result) {
+                return
+            }
+
+            for (let i = 0; i < groupData[groupIndex].users.length; i++) {
+                await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i)
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/deleteGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({group_id: group_id}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.splice(groupIndex, 1)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to delete group with title " + groupData[groupIndex].title)
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -319,6 +352,9 @@ function GroupTables ({section, data}) {
                                 onClick={() => toggleGroup(index)}> 
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
+                                <button className="delete-member-button" onClick={() => deleteGroup(group.group_id, index)}>
+                                            <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
+                                        </button>
                             </div>
                             
                         </div>
