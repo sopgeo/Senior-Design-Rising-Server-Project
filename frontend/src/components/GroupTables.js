@@ -315,11 +315,22 @@ function GroupTables ({section, data}) {
                                 </li>
                             ))}
                             <li className="member-row">
-                                <input ref={ucfIdRef}></input>
-                                <input ref={firstNameRef}></input>
-                                <input ref={lastNameRef}></input>
-                                <button id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
-                                
+                                <div className="ucf-id-input">
+                                    UCF ID:
+                                    <br/>
+                                    <input ref={ucfIdRef}></input>
+                                </div>
+                                <div className="first-name-input">
+                                    First Name:
+                                    <br/>
+                                    <input ref={firstNameRef}></input>
+                                </div>
+                                <div className="last-name-input">
+                                    Last Name:
+                                    <br/>
+                                    <input ref={lastNameRef}></input>
+                                </div>
+                                <button className="add-user" id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
                             </li>
 
                         </ul>
