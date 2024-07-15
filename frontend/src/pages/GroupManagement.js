@@ -99,6 +99,40 @@ const fetchSections = async() => {
     }
   }
 
+  const deleteSection = async(sectionId) =>{
+
+    const sectionData = {
+      section_id: sectionId
+    }
+
+    try{
+
+      const response = await fetch(
+          Path.buildPath("api/section/deleteSection", true),
+          {
+            method:"POST", 
+            body: JSON.stringify(sectionData), 
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        if(!response.ok){
+          throw new Error("Failed to delete section")
+        }
+
+        const json = await response.json();
+
+        if(response.ok){
+          fetchSections();
+        }
+
+    } catch(error){
+      console.error("Error deleting section with section_id "+ sectionId);
+    }
+
+  }
 
   const containerStyle = {
     display: 'flex',
@@ -136,7 +170,7 @@ const fetchSections = async() => {
           <div className="section-container">
             
             {sections.map((section, index) => (
-              <GroupTables key={section.section_id} section={section}/>
+              <GroupTables key={section.section_id} section={section} deleteComponent={deleteSection}/>
             ))}
 
           </div>

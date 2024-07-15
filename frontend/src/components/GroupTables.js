@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import "../css/GroupTables.css";
 import Path from "../components/Path";
 
-function GroupTables ({section, data}) {
+function GroupTables ({section, data, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
     const [sectionName, setSectionName] = useState(section.title);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
@@ -269,9 +269,14 @@ function GroupTables ({section, data}) {
         }
     }
 
-    const deleteGroup = async(group_id, groupIndex) => {
+    const deleteGroup = async(group_id, groupIndex, isDeletingSection) => {
         try {
-            var result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+
+            var result = true;
+            if(!isDeletingSection){
+                result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+            }
+ 
             if (!result) {
                 return
             }
@@ -302,6 +307,29 @@ function GroupTables ({section, data}) {
         }
     }
 
+    const deleteSection = async() => {
+        
+        //Add a confirm to see if they really do want to delete this section
+        try{
+
+            var result = window.confirm(`Want to delete ${sectionName} and its groups?`);
+            if(!result){
+                return
+            }
+             //Delete the groups in the section
+             for(let i = 0; i < groupData.length; i++){
+                const temp = groupData[i];
+                deleteGroup(groupData[i].group_id, i, true);
+            }
+            
+            deleteComponent(section.section_id);
+            
+        }
+        catch(error){
+            console.log("Failure to delete Section " + sectionName);
+        }
+    }
+
     return(
             <div className="semester-list">
 
@@ -325,10 +353,12 @@ function GroupTables ({section, data}) {
                         <h2>{sectionName}</h2>
                     )}
                     <div className="semester-buttons-container">
-                        <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
+                        <button className="delete-section-button" onClick={deleteSection}>
+                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                        </button>
                         <button 
-                        className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
-                        onClick={toggleSemester}>
+                            className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
+                            onClick={toggleSemester}>
                             <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
                         </button>
                     </div>
@@ -343,12 +373,12 @@ function GroupTables ({section, data}) {
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
 
-                    <div className="group" key={index}>
+                    <div className="group" key={group.group_id}>
                         
                         <div className="group-name">
                             <h3>{group.title}</h3>
                             <div className="groupName-buttons-container">
-                                <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index)}>
+                                <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
                                     <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
                                 </button>
                                 <button 
