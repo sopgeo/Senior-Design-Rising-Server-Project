@@ -183,7 +183,8 @@ function Upload() {
       {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
 
       <div className="upload-header">
-        <h1>Hello, </h1>
+        {/* <h1>Hello, </h1> */}
+        <h1>Upload your project</h1>
         <h3>Your group is: {groupTitle}</h3>
         <h4>
           Thank you for your hard work this semester! Please upload your
