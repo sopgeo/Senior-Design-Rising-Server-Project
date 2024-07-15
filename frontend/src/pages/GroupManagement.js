@@ -16,6 +16,7 @@ function GroupManagement() {
   }
 
   const [sections, setSections] = useState([]);
+  const [newSectionName, setNewSectionName] = useState('');
 
   
 const fetchSections = async() => {
@@ -49,9 +50,45 @@ const fetchSections = async() => {
     fetchSections()
   }, []);
 
-  const addSection = () => {
-    console.log("adding section");
-    setSections([...sections, {name: "", data:null }]);
+  const addSection = async() => {
+    if(newSectionName.trim() == ""){
+      alert("Please enter valid section name");
+    }
+    else {
+
+      const sectionData = {
+        title: newSectionName
+      }
+
+      try{
+        const response = await fetch(
+          Path.buildPath("api/section/createSection", true),
+          {
+            method:"POST", 
+            body: JSON.stringify(sectionData), 
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        if(!response.ok) {
+          throw new Error("Failed to create section");
+        }
+
+        const json = await response.json();
+
+        if(response.ok){
+          setNewSectionName("");
+          let updatedSections = JSON.parse(JSON.stringify(sections));
+       updatedSections.push(json)
+          setSections(updatedSections);
+        }
+      } catch(error){
+        console.error("Error creating section: ", error);
+      }
+
+    }
   }
 
 
@@ -79,6 +116,13 @@ const fetchSections = async() => {
             <CsvUpload />
           </div>
           <div className="section-button-container">
+            <input 
+                type="text"
+                value={newSectionName}
+                onChange={(e) => setNewSectionName(e.target.value)}
+                placeholder="Enter Section Name"
+                autoFocus
+              />
             <button className="add-section-button" onClick={addSection}>+ Add Section</button>
           </div>
           <div className="section-container">
