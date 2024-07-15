@@ -334,10 +334,12 @@ function GroupTables ({section, data}) {
                     </div>
                 </div>
                 <div className="group">
-                    <div className="group-name">
-                            <input ref={groupTitleRef}></input>
-                            <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
-                    </div>
+                    {isSemesterExpanded && (
+                        <div className="group-name">
+                                <input ref={groupTitleRef} placeholder="Enter Group Name" ></input>
+                                <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
+                        </div>
+                    )}
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
 
@@ -346,15 +348,14 @@ function GroupTables ({section, data}) {
                         <div className="group-name">
                             <h3>{group.title}</h3>
                             <div className="groupName-buttons-container">
-                                <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
+                                <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index)}>
+                                    <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
+                                </button>
                                 <button 
-                                className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
-                                onClick={() => toggleGroup(index)}> 
+                                    className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                                    onClick={() => toggleGroup(index)}> 
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
-                                <button className="delete-member-button" onClick={() => deleteGroup(group.group_id, index)}>
-                                            <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
-                                        </button>
                             </div>
                             
                         </div>
