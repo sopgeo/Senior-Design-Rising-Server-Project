@@ -116,6 +116,12 @@ exports.createProject = async (req, res) => {
       documents: 0
     })
 
+    const group = await Group.findOne({
+      where: {group_id: req.body.group_id}
+    })
+    group.project_id = newProject.project_id
+    await group.save()
+
     res.status(200).send(newProject)
   }
   catch (error) {
