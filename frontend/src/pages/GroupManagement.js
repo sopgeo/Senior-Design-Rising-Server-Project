@@ -7,6 +7,7 @@ import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
 import Path from "../components/Path";
+import usePagination from "@mui/material/usePagination/usePagination";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -79,9 +80,16 @@ const fetchSections = async() => {
         const json = await response.json();
 
         if(response.ok){
+          // Empty the section name box
           setNewSectionName("");
+
+          // Get the old sections list
           let updatedSections = JSON.parse(JSON.stringify(sections));
-       updatedSections.push(json)
+
+          // Add the new section
+          updatedSections.unshift(json)
+
+          // Update the sections box
           setSections(updatedSections);
         }
       } catch(error){
@@ -128,7 +136,7 @@ const fetchSections = async() => {
           <div className="section-container">
             
             {sections.map((section, index) => (
-              <GroupTables key={index} section={section}/>
+              <GroupTables key={section.section_id} section={section}/>
             ))}
 
           </div>
