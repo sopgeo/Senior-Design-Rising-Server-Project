@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Path from "../components/Path";
 import Select from 'react-select';
 
 const TagGet = () => {
@@ -12,7 +13,7 @@ const TagGet = () => {
 
   const fetchTags = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tag/tags');
+      const response = await fetch(Path.buildPath("api/tag/tags", true));
       if (response.ok) {
         const json = await response.json();
         setTags(json);
@@ -37,7 +38,7 @@ const TagGet = () => {
   const deleteTags = async () => {
     const deletePromises = selectedTags.map(async (tag) => {
       try {
-        const response = await fetch('http://localhost:5000/api/tag/deleteTag', {
+        const response = await fetch(Path.buildPath("api/tag/deleteTag", true), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -62,7 +63,7 @@ const TagGet = () => {
 
   const handleAddTag = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/tag/createTag', {
+      const response = await fetch(Path.buildPath("api/tag/createTag", true), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import "../css/Login.css";
 import GenericHeader, {Header} from './GenericHeader.js'
 import { useNavigate } from "react-router-dom";
+import Path from "../components/Path";
 import { Tooltip, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button, TextField, Snackbar, Alert, createTheme, ThemeProvider } from "@mui/material";
 
 
@@ -37,7 +38,7 @@ export default function Login() {
         
         try {
             const response = await fetch(
-                'http://localhost:5000/api/user/loginUser',
+                Path.buildPath("api/user/loginUser", true),
                 {
                     method: 'POST',
                     body: JSON.stringify({ ucf_id, password }),
@@ -99,8 +100,7 @@ export default function Login() {
         }
         
         try {
-
-            const response = await fetch('http://localhost:5000/api/user/resetPassword', {
+            const response = await fetch(Path.buildPath("api/user/resetPassword", true), {
                 method: 'POST',
                 body: JSON.stringify({ ucf_id: idForReset, password: passwordForReset }),
                 headers: {
