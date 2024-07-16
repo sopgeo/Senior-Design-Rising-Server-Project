@@ -17,7 +17,7 @@ exports.createUser = async (req, res) => {
 
         if (preexisting) throw Error(`User with ucf_id already exists (user_id ${preexisting.user_id})`)
 
-        const newUser = User.create({
+        const newUser = await User.create({
             ucf_id: req.body.ucf_id,
             password: hash,
             type: req.body.type,
@@ -28,7 +28,7 @@ exports.createUser = async (req, res) => {
             section: req.body.section
         })
 
-        res.status(200).json({ message: `User ${req.body.first_name} ${req.body.last_name} created`})
+        res.status(200).json(newUser)
     }
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred creating user"})
@@ -104,5 +104,21 @@ exports.resetPassword = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred resetting password"})
+    }
+}
+
+exports.checkUserExists = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: { ucf_id: req.body.ucf_id }
+        });
+
+        if (user) {
+            res.status(200).json({ exists: true, user_id: user.user_id });
+        } else {
+            res.status(200).json({ exists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message, message: "Error occurred checking user" });
     }
 }
