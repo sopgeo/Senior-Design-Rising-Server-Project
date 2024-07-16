@@ -38,7 +38,7 @@ function Search() {
    * API Req + Basic *
    * * * * * * * * * */
   function getProjects(query, semester, year, keys) {
-    //console.log(keys);
+    console.log(keys);
     let bodyJSON = {};
     if (query != "") {
       bodyJSON["query"] = query;
@@ -53,7 +53,7 @@ function Search() {
       bodyJSON["tags"] = keys;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
-    //console.log(bodyJSONStr);
+    console.log(bodyJSONStr);
 
     const fetchProjects = async () => {
       const response = await fetch(
