@@ -2,11 +2,15 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import "../css/GroupTables.css";
 import Path from "../components/Path";
+import Switch from "react-switch";
 
-function GroupTables ({section, data}) {
+function GroupTables ({section, data, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
+    console.log(groupData)
     const [sectionName, setSectionName] = useState(section.title);
+    const [sectionId, setSectionId] = useState(section.section_id);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
+    const [submissionsEnabled, setSubmissionsEnabled] = useState(section.submissions_enabled);
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
@@ -19,6 +23,18 @@ function GroupTables ({section, data}) {
     const [newMemberName, setNewMemberName] = useState("");
     const initAddingMemberState = Array.from({length: groupData.length}, () => false);// initializes the isAddingNewMember to be all false at the start
     const [isAddingNewMember, setIsAddingNewMember] = useState(initAddingMemberState);
+
+    function giveStatus(submitted) {
+        if(submitted){
+            return(
+                <span className="status-submitted"></span>
+            )
+        }else{
+            return(
+                <span className="status-unsubmitted"></span>
+            )
+        }
+    }
 
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
@@ -87,7 +103,8 @@ function GroupTables ({section, data}) {
         setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
     };
 
-    const addGroup = () => {
+    const addGroup1
+     = () => {
 
         if(!isAddingNewGroup){
             const newGroup = {
@@ -237,67 +254,173 @@ function GroupTables ({section, data}) {
         }
     }
 
+
+    const groupTitleRef = useRef(null);
+    const addGroup = async() => {
+        try {
+            const groupReq = {
+                section_id: section.section_id,
+                title: groupTitleRef.current.value
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/createGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify(groupReq),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.push(json)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to create group with title ")
+        }
+    }
+
+    const deleteGroup = async(group_id, groupIndex, isDeletingSection) => {
+        try {
+
+            var result = true;
+            if(!isDeletingSection){
+                result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+            }
+ 
+            if (!result) {
+                return
+            }
+
+            for (let i = 0; i < groupData[groupIndex].users.length; i++) {
+                await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i)
+            }
+
+            const response = await fetch(
+                Path.buildPath("api/group/deleteGroup", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({group_id: group_id}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              const json = await response.json()
+              if (response.ok) {
+                let updatedGroup = JSON.parse(JSON.stringify(groupData));
+                updatedGroup.splice(groupIndex, 1)
+                setGroupData(updatedGroup);
+              }
+        }
+        catch (error) {
+            console.log("failure to delete group with title " + groupData[groupIndex].title)
+        }
+    }
+
+    const deleteSection = async() => {
+        
+        //Add a confirm to see if they really do want to delete this section
+        try{
+
+            var result = window.confirm(`Want to delete ${sectionName} and its groups?`);
+            if(!result){
+                return
+            }
+             //Delete the groups in the section
+             for(let i = 0; i < groupData.length; i++){
+                const temp = groupData[i];
+                deleteGroup(groupData[i].group_id, i, true);
+            }
+            
+            deleteComponent(section.section_id);
+            
+        }
+        catch(error){
+            console.log("Failure to delete Section " + sectionName);
+        }
+    }
+
+    const toggleSubmissionAbility = async() => {
+        try {
+            let stat = submissionsEnabled ? 0 : 1;
+            const response = await fetch(
+                Path.buildPath("api/section/changeSubmissionStatus", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({section_id: sectionId, status: stat}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              console.log(response.status);
+              if (response.ok) {
+                setSubmissionsEnabled(!submissionsEnabled);
+              }
+        }
+        catch (error) {
+            console.log("failure to toggle submission status" + submissionsEnabled)
+        }        
+    }
+
     return(
             <div className="semester-list">
 
-                <div className="semester-title" >
-                    {sectionName === "" ? (
-                        <input
-                            type="text"
-                            value={tempSectionName}
-                            onChange={(e) => setTempSectionName(e.target.value)}
-                            onBlur={(e) => setTempSectionName(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    saveSectionName();
-                                }
-                            }}
-                            placeholder="Enter Section Name"
-                            autoFocus
-                        />
- 
-                    ) : ( 
+                <div className="semester-title" >       
+
+                    <div className="title-sub-enabled-container">
                         <h2>{sectionName}</h2>
-                    )}
+                        <div className="sub-enabled-container"> 
+                            <Switch onChange={toggleSubmissionAbility} checked={submissionsEnabled} uncheckedIcon={false} checkedIcon={false} onColor="#10b710" />
+                            <span className="submissions-enabled-text">{submissionsEnabled ? "Submissions Enabled" : "Submissions Disabled"}</span>
+                        </div>
+                    </div>
+
                     <div className="semester-buttons-container">
-                        <button className="add-group-button" onClick={addGroup}>+ Add Group</button>
+                        <button className="delete-section-button" onClick={deleteSection}>
+                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                        </button>
                         <button 
-                        className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
-                        onClick={toggleSemester}>
+                            className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
+                            onClick={toggleSemester}>
                             <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
                         </button>
                     </div>
                 </div>
-                {isSemesterExpanded && groupData.map((group, index) => (
-                    <div className="group" key={index}>
+                <div className="group">
+                    {isSemesterExpanded && (
                         <div className="group-name">
-                            {isAddingNewGroup && index === groupData.length -1 ? (
-                                <input 
-                                    type="text"
-                                    value={newGroupName}
-                                    onChange={(e) => setNewGroupName(e.target.value)}
-                                    onBlur={() => saveNewGroupName(index)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            saveNewGroupName(index);
-                                        }
-                                    }}
-                                    autoFocus
-                                />
-                                ) : (
-                            <>
-
-                            <h3>{group.title}</h3>
+                                <input ref={groupTitleRef} placeholder="Enter Group Name" ></input>
+                                <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
+                        </div>
+                    )}
+                </div>
+                {isSemesterExpanded && groupData.map((group, index) => (
+                    <div className="group" key={group.group_id}>
+                        
+                        <div className="group-name">
+                            <div>
+                                {giveStatus(group.submitted)}
+                                <h3>{group.submitted}</h3>
+                                <h3>{group.title}</h3>
+                            </div>
                             <div className="groupName-buttons-container">
-                                <button className="add-member-button" onClick={() => addGroupMember(index)}>+ Add Group Member</button>
+                                <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
+                                    <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
+                                </button>
                                 <button 
-                                className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
-                                onClick={() => toggleGroup(index)}> 
+                                    className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
+                                    onClick={() => toggleGroup(index)}> 
                                     <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
                                 </button>
                             </div>
-                            </>
-                            )}
+                            
                         </div>
                         {expandedGroups[index] && (
                         <ul className="group-member-list">
@@ -306,8 +429,6 @@ function GroupTables ({section, data}) {
                                     
                                     {user.ucf_id} {user.first_name} {user.last_name}
                                     <div className="member-button-container">
-                                        <button className="edit-button" onClick={() => startEditingMember(index, idx, user)}>
-                                            <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
                                         <button className="delete-member-button" onClick={() => deleteUser(user.ucf_id, index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
@@ -315,11 +436,22 @@ function GroupTables ({section, data}) {
                                 </li>
                             ))}
                             <li className="member-row">
-                                <input ref={ucfIdRef}></input>
-                                <input ref={firstNameRef}></input>
-                                <input ref={lastNameRef}></input>
-                                <button id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
-                                
+                                <div className="ucf-id-input">
+                                    UCF ID:
+                                    <br/>
+                                    <input ref={ucfIdRef}></input>
+                                </div>
+                                <div className="first-name-input">
+                                    First Name:
+                                    <br/>
+                                    <input ref={firstNameRef}></input>
+                                </div>
+                                <div className="last-name-input">
+                                    Last Name:
+                                    <br/>
+                                    <input ref={lastNameRef}></input>
+                                </div>
+                                <button className="add-user" id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
                             </li>
 
                         </ul>

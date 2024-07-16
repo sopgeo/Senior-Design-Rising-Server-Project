@@ -7,6 +7,7 @@ import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
 import Path from "../components/Path";
+import usePagination from "@mui/material/usePagination/usePagination";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -16,6 +17,7 @@ function GroupManagement() {
   }
 
   const [sections, setSections] = useState([]);
+  const [newSectionName, setNewSectionName] = useState('');
 
   
 const fetchSections = async() => {
@@ -49,11 +51,88 @@ const fetchSections = async() => {
     fetchSections()
   }, []);
 
-  const addSection = () => {
-    console.log("adding section");
-    setSections([...sections, {name: "", data:null }]);
+  const addSection = async() => {
+    if(newSectionName.trim() == ""){
+      alert("Please enter valid section name");
+    }
+    else {
+
+      const sectionData = {
+        title: newSectionName
+      }
+
+      try{
+        const response = await fetch(
+          Path.buildPath("api/section/createSection", true),
+          {
+            method:"POST", 
+            body: JSON.stringify(sectionData), 
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        if(!response.ok) {
+          throw new Error("Failed to create section");
+        }
+
+        const json = await response.json();
+
+        if(response.ok){
+          // Empty the section name box
+          setNewSectionName("");
+
+          // Get the old sections list
+          let updatedSections = JSON.parse(JSON.stringify(sections));
+
+          // Add the new section
+          updatedSections.unshift(json)
+
+          // Update the sections box
+          setSections(updatedSections);
+        }
+      } catch(error){
+        console.error("Error creating section: ", error);
+      }
+
+    }
   }
 
+  const deleteSection = async(sectionId) =>{
+
+    const sectionData = {
+      section_id: sectionId
+    }
+
+    try{
+
+      const response = await fetch(
+          Path.buildPath("api/section/deleteSection", true),
+          {
+            method:"POST", 
+            body: JSON.stringify(sectionData), 
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+
+        if(!response.ok){
+          throw new Error("Failed to delete section")
+        }
+
+        const json = await response.json();
+
+        if(response.ok){
+          fetchSections();
+        }
+
+    } catch(error){
+      console.error("Error deleting section with section_id "+ sectionId);
+    }
+
+  }
 
   const containerStyle = {
     display: 'flex',
@@ -79,12 +158,19 @@ const fetchSections = async() => {
             <CsvUpload />
           </div>
           <div className="section-button-container">
+            <input 
+                type="text"
+                value={newSectionName}
+                onChange={(e) => setNewSectionName(e.target.value)}
+                placeholder="Enter Section Name"
+                autoFocus
+              />
             <button className="add-section-button" onClick={addSection}>+ Add Section</button>
           </div>
           <div className="section-container">
             
             {sections.map((section, index) => (
-              <GroupTables key={index} section={section}/>
+              <GroupTables key={section.section_id} section={section} deleteComponent={deleteSection}/>
             ))}
 
           </div>

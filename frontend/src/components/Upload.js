@@ -94,7 +94,7 @@ function Upload() {
       assignTags(project_id, tags);
       uploadPDF(project_id, json.end_year, json.end_semester);
 
-      alert("You've submitted your project!" + json.project_id + " " + project_id);
+      alert("You've submitted your project!");
       if (project_id == null) {
         window.open("/search", "_self");
       } else {
@@ -174,7 +174,7 @@ function Upload() {
           : setGroupId(null);
   }, []);
 
-  if(groupId != null){
+  if(groupId != null  && submissionsEnabled){
     return (
       <div className="upload-page">
         <Header />
@@ -216,7 +216,7 @@ function Upload() {
                   id="proj-name"
                   placeholder="Type project name here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -229,7 +229,7 @@ function Upload() {
                   id="proj-year"
                   placeholder="Type project year here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -242,7 +242,7 @@ function Upload() {
                   id="proj-semester"
                   placeholder="Type project semester here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -255,7 +255,7 @@ function Upload() {
                   id="proj-sponsor"
                   placeholder="Type project sponsor here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -325,7 +325,7 @@ function Upload() {
     );
   }else{
     return(<>
-      You must be logged in to view this page. If you think you are seeing this message in error, contact one of your professors.
+      You must be logged in and in your submission window to view this page. If you think you are seeing this message in error, contact one of your professors.
     </>)
   }
 }

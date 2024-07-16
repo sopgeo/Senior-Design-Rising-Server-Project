@@ -55,8 +55,13 @@ exports.createGroup = async (req, res) => {
             section_id: req.body.section_id,
             title: req.body.title
           })
-      
-          res.status(200).send(newGroup)
+          
+          const response = {
+            ...newGroup.toJSON(),
+            users: []
+            }
+
+          res.status(200).json(response)
     }
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred creating group"})
