@@ -166,156 +166,164 @@ function Upload() {
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"));
-    getGroupInformation(user.group_id);
+    user != null
+          ? getGroupInformation(user.group_id)
+          : setGroupId(null);
   }, []);
 
-  return (
-    <div className="upload-page">
-      <Header />
-      <script src="../Pages/UploadPage.js"></script>
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-      />
-      {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
-
-      <div className="upload-header">
-        <h1>Hello, </h1>
-        <h3>Your group is: {groupTitle}</h3>
-        <h4>
-          Thank you for your hard work this semester! Please upload your
-          technical document to the server by filling out the form below.
-        </h4>
-      </div>
-
-      <div className="project-info">
-        <div className="line1">
-          <div className="tags-field">
-            <div id="tags">Tags</div>
-            <TagsInput ref={tagStateRef} />
-          </div>
+  if(groupId != null){
+    return (
+      <div className="upload-page">
+        <Header />
+        <script src="../Pages/UploadPage.js"></script>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+          integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer"
+        />
+        {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
+  
+        <div className="upload-header">
+          <h1>Hello, </h1>
+          <h3>Your group is: {groupTitle}</h3>
+          <h4>
+            Thank you for your hard work this semester! Please upload your
+            technical document to the server by filling out the form below.
+          </h4>
         </div>
-        <br />
-
-        <div className="line2">
-          <div className="project-name-field">
-            <div id="project-name">Project Name</div>
-            <span contenteditable="false">
-              <textarea
-                type="text"
-                id="proj-name"
-                placeholder="Type project name here..."
-              >
-                {" "}
-              </textarea>
-            </span>
+  
+        <div className="project-info">
+          <div className="line1">
+            <div className="tags-field">
+              <div id="tags">Tags</div>
+              <TagsInput ref={tagStateRef} />
+            </div>
           </div>
-
-          <div className="project-year-field">
-            <div id="project-year">Project Year</div>
-            <span contenteditable="false">
-              <textarea
-                type="text"
-                id="proj-year"
-                placeholder="Type project year here..."
-              >
-                {" "}
-              </textarea>
-            </span>
+          <br />
+  
+          <div className="line2">
+            <div className="project-name-field">
+              <div id="project-name">Project Name</div>
+              <span contenteditable="false">
+                <textarea
+                  type="text"
+                  id="proj-name"
+                  placeholder="Type project name here..."
+                >
+                  {" "}
+                </textarea>
+              </span>
+            </div>
+  
+            <div className="project-year-field">
+              <div id="project-year">Project Year</div>
+              <span contenteditable="false">
+                <textarea
+                  type="text"
+                  id="proj-year"
+                  placeholder="Type project year here..."
+                >
+                  {" "}
+                </textarea>
+              </span>
+            </div>
+  
+            <div className="project-semester-field">
+              <div id="project-semester">Project Semester</div>
+              <span contenteditable="false">
+                <textarea
+                  type="text"
+                  id="proj-semester"
+                  placeholder="Type project semester here..."
+                >
+                  {" "}
+                </textarea>
+              </span>
+            </div>
+  
+            <div className="project-sponsor-field">
+              <div id="project-sponsor">Project Sponsor</div>
+              <span contenteditable="false">
+                <textarea
+                  type="text"
+                  id="proj-sponsor"
+                  placeholder="Type project sponsor here..."
+                >
+                  {" "}
+                </textarea>
+              </span>
+            </div>
           </div>
-
-          <div className="project-semester-field">
-            <div id="project-semester">Project Semester</div>
-            <span contenteditable="false">
-              <textarea
-                type="text"
-                id="proj-semester"
-                placeholder="Type project semester here..."
-              >
-                {" "}
-              </textarea>
-            </span>
-          </div>
-
-          <div className="project-sponsor-field">
-            <div id="project-sponsor">Project Sponsor</div>
-            <span contenteditable="false">
-              <textarea
-                type="text"
-                id="proj-sponsor"
-                placeholder="Type project sponsor here..."
-              >
-                {" "}
-              </textarea>
-            </span>
-          </div>
-        </div>
-
-        <div className="line3">
-          <div className="tech-doc-field">
-            <label id="tech-doc">Upload your technical document</label>
-            <form action="/upload" method="POST" enctype="multipart/form-data">
-              <div
-                className="drop-zone"
-                {...getRootProps({ className: "dropzone" })}
-              >
-                <input
-                  name="file"
-                  accept="application/pdf"
-                  className="input-zone"
-                  {...getInputProps()}
-                />
-                {isDragActive ? (
-                  <div className="drop-files">
-                    <p>Release to drop the file here</p>
-                  </div>
-                ) : (
-                  <div className="drag-area">
-                    <span className="header">Drag and drop a file here</span>
-                    <span className="header">
-                      or <span class="button">select a file</span>{" "}
-                      <span className="header2"> from your computer </span>{" "}
-                    </span>
-                    <span class="support">Supports: PDF only</span>
-                    <div className="icon">
-                      <i class="fas fa-upload"></i>
-                      {/* <i class="fas fa-cloud-upload"></i> */}
+  
+          <div className="line3">
+            <div className="tech-doc-field">
+              <label id="tech-doc">Upload your technical document</label>
+              <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div
+                  className="drop-zone"
+                  {...getRootProps({ className: "dropzone" })}
+                >
+                  <input
+                    name="file"
+                    accept="application/pdf"
+                    className="input-zone"
+                    {...getInputProps()}
+                  />
+                  {isDragActive ? (
+                    <div className="drop-files">
+                      <p>Release to drop the file here</p>
                     </div>
-                    <aside>
-                      <br />
-                      <ul>{files}</ul>
-                    </aside>
-                  </div>
-                )}
-              </div>
-            </form>
+                  ) : (
+                    <div className="drag-area">
+                      <span className="header">Drag and drop a file here</span>
+                      <span className="header">
+                        or <span class="button">select a file</span>{" "}
+                        <span className="header2"> from your computer </span>{" "}
+                      </span>
+                      <span class="support">Supports: PDF only</span>
+                      <div className="icon">
+                        <i class="fas fa-upload"></i>
+                        {/* <i class="fas fa-cloud-upload"></i> */}
+                      </div>
+                      <aside>
+                        <br />
+                        <ul>{files}</ul>
+                      </aside>
+                    </div>
+                  )}
+                </div>
+              </form>
+            </div>
+  
+            <div className="proj-desc-field">
+              <div id="project-description">Project description</div>
+              <span contenteditable="false">
+                <textarea
+                  type="text"
+                  id="proj-desc"
+                  placeholder="Type project description here..."
+                >
+                  {" "}
+                </textarea>
+              </span>
+            </div>
           </div>
-
-          <div className="proj-desc-field">
-            <div id="project-description">Project description</div>
-            <span contenteditable="false">
-              <textarea
-                type="text"
-                id="proj-desc"
-                placeholder="Type project description here..."
-              >
-                {" "}
-              </textarea>
-            </span>
-          </div>
+  
+          <br />
+          <button id="done-button" onClick={uploadProject}>
+            Done
+          </button>
         </div>
-
-        <br />
-        <button id="done-button" onClick={uploadProject}>
-          Done
-        </button>
+        <CsFooter />
       </div>
-      <CsFooter />
-    </div>
-  );
+    );
+  }else{
+    return(<>
+      You must be logged in to view this page. If you think you are seeing this message in error, contact one of your professors.
+    </>)
+  }
 }
 
 export default Upload;
