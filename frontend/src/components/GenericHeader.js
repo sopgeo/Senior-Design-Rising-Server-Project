@@ -58,7 +58,7 @@ export function GenericHeader({ background }) {
       css = "see-through";
     } 
 
-    else if (usertype === "coordinator") {
+    else if (usertype === "admin" || usertype==="coordinator") {
       return (
         <div className={css}>
           <div className="navbar">
