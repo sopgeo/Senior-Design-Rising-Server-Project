@@ -116,6 +116,12 @@ exports.createProject = async (req, res) => {
       documents: 0
     })
 
+    const group = await Group.findOne({
+      where: {group_id: req.body.group_id}
+    })
+    group.project_id = newProject.project_id
+    await group.save()
+
     res.status(200).send(newProject)
   }
   catch (error) {
@@ -204,5 +210,18 @@ exports.projectSearch = async (req, res) => {
     res.status(500).send({
       message: err.message || "An error occurred while attempting to search projects.",
     });
+  }
+}
+
+exports.deleteProject = async (req, res) => {
+  try {
+    const project = await Project.destroy({
+      where: {project_id: req.body.project_id}
+    })
+
+    res.status(200).json({message: "Success"})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred deleting project"})
   }
 }

@@ -16,6 +16,24 @@ exports.createSection = async (req, res) => {
     }
 }
 
+exports.checkSectionExists = async (req, res) => {
+    const { title } = req.body;
+  
+    try {
+      const existingSection = await Section.findOne({
+        where: { title }
+      });
+  
+      if (existingSection) {
+        return res.status(200).json({ section_id: existingSection.section_id });
+      } else {
+        return res.status(200).json({ section_id: null });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message, message: "Error occurred checking section" });
+    }
+  }
+
 exports.deleteSection = async (req, res) => {
     try {
         const result = await Section.destroy({
@@ -51,4 +69,20 @@ exports.getSections = async (req, res) => {
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred getting sections"})
     }
+}
+
+exports.changeSubmissionStatus = async (req, res) => {
+  try {
+    const section = await Section.findOne({
+      where: {section_id: req.body.section_id}
+    })
+
+    section.submissions_enabled = req.body.status
+    await section.save()
+
+    res.status(200).json({message: "Success"})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred changing submission status"})
+  }
 }

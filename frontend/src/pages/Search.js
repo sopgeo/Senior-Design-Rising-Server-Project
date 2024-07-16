@@ -282,7 +282,50 @@ function Search() {
         }
       },
     },
+    {
+      header: "Actions",
+      cell: ({ row }) => (
+        <img
+          className="delete-icon"
+          src={require("../images/delete-button.png")}
+          width="22px"
+          height="22px"
+          onClick={() => deleteProject(row.original.project_id)}
+          style={{ cursor: "pointer" }}
+        />
+      ),
+    },
   ];
+
+  const deleteProject = async(project_id) => {
+    try {
+        const response = await fetch(
+            Path.buildPath("api/project/deleteProject", true),
+            {
+              method: "POST",
+              body: JSON.stringify({project_id: project_id}),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          if (response.ok) {
+            await fetch(
+              Path.buildPath("api/file/deleteFile", true),
+              {
+                method: "POST",
+                body: JSON.stringify({project_id: project_id}),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+          }
+    }
+    catch (error) {
+        console.log("failure to delete project with project_id " + project_id)
+    }
+}
 
   const table = useReactTable({
     data: projects,

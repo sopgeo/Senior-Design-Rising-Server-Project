@@ -1,6 +1,7 @@
 const db = require("../models/")
 const Group = db.groups
 const User = db.users
+const Section = db.sections
 
 exports.getGroups = async (req, res) => {
     try {
@@ -33,6 +34,9 @@ exports.getGroupById = async (req, res) => {
         let group = await Group.findOne({
             where: { 
                 group_id: req.body.group_id
+            },
+            include: {
+                model: Section
             }
         })
         res.status(200).json(group)
@@ -80,5 +84,23 @@ exports.deleteGroup = async (req, res) => {
     }
     catch (error) {
         res.status(500).json({error: error.message, message: "Error occurred deleting group"})
+    }
+}
+
+exports.checkGroupExists = async (req, res) => {
+    const { title, section_id } = req.body;
+
+    try {
+        const existingGroup = await Group.findOne({
+            where: { title, section_id }
+        });
+
+        if (existingGroup) {
+            return res.status(200).json({ group_id: existingGroup.group_id });
+        } else {
+            return res.status(200).json({ group_id: null });
+        }
+    } catch (error) {
+        res.status500().json({ error: error.message, message: "Error occurred checking group" });
     }
 }
