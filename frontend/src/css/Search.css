@@ -111,6 +111,10 @@ table {
     width: 35%;
 }
 
+.ActionsCol {
+    width: 10%;
+}
+
 button {
     width: 25%;
     aspect-ratio: 1/1;
