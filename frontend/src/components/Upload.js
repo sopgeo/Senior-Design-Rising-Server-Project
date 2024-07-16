@@ -216,7 +216,7 @@ function Upload() {
                   id="proj-name"
                   placeholder="Type project name here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -229,7 +229,7 @@ function Upload() {
                   id="proj-year"
                   placeholder="Type project year here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -242,7 +242,7 @@ function Upload() {
                   id="proj-semester"
                   placeholder="Type project semester here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
@@ -255,7 +255,7 @@ function Upload() {
                   id="proj-sponsor"
                   placeholder="Type project sponsor here..."
                 >
-                  {" "}
+                  {""}
                 </textarea>
               </span>
             </div>
