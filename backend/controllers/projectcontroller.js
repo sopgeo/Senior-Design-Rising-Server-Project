@@ -212,3 +212,16 @@ exports.projectSearch = async (req, res) => {
     });
   }
 }
+
+exports.deleteProject = async (req, res) => {
+  try {
+    const project = await Project.destroy({
+      where: {project_id: req.body.project_id}
+    })
+
+    res.status(200).json({message: "Success"})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred deleting project"})
+  }
+}
