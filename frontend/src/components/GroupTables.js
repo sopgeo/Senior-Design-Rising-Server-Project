@@ -6,9 +6,11 @@ import Switch from "react-switch";
 
 function GroupTables ({section, data, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
+    console.log(groupData)
     const [sectionName, setSectionName] = useState(section.title);
+    const [sectionId, setSectionId] = useState(section.section_id);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
-    const [submissionsEnabled, setSubmissionsEnabled] = useState(false);
+    const [submissionsEnabled, setSubmissionsEnabled] = useState(section.submissions_enabled);
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
@@ -345,7 +347,26 @@ function GroupTables ({section, data, deleteComponent}) {
     }
 
     const toggleSubmissionAbility = async() => {
-        setSubmissionsEnabled(!submissionsEnabled);
+        try {
+            let stat = submissionsEnabled ? 0 : 1;
+            const response = await fetch(
+                Path.buildPath("api/section/changeSubmissionStatus", true),
+                {
+                  method: "POST",
+                  body: JSON.stringify({section_id: sectionId, status: stat}),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              )
+              console.log(response.status);
+              if (response.ok) {
+                setSubmissionsEnabled(!submissionsEnabled);
+              }
+        }
+        catch (error) {
+            console.log("failure to toggle submission status" + submissionsEnabled)
+        }        
     }
 
     return(
@@ -356,7 +377,7 @@ function GroupTables ({section, data, deleteComponent}) {
                     <div className="title-sub-enabled-container">
                         <h2>{sectionName}</h2>
                         <div className="sub-enabled-container"> 
-                            <Switch onChange={toggleSubmissionAbility} checked={submissionsEnabled} uncheckedIcon="" checkedIcon="" onColor="#10b710" />
+                            <Switch onChange={toggleSubmissionAbility} checked={submissionsEnabled} uncheckedIcon={false} checkedIcon={false} onColor="#10b710" />
                             <span className="submissions-enabled-text">{submissionsEnabled ? "Submissions Enabled" : "Submissions Disabled"}</span>
                         </div>
                     </div>
@@ -381,7 +402,6 @@ function GroupTables ({section, data, deleteComponent}) {
                     )}
                 </div>
                 {isSemesterExpanded && groupData.map((group, index) => (
-
                     <div className="group" key={group.group_id}>
                         
                         <div className="group-name">
