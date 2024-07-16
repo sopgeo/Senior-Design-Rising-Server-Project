@@ -8,4 +8,6 @@ router.post('/deleteSection', sectionController.deleteSection)
 
 router.get('/getSections', sectionController.getSections)
 
+router.post('/checkSectionExists', sectionController.checkSectionExists)
+
 module.exports = router

@@ -1,34 +1,180 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import Papa from 'papaparse';
 import "../css/CsvUpload.css";
 
 const CsvUpload = () => {
   const [file, setFile] = useState(null);
+  const [errorRows, setErrorRows] = useState([]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleFileUpload = async () => {
-    if (!file) {
-      alert('Please select a file first!');
-      return;
-    }
+    if (file) {
+      let errors = [];
+      let sectionName = '';
+      let sectionId = null;
 
-    const formData = new FormData();
-    formData.append('file', file);
+      Papa.parse(file, {
+        complete: async function(results) {
+          for (let index = 0; index < results.data.length; index++) {
+            const row = results.data[index];
 
-    try {
-      const response = await axios.post('/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+            if (index === 0) {
+              continue;
+            }
+
+            if (index === 1) {
+              sectionName = row[0]; 
+              try {
+                const checkResponse = await fetch('http://localhost:5000/api/section/checkSectionExists', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ title: sectionName })
+                });
+
+                const checkJson = await checkResponse.json();
+
+                if (checkJson.section_id) {
+                  sectionId = checkJson.section_id;
+                } else {
+                  const createResponse = await fetch('http://localhost:5000/api/section/createSection', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: sectionName })
+                  });
+
+                  if (createResponse.ok) {
+                    const createJson = await createResponse.json();
+                    sectionId = createJson.section_id;
+                  } else {
+                    const createJson = await createResponse.json();
+                    console.error('Failed to create section:', createJson);
+                  }
+                }
+              } catch (error) {
+                console.error('Error creating section:', error);
+              }
+
+              continue;
+            }
+
+            let isValid = true;
+            for (let key in row) {
+              if (!row[key] || row[key].trim() === '') {
+                isValid = false;
+                break;
+              }
+            }
+
+            if (Object.keys(row).length !== 4 || !isValid) {
+              errors.push({ index: index + 1, row });
+            } else {
+              const groupName = row[3]; 
+
+              try {
+                const checkGroupResponse = await fetch('http://localhost:5000/api/group/checkGroupExists', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ title: groupName, section_id: sectionId })
+                });
+
+                const checkGroupJson = await checkGroupResponse.json();
+
+                let groupId = null;
+
+                if (checkGroupJson.group_id) {
+                  groupId = checkGroupJson.group_id;
+                } else {
+                  const createGroupResponse = await fetch('http://localhost:5000/api/group/createGroup', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ title: groupName, section_id: sectionId })
+                  });
+
+                  if (createGroupResponse.ok) {
+                    const createGroupJson = await createGroupResponse.json();
+                    groupId = createGroupJson.group_id;
+                  } else {
+                    const createGroupJson = await createGroupResponse.json();
+                    console.error('Failed to create group:', createGroupJson);
+                  }
+                }
+
+                const firstName = row[0];
+                const lastName = row[1];
+                const ucfId = row[2];
+
+                try {
+                  const checkUserResponse = await fetch('http://localhost:5000/api/user/checkUserExists', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ucf_id: ucfId })
+                  });
+
+                  const checkUserJson = await checkUserResponse.json();
+
+                  if (checkUserJson.exists) {
+                  } else {
+                    const createUserResponse = await fetch('http://localhost:5000/api/user/createUser', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                        ucf_id: ucfId,
+                        password: ucfId, 
+                        type: 'student',
+                        group_id: groupId,
+                        first_name: firstName,
+                        last_name: lastName,
+                        section: sectionId
+                      })
+                    });
+
+                    if (createUserResponse.ok) {
+                      const createUserJson = await createUserResponse.json();
+                    } else {
+                      const createUserJson = await createUserResponse.json();
+                      console.error('Failed to create user:', createUserJson);
+                    }
+                  }
+                } catch (error) {
+                  console.error('Error creating user:', error);
+                }
+              } catch (error) {
+                console.error('Error creating group:', error);
+              }
+
+            }
+          }
+
+          if (errors.length > 0) {
+            setErrorRows(errors);
+            showErrorsPopup(errors);
+          }
         },
       });
-      alert('File uploaded successfully!');
-    } catch (error) {
-      console.error('Error uploading file:', error);
-      alert('Failed to upload file.');
     }
+  };
+
+  const showErrorsPopup = (errors) => {
+    let message = 'Error Rows:\n';
+    errors.forEach(({ index, row }) => {
+      message += `Row ${index}: ${JSON.stringify(row)}\n`;
+    });
+    alert(message);
   };
 
   const containerStyle = {
@@ -86,7 +232,9 @@ const CsvUpload = () => {
           </button>
         </div>
         <div style={{ textAlign: 'center' }}>
-          <p>Class CSV files should contain student names (First, Last Middle initial) in the leftmost column, student number in the second column, and group number in the third column.</p>
+          <p>Class CSV files should have the header (FirstName,LastName,PID,GroupName) on line 1. Only the section name on line 2. Lines 3 and after should be student information
+            in the format of the header.
+          </p>
         </div>
       </div>
     </div>

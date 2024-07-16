@@ -106,3 +106,19 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({error: error.message, message: "Error occurred resetting password"})
     }
 }
+
+exports.checkUserExists = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: { ucf_id: req.body.ucf_id }
+        });
+
+        if (user) {
+            res.status(200).json({ exists: true, user_id: user.user_id });
+        } else {
+            res.status(200).json({ exists: false });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message, message: "Error occurred checking user" });
+    }
+}

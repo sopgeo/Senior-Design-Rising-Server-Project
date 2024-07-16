@@ -11,4 +11,6 @@ router.post('/deleteUser', userController.deleteUser)
 
 router.post('/resetPassword', userController.resetPassword)
 
+router.post('/checkUserExists', userController.checkUserExists)
+
 module.exports = router
