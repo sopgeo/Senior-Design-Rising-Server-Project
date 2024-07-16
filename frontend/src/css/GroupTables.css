@@ -211,7 +211,7 @@
 .status-submitted{
     width: 15px; 
     height: 15px;  
-    background-color: hsl(120, 84%, 39%);  
+    background-color: #10b710;  
     border-radius: 50%;  
     display: inline-block;
     border: 2px solid white;
@@ -221,9 +221,14 @@
 .status-unsubmitted{
     width: 15px; 
     height: 15px;  
-    background-color: hsl(6, 84%, 39%);  
+    background-color: #b72110;  
     border-radius: 50%;  
     display: inline-block;
     border: 2px solid white;
     margin:15px 7px 0px 0px;
+}
+
+.submissions-enabled-text{
+    padding-left: 1%;
+    text-wrap: nowrap;
 }

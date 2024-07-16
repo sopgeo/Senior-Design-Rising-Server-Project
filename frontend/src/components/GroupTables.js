@@ -2,11 +2,13 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import "../css/GroupTables.css";
 import Path from "../components/Path";
+import Switch from "react-switch";
 
 function GroupTables ({section, data, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
     const [sectionName, setSectionName] = useState(section.title);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
+    const [submissionsEnabled, setSubmissionsEnabled] = useState(false);
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
@@ -341,24 +343,24 @@ function GroupTables ({section, data, deleteComponent}) {
             console.log("Failure to delete Section " + sectionName);
         }
     }
-    
-    let submissionsEnabled = true;
+
+    const toggleSubmissionAbility = async() => {
+        setSubmissionsEnabled(!submissionsEnabled);
+    }
 
     return(
             <div className="semester-list">
 
                 <div className="semester-title" >       
-                    {submissionsEnabled ? (
-                        <div className="title-sub-enabled-container">
-                            <h2>{sectionName}</h2>
-                            <div className="sub-enabled-container"> 
-                                <div className="submissions-enabled-circle"></div>
-                                <b>Submissions Enabled</b>
-                            </div>
-                        </div>
-                    ) : (
+
+                    <div className="title-sub-enabled-container">
                         <h2>{sectionName}</h2>
-                    )}
+                        <div className="sub-enabled-container"> 
+                            <Switch onChange={toggleSubmissionAbility} checked={submissionsEnabled} uncheckedIcon="" checkedIcon="" onColor="#10b710" />
+                            <span className="submissions-enabled-text">{submissionsEnabled ? "Submissions Enabled" : "Submissions Disabled"}</span>
+                        </div>
+                    </div>
+
                     <div className="semester-buttons-container">
                         <button className="delete-section-button" onClick={deleteSection}>
                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
