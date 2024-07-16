@@ -329,27 +329,22 @@ function GroupTables ({section, data, deleteComponent}) {
             console.log("Failure to delete Section " + sectionName);
         }
     }
+    
+    let submissionsEnabled = true;
 
     return(
             <div className="semester-list">
 
-                <div className="semester-title" >
-                    {sectionName === "" ? (
-                        <input
-                            type="text"
-                            value={tempSectionName}
-                            onChange={(e) => setTempSectionName(e.target.value)}
-                            onBlur={(e) => setTempSectionName(e.target.value)}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    saveSectionName();
-                                }
-                            }}
-                            placeholder="Enter Section Name"
-                            autoFocus
-                        />
- 
-                    ) : ( 
+                <div className="semester-title" >       
+                    {submissionsEnabled ? (
+                        <div className="title-sub-enabled-container">
+                            <h2>{sectionName}</h2>
+                            <div className="sub-enabled-container"> 
+                                <div className="submissions-enabled-circle"></div>
+                                <b>Submissions Enabled</b>
+                            </div>
+                        </div>
+                    ) : (
                         <h2>{sectionName}</h2>
                     )}
                     <div className="semester-buttons-container">
@@ -376,7 +371,7 @@ function GroupTables ({section, data, deleteComponent}) {
                     <div className="group" key={group.group_id}>
                         
                         <div className="group-name">
-                            <h3>{group.title}</h3>
+                            <h3>{group.title}</h3>         
                             <div className="groupName-buttons-container">
                                 <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
                                     <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>

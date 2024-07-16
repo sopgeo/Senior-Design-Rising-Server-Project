@@ -36,6 +36,7 @@
 
 .semester-title h2{
     padding-left: 20px;
+    margin-top:5px;
 }
 
 .group-name{
@@ -187,3 +188,22 @@
     margin-top: 1%;
     text-wrap: nowrap;
 }    
+
+.submissions-enabled-circle{
+    width: 15px; 
+    height: 15px;  
+    background-color: hsl(120, 84%, 39%);  
+    border-radius: 50%;  
+    display: inline-block;
+    border: 2px solid white;
+    margin:15px 7px 0px 0px;
+}
+
+.sub-enabled-container {
+    display:inline-block;
+    margin:0px 0px 0px 20px;
+}
+
+.title-sub-enabled-container{
+    display:flex;
+}
