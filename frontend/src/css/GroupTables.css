@@ -207,3 +207,23 @@
 .title-sub-enabled-container{
     display:flex;
 }
+
+.status-submitted{
+    width: 15px; 
+    height: 15px;  
+    background-color: hsl(120, 84%, 39%);  
+    border-radius: 50%;  
+    display: inline-block;
+    border: 2px solid white;
+    margin:15px 7px 0px 0px;
+}
+
+.status-unsubmitted{
+    width: 15px; 
+    height: 15px;  
+    background-color: hsl(6, 84%, 39%);  
+    border-radius: 50%;  
+    display: inline-block;
+    border: 2px solid white;
+    margin:15px 7px 0px 0px;
+}

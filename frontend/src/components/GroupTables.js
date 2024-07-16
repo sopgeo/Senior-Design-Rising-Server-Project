@@ -20,6 +20,18 @@ function GroupTables ({section, data, deleteComponent}) {
     const initAddingMemberState = Array.from({length: groupData.length}, () => false);// initializes the isAddingNewMember to be all false at the start
     const [isAddingNewMember, setIsAddingNewMember] = useState(initAddingMemberState);
 
+    function giveStatus(submitted) {
+        if(submitted){
+            return(
+                <span className="status-submitted"></span>
+            )
+        }else{
+            return(
+                <span className="status-unsubmitted"></span>
+            )
+        }
+    }
+
     const toggleSemester = () => {
         setIsSemesterExpanded(!isSemesterExpanded);
     };
@@ -371,7 +383,11 @@ function GroupTables ({section, data, deleteComponent}) {
                     <div className="group" key={group.group_id}>
                         
                         <div className="group-name">
-                            <h3>{group.title}</h3>         
+                            <div>
+                                {giveStatus(group.submitted)}
+                                <h3>{group.submitted}</h3>
+                                <h3>{group.title}</h3>
+                            </div>
                             <div className="groupName-buttons-container">
                                 <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
                                     <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
