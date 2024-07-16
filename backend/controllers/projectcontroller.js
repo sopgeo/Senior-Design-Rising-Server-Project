@@ -120,6 +120,7 @@ exports.createProject = async (req, res) => {
       where: {group_id: req.body.group_id}
     })
     group.project_id = newProject.project_id
+    group.submitted = 1
     await group.save()
 
     res.status(200).send(newProject)
