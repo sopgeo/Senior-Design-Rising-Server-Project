@@ -10,4 +10,6 @@ router.post('/createGroup', groupController.createGroup)
 
 router.post('/deleteGroup', groupController.deleteGroup)
 
+router.post('/checkGroupExists', groupController.checkGroupExists); 
+
 module.exports = router

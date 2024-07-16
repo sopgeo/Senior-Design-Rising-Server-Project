@@ -6,6 +6,7 @@ import "../css/GroupManagement.css";
 import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
+import Path from "../components/Path";
 
 function GroupManagement() {
   const [user, setUser] = useState("public");
@@ -14,17 +15,45 @@ function GroupManagement() {
     return user;
   }
 
+  const [sections, setSections] = useState([]);
+
+  
+const fetchSections = async() => {
+  try {
+      const response = await fetch(
+          Path.buildPath("api/section/getSections", true),
+          {
+            method: "GET"
+          }
+        );
+  
+        if (!response.ok) {
+          throw new Error("Failed to fetch section information");
+        }
+
+        const json = await response.json();
+
+        
+        if (response.ok) {
+          setSections(json)
+          //console.log("JSON " +json);
+          //console.log("sections " + sections);
+        }
+
+  } catch (error) {
+      console.error("Error fetching data: ", error);
+  }
+}
+
   useEffect(() => {
-    // May be needed to run functions in the return if they give loading issues
+    fetchSections()
   }, []);
 
-  function renderSemester(semInfo) {
-    return (
-      <div className="SemesterBar">AAA</div>
-    );
+  const addSection = () => {
+    console.log("adding section");
+    setSections([...sections, {name: "", data:null }]);
   }
 
-  function renderGroup(groupInfo) {}
 
   const containerStyle = {
     display: 'flex',
@@ -32,6 +61,7 @@ function GroupManagement() {
     gap: '20px',
     marginBottom: '20px',
   };
+
 
   return (
     <>
@@ -48,9 +78,15 @@ function GroupManagement() {
             <TagGet />
             <CsvUpload />
           </div>
-          <div className="semester-container">
-            <GroupTables />
-            <GroupTables />
+          <div className="section-button-container">
+            <button className="add-section-button" onClick={addSection}>+ Add Section</button>
+          </div>
+          <div className="section-container">
+            
+            {sections.map((section, index) => (
+              <GroupTables key={index} section={section}/>
+            ))}
+
           </div>
 
         </div>
