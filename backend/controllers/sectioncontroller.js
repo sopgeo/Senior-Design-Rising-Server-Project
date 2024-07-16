@@ -70,3 +70,19 @@ exports.getSections = async (req, res) => {
         res.status(500).json({error: error.message, message: "Error occurred getting sections"})
     }
 }
+
+exports.changeSubmissionStatus = async (req, res) => {
+  try {
+    const section = await Section.findOne({
+      where: {section_id: req.body.section_id}
+    })
+
+    section.submissions_enabled = req.body.status
+    await section.save()
+
+    res.status(200).json({message: "Success"})
+  }
+  catch (error) {
+    res.status(500).json({error: error.message, message: "Error occurred changing submission status"})
+  }
+}

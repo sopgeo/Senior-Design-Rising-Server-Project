@@ -23,6 +23,7 @@ db.sections = require("./sectionmodel")(sequelize, Sequelize)
 db.projects.hasOne(db.groups, { foreignKey: "project_id" })
 db.groups.hasMany(db.users, { foreignKey: "group_id" })
 db.sections.hasMany(db.groups, { foreignKey: "section_id"})
+db.groups.belongsTo(db.sections, {foreignKey: "section_id"})
 
 db.tags.hasMany(db.tagmap, { foreignKey: "tag_id" });
 db.tags.belongsToMany(db.projects, { through: db.tagmap, foreignKey: "tag_id" });

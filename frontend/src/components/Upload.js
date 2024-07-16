@@ -10,6 +10,7 @@ import Path from "../components/Path";
 function Upload() {
   const [uploadedURL, setUploadedURL] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [submissionsEnabled, setSubmissionsEnabled] = useState(1)
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -50,6 +51,8 @@ function Upload() {
       if (response.ok) {
         setGroupTitle(json.title);
         setGroupId(group_id);
+        console.log(json.section.submissions_enabled)
+        setSubmissionsEnabled(json.section.submissions_enabled)
       }
     } catch (error) {
       console.error("Error fetching data: ", error);

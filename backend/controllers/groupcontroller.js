@@ -1,6 +1,7 @@
 const db = require("../models/")
 const Group = db.groups
 const User = db.users
+const Section = db.sections
 
 exports.getGroups = async (req, res) => {
     try {
@@ -33,6 +34,9 @@ exports.getGroupById = async (req, res) => {
         let group = await Group.findOne({
             where: { 
                 group_id: req.body.group_id
+            },
+            include: {
+                model: Section
             }
         })
         res.status(200).json(group)
