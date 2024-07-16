@@ -274,6 +274,7 @@ function GroupTables ({section, data, deleteComponent}) {
                 }
               )
               const json = await response.json()
+              json["users"] = [];
               if (response.ok) {
                 let updatedGroup = JSON.parse(JSON.stringify(groupData));
                 updatedGroup.push(json)
