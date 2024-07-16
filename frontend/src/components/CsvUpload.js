@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import Path from "../components/Path";
 import "../css/CsvUpload.css";
+
 
 const CsvUpload = () => {
   const [file, setFile] = useState(null);
@@ -28,7 +30,7 @@ const CsvUpload = () => {
             if (index === 1) {
               sectionName = row[0]; 
               try {
-                const checkResponse = await fetch('http://localhost:5000/api/section/checkSectionExists', {
+                const checkResponse = await fetch(Path.buildPath("api/section/checkSectionExists", true), {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -41,7 +43,7 @@ const CsvUpload = () => {
                 if (checkJson.section_id) {
                   sectionId = checkJson.section_id;
                 } else {
-                  const createResponse = await fetch('http://localhost:5000/api/section/createSection', {
+                  const createResponse = await fetch(Path.buildPath("api/section/createSection", true), {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
@@ -78,7 +80,7 @@ const CsvUpload = () => {
               const groupName = row[3]; 
 
               try {
-                const checkGroupResponse = await fetch('http://localhost:5000/api/group/checkGroupExists', {
+                const checkGroupResponse = await fetch(Path.buildPath("api/group/checkGroupExists", true), {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
@@ -93,7 +95,7 @@ const CsvUpload = () => {
                 if (checkGroupJson.group_id) {
                   groupId = checkGroupJson.group_id;
                 } else {
-                  const createGroupResponse = await fetch('http://localhost:5000/api/group/createGroup', {
+                  const createGroupResponse = await fetch(Path.buildPath("api/group/createGroup", true), {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
@@ -115,7 +117,7 @@ const CsvUpload = () => {
                 const ucfId = row[2];
 
                 try {
-                  const checkUserResponse = await fetch('http://localhost:5000/api/user/checkUserExists', {
+                  const checkUserResponse = await fetch(Path.buildPath("api/user/checkUserExists", true), {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json'
@@ -127,7 +129,7 @@ const CsvUpload = () => {
 
                   if (checkUserJson.exists) {
                   } else {
-                    const createUserResponse = await fetch('http://localhost:5000/api/user/createUser', {
+                    const createUserResponse = await fetch(Path.buildPath("api/user/createUser", true), {
                       method: 'POST',
                       headers: {
                         'Content-Type': 'application/json'
