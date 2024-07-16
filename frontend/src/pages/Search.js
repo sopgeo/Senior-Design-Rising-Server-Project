@@ -84,7 +84,7 @@ function Search() {
 
   function getAllKeyWords() {
     const fetchTags = async () => {
-      const response = await fetch("http://localhost:5000/api/tag/tags");
+      const response = await fetch(Path.buildPath("api/tag/tags", true));
       const json = await response.json();
       if (response.ok) {
         let kwl = [];
