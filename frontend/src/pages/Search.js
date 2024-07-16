@@ -21,7 +21,11 @@ import Select from "react-select";
 function Search() {
   // Sets up variables we're using
   const [timer, setTimer] = useState("");
-  const [user, setUser] = useState("public");
+  const [user, setUser] = useState(
+    localStorage.getItem("user")!=null && JSON.parse(localStorage.getItem("user")).hasOwnProperty("type")
+      ? JSON.parse(localStorage.getItem("user")).type
+      : null
+  );
   const [search, setSearch] = useState("");
   const [semester, setSemester] = useState("");
   const [year, setYear] = useState("");
@@ -251,87 +255,128 @@ function Search() {
   /* * * * * * * * * *
    *  Results Table  *
    * * * * * * * * * */
-  const columns = [
-    {
-      accessorKey: "name",
-      header: "Title",
-    },
-    {
-      header: "Term",
-      cell: ({ row }) => (
-        <>{row.original.end_semester + " " + row.original.end_year} </>
-      ),
-    },
-    {
-      accessorKey: "sponsor",
-      header: "Sponsor",
-    },
-    {
-      accessorKey: "tags",
-      header: "Key Words",
-      cell: ({ row }) => {
-        try {
-          let keys = "";
-          for (let i = 0; i < row.original.tags.length; i++) {
-            keys = keys.concat(row.original.tags[i].name + ", ");
-          }
-          keys = keys.slice(0, keys.length - 2);
-          return keys;
-        } catch {
-          return "";
-        }
-      },
-    },
-    {
-      header: "Actions",
-      cell: ({ row }) => (
-        <img
-          className="delete-icon"
-          src={require("../images/delete-button.png")}
-          width="22px"
-          height="22px"
-          onClick={() => deleteProject(row.original.project_id)}
-          style={{ cursor: "pointer" }}
-        />
-      ),
-    },
-  ];
+  const columns = getColumnsPermissions();
 
-  const deleteProject = async(project_id) => {
-    try {
-        const response = await fetch(
-            Path.buildPath("api/project/deleteProject", true),
-            {
-              method: "POST",
-              body: JSON.stringify({project_id: project_id}),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          if (response.ok) {
-            await fetch(
-              Path.buildPath("api/file/deleteFile", true),
-              {
-                method: "POST",
-                body: JSON.stringify({project_id: project_id}),
-                headers: {
-                  "Content-Type": "application/json",
-                },
+  function getColumnsPermissions() {
+    if (user == "admin" || user == "coordinator") {
+      return [
+        {
+          accessorKey: "name",
+          header: "Title",
+        },
+        {
+          header: "Term",
+          cell: ({ row }) => (
+            <>{row.original.end_semester + " " + row.original.end_year} </>
+          ),
+        },
+        {
+          accessorKey: "sponsor",
+          header: "Sponsor",
+        },
+        {
+          accessorKey: "tags",
+          header: "Key Words",
+          cell: ({ row }) => {
+            try {
+              let keys = "";
+              for (let i = 0; i < row.original.tags.length; i++) {
+                keys = keys.concat(row.original.tags[i].name + ", ");
               }
-            )
-            let index = projects.findIndex(proj => proj.project_id === project_id);
-            if(index == 0){
-              setProjects(projects.slice(1, projects.length))
-            }else{
-            setProjects(projects.slice(0, index).concat(projects.slice(index+1, projects.length)));
+              keys = keys.slice(0, keys.length - 2);
+              return keys;
+            } catch {
+              return "";
             }
-          }
+          },
+        },
+        {
+          header: "Actions",
+          cell: ({ row }) => (
+            <img
+              className="delete-icon"
+              src={require("../images/delete-button.png")}
+              width="22px"
+              height="22px"
+              onClick={() => deleteProject(row.original.project_id)}
+              style={{ cursor: "pointer" }}
+            />
+          ),
+        },
+      ];
+    } else {
+      return [
+        {
+          accessorKey: "name",
+          header: "Title",
+        },
+        {
+          header: "Term",
+          cell: ({ row }) => (
+            <>{row.original.end_semester + " " + row.original.end_year} </>
+          ),
+        },
+        {
+          accessorKey: "sponsor",
+          header: "Sponsor",
+        },
+        {
+          accessorKey: "tags",
+          header: "Key Words",
+          cell: ({ row }) => {
+            try {
+              let keys = "";
+              for (let i = 0; i < row.original.tags.length; i++) {
+                keys = keys.concat(row.original.tags[i].name + ", ");
+              }
+              keys = keys.slice(0, keys.length - 2);
+              return keys;
+            } catch {
+              return "";
+            }
+          },
+        },
+      ];
     }
-    catch (error) {
-        console.log("failure to delete project with project_id " + project_id)
+  }
+
+  const deleteProject = async (project_id) => {
+    try {
+      const response = await fetch(
+        Path.buildPath("api/project/deleteProject", true),
+        {
+          method: "POST",
+          body: JSON.stringify({ project_id: project_id }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        await fetch(Path.buildPath("api/file/deleteFile", true), {
+          method: "POST",
+          body: JSON.stringify({ project_id: project_id }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        let index = projects.findIndex(
+          (proj) => proj.project_id === project_id
+        );
+        if (index == 0) {
+          setProjects(projects.slice(1, projects.length));
+        } else {
+          setProjects(
+            projects
+              .slice(0, index)
+              .concat(projects.slice(index + 1, projects.length))
+          );
+        }
+      }
+    } catch (error) {
+      console.log("failure to delete project with project_id " + project_id);
     }
-}
+  };
 
   const table = useReactTable({
     data: projects,
@@ -398,12 +443,10 @@ function Search() {
         {/* For all rows... */}
         {table.getRowModel().rows.map((row) => {
           return (
-            <tr
-              key={row.original.project_id + "_" + row.original.group_id}
-            >
+            <tr key={row.original.project_id + "_" + row.original.group_id}>
               {/* For all cells... */}
               {row.getVisibleCells().map((cell) => {
-                if(cell.column.id == "Actions"){
+                if (cell.column.id == "Actions") {
                   return (
                     <td
                       key={
@@ -416,10 +459,13 @@ function Search() {
                         cell.column.id
                       }
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </td>
                   );
-                }else{
+                } else {
                   return (
                     <td
                       key={
@@ -433,7 +479,10 @@ function Search() {
                       }
                       onClick={() => rowClick(row.original.project_id)}
                     >
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </td>
                   );
                 }
