@@ -409,8 +409,6 @@ function GroupTables ({section, data, deleteComponent}) {
                                     
                                     {user.ucf_id} {user.first_name} {user.last_name}
                                     <div className="member-button-container">
-                                        <button className="edit-button" onClick={() => startEditingMember(index, idx, user)}>
-                                            <img className="edit-icon" src={require('../images/edit-button.png')} width="22px" height="22px"/></button>
                                         <button className="delete-member-button" onClick={() => deleteUser(user.ucf_id, index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
                                         </button>
