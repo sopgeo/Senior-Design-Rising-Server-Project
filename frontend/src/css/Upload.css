@@ -78,10 +78,6 @@
     margin: 10px 15px;
 }
 
-.test{
-    padding:5px 0px 0px 5px;
-}
-
 .line1 {
     padding-top: 10px;
     display: flex;
@@ -166,4 +162,3 @@
 /* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
     margin: 5px;
 } */
-
