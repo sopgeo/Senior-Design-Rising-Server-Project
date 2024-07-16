@@ -10,6 +10,10 @@ module.exports = (sequelize, Sequelize) => {
         title: {
             type: Sequelize.STRING
         },
+        submissions_enabled: {
+          type: Sequelize.BOOLEAN,
+          default: true
+        },
         
       },
       {

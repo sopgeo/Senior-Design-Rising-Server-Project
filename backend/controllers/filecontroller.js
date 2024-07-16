@@ -70,8 +70,45 @@ const Projects = db.projects
       }
   };
 
+  const deleteFile = async (req, res) => {
+    try {
+      // Find the file in the database using fileId
+      const file = await File.findOne({ where: { project_id: req.body.project_id } });
+      if (!file) {
+        return res.status(404).send({ message: 'File not found in database.' });
+      }
+  
+      const filePath = path.join(__dirname, '../../frontend/public', file.filepath);
+  
+      // Check if the file exists
+      if (fs.existsSync(filePath)) {
+        // Delete the file from the filesystem
+        fs.unlinkSync(filePath);
+      } else {
+        return res.status(404).send({ message: 'File not found on filesystem.' });
+      }
+  
+      // Delete the file metadata from the database
+      await File.destroy({ where: { id: file.id } });
+  
+      // Update the project's document count (assuming it decreases by one)
+      const project = await Projects.findOne({ where: { project_id: req.body.project_id } });
+      if (project) {
+        await Projects.update(
+          { documents: Math.max(0, project.documents - 1) }, 
+          { where: { project_id: req.body.project_id } }
+        );
+      }
+  
+      res.send({ message: 'File deleted successfully.' });
+    } catch (error) {
+      res.status(500).send({ message: error.message || 'Error deleting the file.' });
+    }
+  };
+
   module.exports = {
-    uploadFile
+    uploadFile,
+    deleteFile
   };
 
 

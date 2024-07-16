@@ -34,7 +34,7 @@ function Search() {
    * API Req + Basic *
    * * * * * * * * * */
   function getProjects(query, semester, year, keys) {
-    console.log(keys);
+    //console.log(keys);
     let bodyJSON = {};
     if (query != "") {
       bodyJSON["query"] = query;
@@ -49,7 +49,7 @@ function Search() {
       bodyJSON["tags"] = keys;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
-    console.log(bodyJSONStr);
+    //console.log(bodyJSONStr);
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -90,8 +90,8 @@ function Search() {
           temp["label"] = val.name;
           kwl.push(temp);
         });
-        console.log(kwl);
-        console.log(json);
+        //console.log(kwl);
+        //console.log(json);
         setAllKeyWords(kwl);
       }
     };
@@ -282,7 +282,56 @@ function Search() {
         }
       },
     },
+    {
+      header: "Actions",
+      cell: ({ row }) => (
+        <img
+          className="delete-icon"
+          src={require("../images/delete-button.png")}
+          width="22px"
+          height="22px"
+          onClick={() => deleteProject(row.original.project_id)}
+          style={{ cursor: "pointer" }}
+        />
+      ),
+    },
   ];
+
+  const deleteProject = async(project_id) => {
+    try {
+        const response = await fetch(
+            Path.buildPath("api/project/deleteProject", true),
+            {
+              method: "POST",
+              body: JSON.stringify({project_id: project_id}),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          if (response.ok) {
+            await fetch(
+              Path.buildPath("api/file/deleteFile", true),
+              {
+                method: "POST",
+                body: JSON.stringify({project_id: project_id}),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+            let index = projects.findIndex(proj => proj.project_id === project_id);
+            if(index == 0){
+              setProjects(projects.slice(1, projects.length))
+            }else{
+            setProjects(projects.slice(0, index).concat(projects.slice(index+1, projects.length)));
+            }
+          }
+    }
+    catch (error) {
+        console.log("failure to delete project with project_id " + project_id)
+    }
+}
 
   const table = useReactTable({
     data: projects,
@@ -351,25 +400,43 @@ function Search() {
           return (
             <tr
               key={row.original.project_id + "_" + row.original.group_id}
-              onClick={() => rowClick(row.original.project_id)}
             >
               {/* For all cells... */}
               {row.getVisibleCells().map((cell) => {
-                return (
-                  <td
-                    key={
-                      cell.getValue() +
-                      "_" +
-                      row.original.name +
-                      "_" +
-                      row.original.group_id +
-                      "_" +
-                      cell.column.id
-                    }
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                );
+                if(cell.column.id == "Actions"){
+                  return (
+                    <td
+                      key={
+                        cell.getValue() +
+                        "_" +
+                        row.original.name +
+                        "_" +
+                        row.original.group_id +
+                        "_" +
+                        cell.column.id
+                      }
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
+                }else{
+                  return (
+                    <td
+                      key={
+                        cell.getValue() +
+                        "_" +
+                        row.original.name +
+                        "_" +
+                        row.original.group_id +
+                        "_" +
+                        cell.column.id
+                      }
+                      onClick={() => rowClick(row.original.project_id)}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  );
+                }
               })}
             </tr>
           );
