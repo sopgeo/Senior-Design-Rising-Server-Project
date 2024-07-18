@@ -99,6 +99,12 @@
 }
 
 .member-row{
+    height: 50px;
+    display: flex;
+    justify-content:space-between;
+}
+
+.member-row2{
     display: flex;
     justify-content:space-between;
 }
@@ -231,4 +237,13 @@
 .submissions-enabled-text{
     padding-left: 1%;
     text-wrap: nowrap;
+}
+
+.ucf-id-name, .first-name-name, .last-name-name {
+    margin: 2px;
+}
+
+.ucf-id-input-field, .first-name-field, .last-name-field {
+    padding: 14px;
+    border-radius: 6px;
 }

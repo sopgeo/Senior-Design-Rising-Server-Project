@@ -427,8 +427,9 @@ function GroupTables ({section, data, deleteComponent}) {
                         <ul className="group-member-list">
                             {group.users.map((user, idx) => (
                                 <li key={idx} className="member-row">
-                                    
-                                    {user.ucf_id} {user.first_name} {user.last_name}
+                                    <p className="col1"> {user.ucf_id} </p>
+                                    <p className="col2"> {user.first_name} </p> 
+                                    <p className="col3"> {user.last_name} </p>
                                     <div className="member-button-container">
                                         <button className="delete-member-button" onClick={() => deleteUser(user.ucf_id, index, idx)}>
                                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
@@ -436,21 +437,18 @@ function GroupTables ({section, data, deleteComponent}) {
                                     </div>
                                 </li>
                             ))}
-                            <li className="member-row">
+                            <li className="member-row2">
                                 <div className="ucf-id-input">
-                                    UCF ID:
-                                    <br/>
-                                    <input ref={ucfIdRef}></input>
+                                    <p className="ucf-id-name">UCF ID:</p>
+                                    <input className="ucf-id-input-field" ref={ucfIdRef}></input>
                                 </div>
                                 <div className="first-name-input">
-                                    First Name:
-                                    <br/>
-                                    <input ref={firstNameRef}></input>
+                                    <p className="first-name-name">First Name:</p>
+                                    <input className="first-name-field" ref={firstNameRef}></input>
                                 </div>
                                 <div className="last-name-input">
-                                    Last Name:
-                                    <br/>
-                                    <input ref={lastNameRef}></input>
+                                    <p className="last-name-name">Last Name:</p>
+                                    <input className="last-name-field" ref={lastNameRef}></input>
                                 </div>
                                 <button className="add-user" id="add-user"  onClick={() => addUser(index, group.group_id, section.section_id)}>Add User</button>
                             </li>
