@@ -150,8 +150,8 @@ exports.projectSearch = async (req, res) => {
           }
         },  
       ],
-      group: ['Project.project_id'],
-      having: Sequelize.literal(`COUNT(\`Tags\`.\`tag_id\`) = ${tagFilter.length}`)
+      //group: ['Project.project_id'],
+      //having: Sequelize.literal(`COUNT(\`Tags\`.\`tag_id\`) = ${tagFilter.length}`)
     })
     else {
       filteredProjects = await Project.findAll()
@@ -201,6 +201,10 @@ exports.projectSearch = async (req, res) => {
             attributes: []
           },
         },
+        {
+          model: Files,
+          attributes: ['filepath'],
+        }
       ]
 
     });
