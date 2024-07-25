@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken')
-const db = require('./models')
+const db = require('../models')
 const User = db.users
 
-const requireAuth = async (req, res, next) => {
+const studentAuth = async (req, res, next) => {
   // verify user is authenticated
   const { authorization } = req.headers
 
@@ -12,13 +12,14 @@ const requireAuth = async (req, res, next) => {
 
   const token = authorization.split(' ')[1]
 
-  console.log(token)
+  //console.log(token)
   try {
-    const ucf_id = jwt.verify(token, process.env.SECRET)
+    const {ucf_id, type} = jwt.verify(token, process.env.SECRET)
     if (!ucf_id) throw Error("UCF_ID not found")
     req.user = await User.findOne({
         where: {ucf_id: ucf_id}
     })
+    //console.log(req.user.group_id)
     next()
 
   } catch (error) {
@@ -27,4 +28,4 @@ const requireAuth = async (req, res, next) => {
   }
 }
 
-module.exports = requireAuth
+module.exports = studentAuth

@@ -106,7 +106,7 @@ exports.getMembers = async (req, res) => {
 exports.createProject = async (req, res) => {
   try {
     const newProject = await Project.create({
-      group_id: req.body.group_id,
+      group_id: req.user.group_id,
       name: req.body.name,
       sponsor: req.body.sponsor,
       sponsor_contact: req.body.sponsor_contact,
@@ -117,7 +117,7 @@ exports.createProject = async (req, res) => {
     })
 
     const group = await Group.findOne({
-      where: {group_id: req.body.group_id}
+      where: {group_id: req.user.group_id}
     })
     group.project_id = newProject.project_id
     group.submitted = 1
