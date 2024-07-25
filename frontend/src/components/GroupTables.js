@@ -47,154 +47,10 @@ function GroupTables ({section, data, deleteComponent}) {
         }));
     };
 
-    const deleteMember = (groupIndex, memberIndex) => {
-
-        const groupMemberName = groupData[groupIndex].members[memberIndex];
-        const groupName = groupData[groupIndex].groupName;
-        const confirmed = window.confirm(`Are you sure you want to delete ${groupMemberName} from ${groupName}?`);
-
-        if( confirmed ) {
-            setGroupData(prevGroupData => {
-                const newGroupData = [...prevGroupData];
-                newGroupData[groupIndex] = {
-                    ...newGroupData[groupIndex], 
-                    members: [...newGroupData[groupIndex].members]
-                };
-                newGroupData[groupIndex].members.splice(memberIndex, 1);
-                return newGroupData;
-            });
-        }
-    };
-    
-    const startEditingMember = (groupIndex, memberIndex, memberName) => {
-        if(editingMember.groupIndex!== null || editingMember.memberIndex !== null){
-            cancelEdit(editingMember.groupIndex, editingMember.memberIndex);
-    }
-        setEditingMember({ groupIndex, memberIndex, editedName: memberName, originalName: memberName });
-    };
-
-    const handleMemberNameChange = (e) => {
-        setEditingMember((prev) => ({...prev, editedName: e.target.value}));
-    };
-
-    const saveMemberName = (groupIndex, memberIndex) => {
-        setGroupData((prevGroupData) => {
-            const newGroupData = [...prevGroupData];
-            newGroupData[groupIndex] = {
-                ...newGroupData[groupIndex], 
-                members: [...newGroupData[groupIndex].members],
-            };
-            newGroupData[groupIndex].members[memberIndex] = editingMember.editedName;
-            return newGroupData;
-        });
-        setEditingMember({groupIndex:null, memberIndex:null, editedName:"", originalName:""});
-    };
-
-    const cancelEdit = (groupIndex, memberIndex) => {
-        setGroupData((prevGroupData) => {
-            const newGroupData = [...prevGroupData];
-            newGroupData[groupIndex] = {
-                ...newGroupData[groupIndex], 
-                members: [...newGroupData[groupIndex].members],
-            };
-            newGroupData[groupIndex].members[memberIndex] = editingMember.originalName;
-            return newGroupData;
-        });
-        setEditingMember({groupIndex: null, memberIndex: null, editedName: editingMember.originalName, originalName: ""});
-    };
-
-    const addGroup1
-     = () => {
-
-        if(!isAddingNewGroup){
-            const newGroup = {
-                groupName: `Group ${groupData.length + 1}`,
-                members: [], 
-                semester: sectionName
-            };
-            setGroupData([...groupData, newGroup]);
-            setIsAddingNewGroup(true);
-            setNewGroupName(newGroup.groupName);
-            setExpandedGroups({...expandedGroups, [groupData.length]: true});
-
-        }
-        else{
-            alert("Can not add two groups at a time");
-        }
-    };
-
-    const saveNewGroupName = (index) => {
-        if (newGroupName.trim() !== "") {
-            setGroupData(prevGroupData => {
-                const newGroupData = [...prevGroupData];
-                newGroupData[index].groupName = newGroupName;
-                return newGroupData;
-            });
-            setNewGroupName("");
-            setIsAddingNewGroup(false);
-        }
-    };
-
-    const addGroupMember = (groupIndex) => {
-
-        if(!isAddingNewMember[groupIndex]) {
-            setGroupData(prevGroupData => {
-                const newGroupData = [...prevGroupData];
-                newGroupData[groupIndex] = {
-                    ...newGroupData[groupIndex],
-                    members: [...newGroupData[groupIndex].members, "tempvalue"]
-                };
-                return newGroupData;
-            });
-
-            setIsAddingNewMember(prevState => {
-                const newState = [...prevState];
-                newState[groupIndex] = true;
-                return newState
-            });
-        }
-        else{
-            alert("Can not add two members at the same time");
-        }
-    };
-
-    //Similar to saveMember name, except this one is used when it is saving a new members name
-    //This is so that the edit hook is not altered
-    const saveNewMemberName = (groupIndex, memberIndex) => {
-        if(newMemberName.trim() !== "") {
-            setGroupData((prevGroupData) => {
-                const newGroupData = [...prevGroupData];
-                newGroupData[groupIndex] = {
-                    ...newGroupData[groupIndex], 
-                    members: [...newGroupData[groupIndex].members],
-                };
-                newGroupData[groupIndex].members[memberIndex] = newMemberName;
-                return newGroupData;
-            });
-            setIsAddingNewMember(prevState => {
-                const newState = [...prevState];
-                newState[groupIndex] = false;
-                return newState
-            });
-            setNewMemberName("");
-        }
-        else{
-            alert(`New group member for ${groupData[groupIndex].groupName} must have a valid name`);
-        }
-    }
-
-    const saveSectionName = () => {
-        if(tempSectionName.trim() !== ""){
-            setSectionName(tempSectionName);
-            setTempSectionName("");
-        }
-        else{
-            alert("New section must have a valid name");
-        }
-    }
 
     const deleteUser = async(ucf_id, groupIndex, userIndex) => {
         try {
+            const token = JSON.parse(localStorage.getItem('user')).token
             const response = await fetch(
                 Path.buildPath("api/user/deleteUser", true),
                 {
@@ -202,6 +58,7 @@ function GroupTables ({section, data, deleteComponent}) {
                   body: JSON.stringify({ucf_id: ucf_id}),
                   headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                 }
               )
@@ -231,7 +88,7 @@ function GroupTables ({section, data, deleteComponent}) {
                 type: "student",
                 section: section_id
             }
-
+            const token = JSON.parse(localStorage.getItem('user')).token
             const response = await fetch(
                 Path.buildPath("api/user/createUser", true),
                 {
@@ -239,6 +96,7 @@ function GroupTables ({section, data, deleteComponent}) {
                   body: JSON.stringify(userData),
                   headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                 }
               )
@@ -262,7 +120,7 @@ function GroupTables ({section, data, deleteComponent}) {
                 section_id: section.section_id,
                 title: groupTitleRef.current.value
             }
-
+            const token = JSON.parse(localStorage.getItem('user')).token
             const response = await fetch(
                 Path.buildPath("api/group/createGroup", true),
                 {
@@ -270,6 +128,7 @@ function GroupTables ({section, data, deleteComponent}) {
                   body: JSON.stringify(groupReq),
                   headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                 }
               )
@@ -302,6 +161,7 @@ function GroupTables ({section, data, deleteComponent}) {
                 await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i)
             }
 
+            const token = JSON.parse(localStorage.getItem('user')).token
             const response = await fetch(
                 Path.buildPath("api/group/deleteGroup", true),
                 {
@@ -309,6 +169,7 @@ function GroupTables ({section, data, deleteComponent}) {
                   body: JSON.stringify({group_id: group_id}),
                   headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                 }
               )
@@ -350,6 +211,7 @@ function GroupTables ({section, data, deleteComponent}) {
     const toggleSubmissionAbility = async() => {
         try {
             let stat = submissionsEnabled ? 0 : 1;
+            const token = JSON.parse(localStorage.getItem('user')).token
             const response = await fetch(
                 Path.buildPath("api/section/changeSubmissionStatus", true),
                 {
@@ -357,6 +219,7 @@ function GroupTables ({section, data, deleteComponent}) {
                   body: JSON.stringify({section_id: sectionId, status: stat}),
                   headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                   },
                 }
               )
