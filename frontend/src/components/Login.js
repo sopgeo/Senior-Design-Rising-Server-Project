@@ -53,7 +53,9 @@ export default function Login() {
                 throw new Error("Login failed");
             }
             
-            const data = await response.json();
+            const json = await response.json();
+            const token = json.token
+            const data = json.user
 
             if (data && (data.defaultPassword === 1)) {
                     localStorage.setItem('user', JSON.stringify({
@@ -62,6 +64,7 @@ export default function Login() {
                         value: data.defaultPassword,
                         type: data.type,
                         firstname: data.first_name,
+                        token: json.token
                 }));
                 handleOpen();
                 handleResetPassword();
@@ -75,6 +78,7 @@ export default function Login() {
                         value: data.defaultPassword,
                         type: data.type,
                         firstname: data.first_name,
+                        token: json.token
                 }))
                 navigate('/');
             }

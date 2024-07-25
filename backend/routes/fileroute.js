@@ -3,8 +3,10 @@ const fileController = require('../controllers/filecontroller')
 
 const router = express.Router()
 
-router.post('/upload', fileController.uploadFile)
+const requireAuth = require('../auth')
 
-router.post('/deleteFile', fileController.deleteFile)
+router.post('/upload', requireAuth, fileController.uploadFile)
+
+router.post('/deleteFile', requireAuth, fileController.deleteFile)
 
 module.exports = router

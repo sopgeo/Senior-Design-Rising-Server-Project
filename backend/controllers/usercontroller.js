@@ -4,6 +4,11 @@ const db = require("../models/")
 const bcrypt = require('bcrypt')
 
 const User = db.users
+const jwt = require('jsonwebtoken')
+
+const createToken = (_id) => {
+    return jwt.sign({_id}, process.env.SECRET, { expiresIn: '3d' })
+}
 
 exports.createUser = async (req, res) => {
     try {
@@ -58,8 +63,10 @@ exports.login = async (req, res) => {
 
         if (await bcrypt.compare((user.ucf_id).toString(), user.password)) user.dataValues.defaultPassword = 1 
         else user.dataValues.defaultPassword = 0
+
+        const token = createToken(user.ucf_id)
         
-        res.status(200).json(user)
+        res.status(200).json({user, token})
     }
     catch (error) {
         console.log(error)

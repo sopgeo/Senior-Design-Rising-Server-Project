@@ -345,6 +345,7 @@ function Search() {
 
   const deleteProject = async (project_id) => {
     try {
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
         Path.buildPath("api/project/deleteProject", true),
         {
@@ -352,6 +353,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
         }
       );
@@ -361,6 +363,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
         });
         let index = projects.findIndex(
