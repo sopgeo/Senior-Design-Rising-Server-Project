@@ -76,6 +76,7 @@ function Search() {
 
       if (response.ok) {
         setProjects(json);
+        console.log(json);
       }
     };
 
@@ -261,8 +262,10 @@ function Search() {
     if (user == "admin" || user == "coordinator") {
       return [
         {
-          accessorKey: "name",
           header: "Title",
+          cell: ({ row }) => (
+            <>{row.original.files.length > 0 ? "🗎 " + row.original.name : row.original.name} </>
+          ),
         },
         {
           header: "Term",
