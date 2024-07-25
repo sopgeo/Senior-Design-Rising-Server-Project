@@ -264,7 +264,7 @@ function Search() {
         {
           header: "Title",
           cell: ({ row }) => (
-            <>{row.original.documents > 0 ? "🗎 " + row.original.name : row.original.name} </>
+            <>{row.original.files.length > 0 ? "🗎 " + row.original.name : row.original.name} </>
           ),
         },
         {
