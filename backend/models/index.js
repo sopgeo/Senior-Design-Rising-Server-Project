@@ -30,5 +30,8 @@ db.tags.belongsToMany(db.projects, { through: db.tagmap, foreignKey: "tag_id" })
 db.projects.hasMany(db.tagmap, { foreignKey: "project_id" });
 db.projects.belongsToMany(db.tags, { through: db.tagmap, foreignKey: "project_id" });
 
+db.files.belongsTo(db.projects, {foreignKey: "project_id"})
+db.projects.hasMany(db.files, {foreignKey: "project_id"})
+
 
 module.exports = db;
