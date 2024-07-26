@@ -72,6 +72,7 @@ function Upload() {
         end_year: document.getElementById("proj-year").value,
       };
 
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
         Path.buildPath("api/project/createProject", true),
         {
@@ -79,6 +80,7 @@ function Upload() {
           body: JSON.stringify(projectData),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
         }
       );
@@ -93,7 +95,7 @@ function Upload() {
       const project_id = json.project_id;
       const tags = getTagState();
       assignTags(project_id, tags);
-      uploadPDF(project_id, json.end_year, json.end_semester);
+      if(selectedFile) uploadPDF(project_id, json.end_year, json.end_semester);
 
       alert("You've submitted your project!");
       if (project_id == null) {
@@ -148,10 +150,13 @@ function Upload() {
       formData.append("semester", semester);
 
       console.log(formData);
-
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(Path.buildPath("api/file/upload", true), {
         method: "POST",
         body: formData,
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
 
       if (!response.ok) {

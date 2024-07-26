@@ -62,6 +62,7 @@ const fetchSections = async() => {
       }
 
       try{
+        const token = JSON.parse(localStorage.getItem('user')).token
         const response = await fetch(
           Path.buildPath("api/section/createSection", true),
           {
@@ -69,6 +70,7 @@ const fetchSections = async() => {
             body: JSON.stringify(sectionData), 
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
             },
           }
         )
@@ -106,7 +108,7 @@ const fetchSections = async() => {
     }
 
     try{
-
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
           Path.buildPath("api/section/deleteSection", true),
           {
@@ -114,6 +116,7 @@ const fetchSections = async() => {
             body: JSON.stringify(sectionData), 
             headers: {
               "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
             },
           }
         )
