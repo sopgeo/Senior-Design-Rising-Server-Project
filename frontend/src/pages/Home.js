@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/Home.css";
-import Header from './GenericHeader.js'
-import CsFooter from "../components/CsFooter";
+import Header from '../components/GenericHeader.js'
+import CsFooter from "../components/CsFooter.js";
 
 function Home() {
   return (
