@@ -10,7 +10,8 @@ import Path from "../components/Path";
 function Upload() {
   const [uploadedURL, setUploadedURL] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [submissionsEnabled, setSubmissionsEnabled] = useState(1)
+  const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
+  const [width, setWidth] = useState(window.innerWidth>600);
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -51,8 +52,8 @@ function Upload() {
       if (response.ok) {
         setGroupTitle(json.title);
         setGroupId(group_id);
-        console.log(json.section.submissions_enabled)
-        setSubmissionsEnabled(json.section.submissions_enabled)
+        console.log(json.section.submissions_enabled);
+        setSubmissionsEnabled(json.section.submissions_enabled);
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -169,12 +170,10 @@ function Upload() {
 
   useEffect(() => {
     let user = JSON.parse(localStorage.getItem("user"));
-    user != null
-          ? getGroupInformation(user.group_id)
-          : setGroupId(null);
+    user != null ? getGroupInformation(user.group_id) : setGroupId(null);
   }, []);
 
-  if(groupId != null  && submissionsEnabled){
+  if (groupId != null && submissionsEnabled && width) {
     return (
       <div className="upload-page">
         <Header />
@@ -187,17 +186,17 @@ function Upload() {
           referrerpolicy="no-referrer"
         />
         {/* <FileUploader handleChange = {handleChange} name="file" types={fileTypes} /> */}
-  
+
         <div className="upload-header">
-        {/* <h1>Hello, </h1> */}
-        <h1>Upload your project</h1>
+          {/* <h1>Hello, </h1> */}
+          <h1>Upload your project</h1>
           <h3>Your group is: {groupTitle}</h3>
           <h4>
             Thank you for your hard work this semester! Please upload your
             technical document to the server by filling out the form below.
           </h4>
         </div>
-  
+
         <div className="project-info">
           <div className="line1">
             <div className="tags-field">
@@ -206,7 +205,7 @@ function Upload() {
             </div>
           </div>
           <br />
-  
+
           <div className="line2">
             <div className="project-name-field">
               <div id="project-name">Project Name</div>
@@ -220,7 +219,7 @@ function Upload() {
                 </textarea>
               </span>
             </div>
-  
+
             <div className="project-year-field">
               <div id="project-year">Project Year</div>
               <span contenteditable="false">
@@ -233,7 +232,7 @@ function Upload() {
                 </textarea>
               </span>
             </div>
-  
+
             <div className="project-semester-field">
               <div id="project-semester">Project Semester</div>
               <span contenteditable="false">
@@ -246,7 +245,7 @@ function Upload() {
                 </textarea>
               </span>
             </div>
-  
+
             <div className="project-sponsor-field">
               <div id="project-sponsor">Project Sponsor</div>
               <span contenteditable="false">
@@ -260,11 +259,15 @@ function Upload() {
               </span>
             </div>
           </div>
-  
+
           <div className="line3">
             <div className="tech-doc-field">
               <label id="tech-doc">Upload your technical document</label>
-              <form action="/upload" method="POST" enctype="multipart/form-data">
+              <form
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+              >
                 <div
                   className="drop-zone"
                   {...getRootProps({ className: "dropzone" })}
@@ -300,7 +303,7 @@ function Upload() {
                 </div>
               </form>
             </div>
-  
+
             <div className="proj-desc-field">
               <div id="project-description">Project description</div>
               <span contenteditable="false">
@@ -314,7 +317,7 @@ function Upload() {
               </span>
             </div>
           </div>
-  
+
           <br />
           <button id="done-button" onClick={uploadProject}>
             Done
@@ -323,10 +326,19 @@ function Upload() {
         <CsFooter />
       </div>
     );
-  }else{
-    return(<>
-      You must be logged in and in your submission window to view this page. If you think you are seeing this message in error, contact one of your professors.
-    </>)
+  } else if (width) {
+    <>
+      Your device's screen is too small to properly display this content. Please
+      use a larger device.
+    </>;
+  } else {
+    return (
+      <>
+        You must be logged in and in your submission window to view this page.
+        If you think you are seeing this message in error, contact one of your
+        professors.
+      </>
+    );
   }
 }
 
