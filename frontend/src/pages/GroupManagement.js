@@ -7,81 +7,80 @@ import CsvUpload from "../components/CsvUpload";
 import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
 import Path from "../components/Path";
-import usePagination from "@mui/material/usePagination/usePagination";
+import { jwtDecode } from "jwt-decode";
 
 function GroupManagement() {
-  const [user, setUser] = useState("public");
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) ? jwtDecode(JSON.parse(localStorage.getItem("user")).token).type : "public"
+  );
+  const [width, setWidth] = useState(window.innerWidth > 600);
 
   function getUser() {
     return user;
   }
 
   const [sections, setSections] = useState([]);
-  const [newSectionName, setNewSectionName] = useState('');
+  const [newSectionName, setNewSectionName] = useState("");
 
-  
-const fetchSections = async() => {
-  try {
+  const fetchSections = async () => {
+    console.log(JSON.parse(localStorage.getItem("user")))
+    try {
       const response = await fetch(
-          Path.buildPath("api/section/getSections", true),
-          {
-            method: "GET"
-          }
-        );
-  
-        if (!response.ok) {
-          throw new Error("Failed to fetch section information");
+        Path.buildPath("api/section/getSections", true),
+        {
+          method: "GET",
         }
+      );
 
-        const json = await response.json();
-
-        
-        if (response.ok) {
-          setSections(json)
-          //console.log("JSON " +json);
-          //console.log("sections " + sections);
-        }
-
-  } catch (error) {
-      console.error("Error fetching data: ", error);
-  }
-}
-
-  useEffect(() => {
-    fetchSections()
-  }, []);
-
-  const addSection = async() => {
-    if(newSectionName.trim() == ""){
-      alert("Please enter valid section name");
-    }
-    else {
-
-      const sectionData = {
-        title: newSectionName
+      if (!response.ok) {
+        throw new Error("Failed to fetch section information");
       }
 
-      try{
-        const token = JSON.parse(localStorage.getItem('user')).token
+      const json = await response.json();
+
+      if (response.ok) {
+        setSections(json);
+        //console.log("JSON " +json);
+        //console.log("sections " + sections);
+      }
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSections();
+  }, []);
+
+  const addSection = async () => {
+    if (newSectionName.trim() == "") {
+      alert("Please enter valid section name");
+    } else {
+      const sectionData = {
+        title: newSectionName,
+      };
+
+      try {
+        const token = JSON.parse(localStorage.getItem("user")).token;
         const response = await fetch(
           Path.buildPath("api/section/createSection", true),
           {
-            method:"POST", 
-            body: JSON.stringify(sectionData), 
+            method: "POST",
+            body: JSON.stringify(sectionData),
             headers: {
               "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
             },
           }
-        )
+        );
 
-        if(!response.ok) {
+        if (!response.ok) {
           throw new Error("Failed to create section");
         }
 
         const json = await response.json();
 
-        if(response.ok){
+        if (response.ok) {
           // Empty the section name box
           setNewSectionName("");
 
@@ -89,61 +88,73 @@ const fetchSections = async() => {
           let updatedSections = JSON.parse(JSON.stringify(sections));
 
           // Add the new section
-          updatedSections.unshift(json)
+          updatedSections.unshift(json);
 
           // Update the sections box
           setSections(updatedSections);
         }
-      } catch(error){
+      } catch (error) {
         console.error("Error creating section: ", error);
       }
-
     }
-  }
-
-  const deleteSection = async(sectionId) =>{
-
-    const sectionData = {
-      section_id: sectionId
-    }
-
-    try{
-      const token = JSON.parse(localStorage.getItem('user')).token
-      const response = await fetch(
-          Path.buildPath("api/section/deleteSection", true),
-          {
-            method:"POST", 
-            body: JSON.stringify(sectionData), 
-            headers: {
-              "Content-Type": "application/json",
-              "Authorization": `Bearer ${token}`
-            },
-          }
-        )
-
-        if(!response.ok){
-          throw new Error("Failed to delete section")
-        }
-
-        const json = await response.json();
-
-        if(response.ok){
-          fetchSections();
-        }
-
-    } catch(error){
-      console.error("Error deleting section with section_id "+ sectionId);
-    }
-
-  }
-
-  const containerStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '20px',
-    marginBottom: '20px',
   };
 
+  const deleteSection = async (sectionId) => {
+    const sectionData = {
+      section_id: sectionId,
+    };
+
+    try {
+      const token = JSON.parse(localStorage.getItem("user")).token;
+      const response = await fetch(
+        Path.buildPath("api/section/deleteSection", true),
+        {
+          method: "POST",
+          body: JSON.stringify(sectionData),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to delete section");
+      }
+
+      const json = await response.json();
+
+      if (response.ok) {
+        fetchSections();
+      }
+    } catch (error) {
+      console.error("Error deleting section with section_id " + sectionId);
+    }
+  };
+
+  const containerStyle = {
+    display: "flex",
+    alignItems: "center",
+    gap: "20px",
+    marginBottom: "20px",
+  };
+
+  if ((user==="admin" || user==="coordinator") && width) {
+  } else if (width) {
+    return (
+      <>
+        You must be logged in as an admin to view this page. If you think you
+        are seeing this message in error, please double check the database.
+      </>
+    );
+  } else {
+    return (
+      <>
+        Your device's screen is too small to properly display this content.
+        Please use a larger device.
+      </>
+    );
+  }
 
   return (
     <>
@@ -161,26 +172,27 @@ const fetchSections = async() => {
             <CsvUpload />
           </div>
           <div className="section-button-container">
-            <input 
-                type="text"
-                value={newSectionName}
-                onChange={(e) => setNewSectionName(e.target.value)}
-                placeholder="Enter Section Name"
-                autoFocus
-              />
-            <button className="add-section-button" onClick={addSection}>+ Add Section</button>
+            <input
+              type="text"
+              value={newSectionName}
+              onChange={(e) => setNewSectionName(e.target.value)}
+              placeholder="Enter Section Name"
+              autoFocus
+            />
+            <button className="add-section-button" onClick={addSection}>
+              + Add Section
+            </button>
           </div>
           <div className="section-container">
-            
             {sections.map((section, index) => (
-              <GroupTables key={section.section_id} section={section} deleteComponent={deleteSection}/>
+              <GroupTables
+                key={section.section_id}
+                section={section}
+                deleteComponent={deleteSection}
+              />
             ))}
-
           </div>
-
         </div>
-
-        
       </div>
       <CsFooter />
     </>

@@ -11,7 +11,7 @@ function Upload() {
   const [uploadedURL, setUploadedURL] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
-  const [width, setWidth] = useState(window.innerWidth>600);
+  const [width, setWidth] = useState(window.innerWidth > 600);
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -333,15 +333,15 @@ function Upload() {
     );
   } else if (width) {
     <>
-      Your device's screen is too small to properly display this content. Please
-      use a larger device.
+      You must be logged in and in your submission window to view this page. If
+      you think you are seeing this message in error, contact one of your
+      professors.
     </>;
   } else {
     return (
       <>
-        You must be logged in and in your submission window to view this page.
-        If you think you are seeing this message in error, contact one of your
-        professors.
+        Your device's screen is too small to properly display this content.
+        Please use a larger device.
       </>
     );
   }
