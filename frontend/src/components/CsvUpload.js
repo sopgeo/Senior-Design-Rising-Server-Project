@@ -172,6 +172,7 @@ const CsvUpload = () => {
             setErrorRows(errors);
             showErrorsPopup(errors);
           }
+          window.location.reload();
         },
       });
     }
