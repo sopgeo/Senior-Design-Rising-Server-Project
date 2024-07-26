@@ -14,6 +14,8 @@ import {
 } from "@tanstack/react-table";
 import Path from "../components/Path";
 import Select from "react-select";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 /* * * * * * * * * *
  *     Search      *
@@ -22,7 +24,8 @@ function Search() {
   // Sets up variables we're using
   const [timer, setTimer] = useState("");
   const [user, setUser] = useState(
-    localStorage.getItem("user")!=null && JSON.parse(localStorage.getItem("user")).hasOwnProperty("type")
+    localStorage.getItem("user") != null &&
+      JSON.parse(localStorage.getItem("user")).hasOwnProperty("type")
       ? JSON.parse(localStorage.getItem("user")).type
       : null
   );
@@ -33,12 +36,13 @@ function Search() {
   const [keyWords, setKeyWords] = useState([]);
   const [projects, setProjects] = useState([]);
   const [terms, setTerms] = useState([]);
+  const [first, setFirst] = useState(true);
 
   /* * * * * * * * * *
    * API Req + Basic *
    * * * * * * * * * */
   function getProjects(query, semester, year, keys) {
-    console.log(keys);
+    //console.log(keys);
     let bodyJSON = {};
     if (query != "") {
       bodyJSON["query"] = query;
@@ -53,7 +57,7 @@ function Search() {
       bodyJSON["tags"] = keys;
     }
     let bodyJSONStr = JSON.stringify(bodyJSON);
-    console.log(bodyJSONStr);
+    //console.log(bodyJSONStr);
 
     const fetchProjects = async () => {
       const response = await fetch(
@@ -76,7 +80,7 @@ function Search() {
 
       if (response.ok) {
         setProjects(json);
-        console.log(json);
+        //console.log(json);
       }
     };
 
@@ -226,6 +230,7 @@ function Search() {
     let termArr = term.value.split(" ");
     setSemester(termArr[0]);
     setYear(termArr[1]);
+    setFirst(false);
     getProjects(search, termArr[0], termArr[1], keyWords);
   }
 
@@ -238,6 +243,7 @@ function Search() {
     not overload the api limits, increase if too many api calls */
     setTimer(
       setTimeout(() => {
+        setFirst(false);
         getProjects(searchQuery, semester, year, keyWords);
       }, 750)
     );
@@ -250,6 +256,7 @@ function Search() {
       keyWordsArr.push(word.value);
     });
     setKeyWords(keyWordsArr);
+    setFirst(false);
     getProjects(search, semester, year, keyWordsArr);
   }
 
@@ -264,7 +271,11 @@ function Search() {
         {
           header: "Title",
           cell: ({ row }) => (
-            <>{row.original.files.length > 0 ? '\u{1F4C4} ' + row.original.name : row.original.name} </>
+            <>
+              {row.original.files.length > 0
+                ? "\u{1F4C4} " + row.original.name
+                : row.original.name}{" "}
+            </>
           ),
         },
         {
@@ -395,6 +406,7 @@ function Search() {
   });
 
   function getTable() {
+    //console.log(first);
     if (projects.length != 0) {
       return (
         <div align="center">
@@ -404,6 +416,8 @@ function Search() {
           </table>
         </div>
       );
+    } else if (first) {
+      return <Skeleton count={15}/>;
     } else {
       return <p align="center">Sorry, that query returned no results</p>;
     }
