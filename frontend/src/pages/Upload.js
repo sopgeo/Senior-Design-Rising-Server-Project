@@ -2,10 +2,10 @@
 import "../css/Upload.css";
 import React, { useState, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import Header from "./GenericHeader.js";
-import TagsInput from "../components/TagsInput";
-import CsFooter from "../components/CsFooter";
-import Path from "../components/Path";
+import Header from "../components/GenericHeader.js";
+import TagsInput from "../components/TagsInput.js";
+import CsFooter from "../components/CsFooter.js";
+import Path from "../components/Path.js";
 
 function Upload() {
   const [uploadedURL, setUploadedURL] = useState(null);

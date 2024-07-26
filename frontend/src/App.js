@@ -1,7 +1,7 @@
 import './css/App.css';
 import ProjectPage from './pages/ProjectPage'
-import Upload from './components/Upload';
-import Home from './components/Home';
+import Upload from './pages/Upload';
+import Home from './pages/Home';
 import Project from './pages/Project';
 import Search from './pages/Search';
 import Login from './components/Login';
