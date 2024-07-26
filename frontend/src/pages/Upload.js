@@ -95,7 +95,10 @@ function Upload() {
       const project_id = json.project_id;
       const tags = getTagState();
       assignTags(project_id, tags);
-      if(selectedFile) uploadPDF(project_id, json.end_year, json.end_semester);
+      if(selectedFile) {
+        alert("Loading")
+        await uploadPDF(project_id, json.end_year, json.end_semester);
+      }
 
       alert("You've submitted your project!");
       if (project_id == null) {
@@ -162,6 +165,8 @@ function Upload() {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
+
+      return 1
     } catch (error) {
       console.error("Error uploading pdf" + error.message);
     }
