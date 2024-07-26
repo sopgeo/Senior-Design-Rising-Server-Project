@@ -38,10 +38,12 @@ const TagGet = () => {
   const deleteTags = async () => {
     const deletePromises = selectedTags.map(async (tag) => {
       try {
+        const token = JSON.parse(localStorage.getItem('user')).token
         const response = await fetch(Path.buildPath("api/tag/deleteTag", true), {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({ tag_id: tag.value })
         });
@@ -63,10 +65,12 @@ const TagGet = () => {
 
   const handleAddTag = async () => {
     try {
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(Path.buildPath("api/tag/createTag", true), {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ name: newTagName })
       });

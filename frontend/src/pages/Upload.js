@@ -11,7 +11,7 @@ function Upload() {
   const [uploadedURL, setUploadedURL] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
-  const [width, setWidth] = useState(window.innerWidth>600);
+  const [width, setWidth] = useState(window.innerWidth > 600);
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -72,6 +72,7 @@ function Upload() {
         end_year: document.getElementById("proj-year").value,
       };
 
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
         Path.buildPath("api/project/createProject", true),
         {
@@ -79,6 +80,7 @@ function Upload() {
           body: JSON.stringify(projectData),
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
         }
       );
@@ -93,7 +95,7 @@ function Upload() {
       const project_id = json.project_id;
       const tags = getTagState();
       assignTags(project_id, tags);
-      uploadPDF(project_id, json.end_year, json.end_semester);
+      if(selectedFile) uploadPDF(project_id, json.end_year, json.end_semester);
 
       alert("You've submitted your project!");
       if (project_id == null) {
@@ -148,10 +150,13 @@ function Upload() {
       formData.append("semester", semester);
 
       console.log(formData);
-
+      const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(Path.buildPath("api/file/upload", true), {
         method: "POST",
         body: formData,
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
       });
 
       if (!response.ok) {
@@ -328,15 +333,15 @@ function Upload() {
     );
   } else if (width) {
     <>
-      Your device's screen is too small to properly display this content. Please
-      use a larger device.
+      You must be logged in and in your submission window to view this page. If
+      you think you are seeing this message in error, contact one of your
+      professors.
     </>;
   } else {
     return (
       <>
-        You must be logged in and in your submission window to view this page.
-        If you think you are seeing this message in error, contact one of your
-        professors.
+        Your device's screen is too small to properly display this content.
+        Please use a larger device.
       </>
     );
   }

@@ -3,9 +3,11 @@ const tagController = require('../controllers/tagcontroller')
 
 const router = express.Router()
 
-router.post('/createTag', tagController.createTag)
+const adminAuth = require('../auth/adminAuth')
 
-router.post('/deleteTag', tagController.deleteTag)
+router.post('/createTag', adminAuth, tagController.createTag)
+
+router.post('/deleteTag', adminAuth, tagController.deleteTag)
 
 router.get('/tags', tagController.getAllTags);
 

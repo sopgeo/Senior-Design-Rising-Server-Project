@@ -43,10 +43,12 @@ const CsvUpload = () => {
                 if (checkJson.section_id) {
                   sectionId = checkJson.section_id;
                 } else {
+                  const token = JSON.parse(localStorage.getItem('user')).token
                   const createResponse = await fetch(Path.buildPath("api/section/createSection", true), {
                     method: 'POST',
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'application/json',
+                      "Authorization": `Bearer ${token}`
                     },
                     body: JSON.stringify({ title: sectionName })
                   });
@@ -95,10 +97,12 @@ const CsvUpload = () => {
                 if (checkGroupJson.group_id) {
                   groupId = checkGroupJson.group_id;
                 } else {
+                  const token = JSON.parse(localStorage.getItem('user')).token
                   const createGroupResponse = await fetch(Path.buildPath("api/group/createGroup", true), {
                     method: 'POST',
                     headers: {
-                      'Content-Type': 'application/json'
+                      'Content-Type': 'application/json',
+                      "Authorization": `Bearer ${token}`
                     },
                     body: JSON.stringify({ title: groupName, section_id: sectionId })
                   });
@@ -129,10 +133,12 @@ const CsvUpload = () => {
 
                   if (checkUserJson.exists) {
                   } else {
+                    const token = JSON.parse(localStorage.getItem('user')).token
                     const createUserResponse = await fetch(Path.buildPath("api/user/createUser", true), {
                       method: 'POST',
                       headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        "Authorization": `Bearer ${token}`
                       },
                       body: JSON.stringify({
                         ucf_id: ucfId,
@@ -166,6 +172,7 @@ const CsvUpload = () => {
             setErrorRows(errors);
             showErrorsPopup(errors);
           }
+          window.location.reload();
         },
       });
     }
