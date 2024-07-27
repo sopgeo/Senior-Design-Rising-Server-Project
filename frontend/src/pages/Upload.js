@@ -13,6 +13,7 @@ function Upload() {
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
   const [width, setWidth] = useState(window.innerWidth > 600);
   const [loading, setLoading] = useState(false)
+  const [formErrors, setFormErrors] = useState({})
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -61,7 +62,33 @@ function Upload() {
     }
   };
 
+  const validate = () => {
+    const errors = {}
+    if (!document.getElementById("proj-name").value) errors.name = "Name is required"
+
+    if (!document.getElementById("proj-year").value) errors.year = "Year is required"
+    else {
+      const currentYear = new Date().getFullYear() + 1
+      const inputYear = document.getElementById("proj-year").value
+
+      if (!/^\d{4}$/.test(inputYear) || inputYear < 2010 || inputYear > currentYear)
+        errors.year = "Invalid year"
+    }
+
+    if (!document.getElementById("proj-semester").value) errors.semester = "Semester is required"
+    else if (document.getElementById("proj-semester").value !== 'Fall' &&
+             document.getElementById("proj-semester").value !== 'Summer' &&
+             document.getElementById("proj-semester").value !== 'Spring') errors.semester = "Semester must be Fall, Summer, Spring"
+
+    if (!document.getElementById("proj-semester").value) errors.sponsor = "Sponsor is required"
+
+    setFormErrors(errors)
+
+    return Object.keys(errors).length === 0
+  }
+
   const uploadProject = async () => {
+    if (!validate()) return
     try {
       setLoading(true)
       const projectData = {
@@ -210,6 +237,14 @@ function Upload() {
         </div>
 
         <div className="project-info">
+
+        <div className="line1">
+            <div className="tags-field">
+              <div id="tags">Tags</div>
+              <TagsInput ref={tagStateRef} />
+            </div>
+          </div>
+          <br />
           
 
           <div className="line2">
@@ -220,18 +255,7 @@ function Upload() {
                   type="text"
                   id="proj-name"
                   placeholder="Type project name here..."
-                >
-                </input>
-              </span>
-            </div>
-
-            <div className="project-semester-field">
-              <div id="project-semester">Project Semester</div>
-              <span contenteditable="false">
-                <input
-                  type="text"
-                  id="proj-semester"
-                  placeholder="e.g. 'Spring'"
+                  style={{borderColor: formErrors.name ? 'red' : ''}}
                 >
                 </input>
               </span>
@@ -244,11 +268,24 @@ function Upload() {
                   type="text"
                   id="proj-year"
                   placeholder="e.g. '2024'"
+                  style={{borderColor: formErrors.year ? 'red' : ''}}
                 >
                 </input>
               </span>
             </div>
 
+            <div className="project-semester-field">
+              <div id="project-semester">Project Semester</div>
+              <span contenteditable="false">
+                <input
+                  type="text"
+                  id="proj-semester"
+                  placeholder="e.g. 'Spring'"
+                  style={{borderColor: formErrors.semester ? 'red' : ''}}
+                >
+                </input>
+              </span>
+            </div>
 
             <div className="project-sponsor-field">
               <div id="project-sponsor">Project Sponsor</div>
@@ -257,20 +294,13 @@ function Upload() {
                   type="text"
                   id="proj-sponsor"
                   placeholder="e.g. 'Richard Leinecker'"
+                  style={{borderColor: formErrors.sponsor ? 'red' : ''}}
                 >
                 </input>
               </span>
             </div>
           </div>
           {/* <br /> */}
-
-          <div className="line1">
-            <div className="tags-field">
-              <div id="tags">Tags</div>
-              <TagsInput ref={tagStateRef} />
-            </div>
-          </div>
-          <br />
 
           <div className="line3">
             <div className="tech-doc-field">
@@ -341,8 +371,15 @@ function Upload() {
           <button id="done-button" onClick={uploadProject}>
             Done
           </button>
+          
           )
           }
+          <div className='error-container'> 
+          {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+          {formErrors.year && <span className="error-message">{formErrors.year}</span>}
+          {formErrors.semester && <span className="error-message">{formErrors.semester}</span>}
+          {formErrors.sponsor && <span className="error-message">{formErrors.sponsor}</span>}
+          </div>
         </div>
         <CsFooter />
       </div>

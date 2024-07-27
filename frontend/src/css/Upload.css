@@ -60,13 +60,28 @@
     font-size: 16px
 }
 
-#proj-semester, #proj-sponsor {
+#proj-semester {
     width: 200px;
     height: 40px;
     font-size: 16px
 }
 
+#proj-sponsor {
+    width: 200px;
+    height: 40px;
+    font-size: 16px
+}
 
+.error-container {
+    margin-left: 10px;
+}
+
+.error-message {
+    color: black;
+    font-size: 12px;
+    margin-top: 4px;
+    clear: both;
+  }
 
 #full-name-input, #linked-in-input, #project-role-input {
     width: 214px;
@@ -84,7 +99,7 @@
 }
 
 .line2 {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
 }
 
