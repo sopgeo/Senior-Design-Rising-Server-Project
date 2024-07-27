@@ -256,7 +256,7 @@ function Upload() {
                 <input
                   type="text"
                   id="proj-sponsor"
-                  placeholder="Type project sponsor here..."
+                  placeholder="e.g. 'Richard Leinecker'"
                 >
                 </input>
               </span>
