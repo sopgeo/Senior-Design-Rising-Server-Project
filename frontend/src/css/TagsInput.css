@@ -11,7 +11,10 @@ body{
     /* font-weight: bold; */
 }
 
-/* .tags-input-container{ */
+.tags-input-container{
+    width: 890px;
+    border-color: black;
+}
 
 
 .react-select{

@@ -34,15 +34,13 @@
     text-align: left;
 }
 
-#full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc, #proj-name, #proj-sponsor {
+#proj-semester, #proj-year, #full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc, #proj-name, #proj-sponsor {
     border: 1px solid #555555;
     border-radius: 3px;
     height: 3.63rem;
     padding: .5em;
     flex-wrap: wrap;
 }
-
-
 
 #proj-desc {
     width: 450px;
@@ -146,7 +144,8 @@
 }
 
 #done-button {
-    width: 100px;
+    width: 115px;
+    height: 75px;
     margin: 20px;
     background-color: #FFC904;
     padding: 10px;
@@ -175,6 +174,6 @@
     100%{transform: rotate(1turn)}
   }
 
-/* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
-    margin: 5px;
-} */
+#project-name, #project-year, #project-semester, #project-sponsor {
+    text-align: left;
+}

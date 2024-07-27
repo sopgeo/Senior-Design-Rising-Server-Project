@@ -210,6 +210,60 @@ function Upload() {
         </div>
 
         <div className="project-info">
+          
+
+          <div className="line2">
+            <div className="project-name-field">
+              <div id="project-name">Project Name</div>
+              <span contenteditable="false">
+                <input
+                  type="text"
+                  id="proj-name"
+                  placeholder="Type project name here..."
+                >
+                </input>
+              </span>
+            </div>
+
+            <div className="project-semester-field">
+              <div id="project-semester">Project Semester</div>
+              <span contenteditable="false">
+                <input
+                  type="text"
+                  id="proj-semester"
+                  placeholder="e.g. 'Spring'"
+                >
+                </input>
+              </span>
+            </div>
+
+            <div className="project-year-field">
+              <div id="project-year">Project Year</div>
+              <span contenteditable="false">
+                <input
+                  type="text"
+                  id="proj-year"
+                  placeholder="e.g. '2024'"
+                >
+                </input>
+              </span>
+            </div>
+
+
+            <div className="project-sponsor-field">
+              <div id="project-sponsor">Project Sponsor</div>
+              <span contenteditable="false">
+                <input
+                  type="text"
+                  id="proj-sponsor"
+                  placeholder="Type project sponsor here..."
+                >
+                </input>
+              </span>
+            </div>
+          </div>
+          {/* <br /> */}
+
           <div className="line1">
             <div className="tags-field">
               <div id="tags">Tags</div>
@@ -217,60 +271,6 @@ function Upload() {
             </div>
           </div>
           <br />
-
-          <div className="line2">
-            <div className="project-name-field">
-              <div id="project-name">Project Name</div>
-              <span contenteditable="false">
-                <textarea
-                  type="text"
-                  id="proj-name"
-                  placeholder="Type project name here..."
-                >
-                  {""}
-                </textarea>
-              </span>
-            </div>
-
-            <div className="project-year-field">
-              <div id="project-year">Project Year</div>
-              <span contenteditable="false">
-                <textarea
-                  type="text"
-                  id="proj-year"
-                  placeholder="Type project year here..."
-                >
-                  {""}
-                </textarea>
-              </span>
-            </div>
-
-            <div className="project-semester-field">
-              <div id="project-semester">Project Semester</div>
-              <span contenteditable="false">
-                <textarea
-                  type="text"
-                  id="proj-semester"
-                  placeholder="Type project semester here..."
-                >
-                  {""}
-                </textarea>
-              </span>
-            </div>
-
-            <div className="project-sponsor-field">
-              <div id="project-sponsor">Project Sponsor</div>
-              <span contenteditable="false">
-                <textarea
-                  type="text"
-                  id="proj-sponsor"
-                  placeholder="Type project sponsor here..."
-                >
-                  {""}
-                </textarea>
-              </span>
-            </div>
-          </div>
 
           <div className="line3">
             <div className="tech-doc-field">
@@ -329,6 +329,8 @@ function Upload() {
               </span>
             </div>
           </div>
+
+          
 
           <br />
           {loading ? 
