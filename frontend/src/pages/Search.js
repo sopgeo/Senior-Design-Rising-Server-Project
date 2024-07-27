@@ -312,7 +312,11 @@ function Search() {
               src={require("../images/delete-button.png")}
               width="22px"
               height="22px"
-              onClick={() => deleteProject(row.original.project_id)}
+              onClick={() => {
+                if (window.confirm("Are you sure you want to delete this project?")) {
+                  deleteProject(row.original.project_id);
+                }
+              }}
               style={{ cursor: "pointer" }}
             />
           ),
