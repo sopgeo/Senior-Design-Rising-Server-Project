@@ -12,7 +12,6 @@ function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
   const [width, setWidth] = useState(window.innerWidth > 600);
-  const [loading, setLoading] = useState(false)
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -63,7 +62,6 @@ function Upload() {
 
   const uploadProject = async () => {
     try {
-      setLoading(true)
       const projectData = {
         group_id: groupId,
         name: document.getElementById("proj-name").value,
@@ -98,7 +96,7 @@ function Upload() {
       const tags = getTagState();
       assignTags(project_id, tags);
       if(selectedFile) {
-        //alert("Loading")
+        alert("Loading")
         await uploadPDF(project_id, json.end_year, json.end_semester);
       }
 
@@ -331,16 +329,9 @@ function Upload() {
           </div>
 
           <br />
-          {loading ? 
-          (
-            <div className="loader"></div>
-          ) : 
-          (
           <button id="done-button" onClick={uploadProject}>
             Done
           </button>
-          )
-          }
         </div>
         <CsFooter />
       </div>

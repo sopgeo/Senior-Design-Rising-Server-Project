@@ -22,7 +22,6 @@ const Projects = db.projects
   
   const uploadFile = (req, res) => {
     try {
-      console.log(process.env.NODE_ENV)
     // Call multer as middleware here, inside the route handler
     upload.single('pdf')(req, res, function (err) {
       if (err instanceof multer.MulterError) {
@@ -37,24 +36,16 @@ const Projects = db.projects
       const projectId = req.body.projectId;
       console.log(req.file.path)
       const dir = path.join(__dirname, `../../frontend/public/Files/${year}/${semester}/Projects/${projectId}`);
-      const dirBuild = path.join(__dirname, `../../frontend/build/Files/${year}/${semester}/Projects/${projectId}`)
+      console.log(dir)
   
       // Create directory if it doesn't exist
       fs.mkdirSync(dir, { recursive: true });
-      if (process.env.NODE_ENV === 'production') {
-        fs.mkdirSync(dirBuild, { recursive: true });
-      }
   
       // Move the file to the correct destination
       const finalPath = path.join(dir, req.file.originalname);
       fs.rename(req.file.path, finalPath, (err) => {
         if (err) {
           return res.status(500).send({ message: 'Error moving the file.' });
-        }
-
-        if (process.env.NODE_ENV === 'production') {
-          const finalPathBuild = path.join(dirBuild, req.file.originalname);
-          fs.copyFileSync(finalPath, finalPathBuild);
         }
   
         // File has been moved, now save the file metadata to the database
