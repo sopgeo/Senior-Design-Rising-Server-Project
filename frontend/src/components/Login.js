@@ -14,13 +14,16 @@ export default function Login() {
     const [idForReset, setIdForReset] = useState('')
     const [snackbarInfo, setSnackbarInfo] = useState({ open: false, message: '', severity: 'info' });
     
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W_]{8,}$/
+                          
 
     const handleSubmit = async (event) => {
         event.preventDefault();  
         const ucf_id = event.target.ucf_id.value;
         const password = event.target.password.value;
         let hasError = false;
+
+        setIdForReset(ucf_id)
 
         
         setShowTooltip({ ucf_id: false, password: false });
@@ -67,7 +70,7 @@ export default function Login() {
                         token: json.token
                 }));
                 handleOpen();
-                handleResetPassword();
+                //handleResetPassword();
             }
 
             if (data && (data.defaultPassword === 0)) {
@@ -179,20 +182,9 @@ export default function Login() {
                     <DialogTitle>Reset Password</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            To reset your password, please enter your new password twice.
-                            It must have a Minimum eight characters, at least one uppercase letter, one lowercase letter and one number.
+                            To reset your password, please enter your new password.
+                            It must have a minimum of eight characters, at least one uppercase letter, one lowercase letter and one number.
                         </DialogContentText>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            label="UCF NID"
-                            type="ucf_id"
-                            fullWidth
-                            variant="standard"
-                            value={idForReset}
-                            onChange={(e) => setIdForReset(e.target.value)}
-                        />
                         <TextField
                             autoFocus
                             margin="dense"
