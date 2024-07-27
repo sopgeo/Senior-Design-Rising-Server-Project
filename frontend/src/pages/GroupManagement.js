@@ -8,6 +8,7 @@ import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
 import Path from "../components/Path";
 import { jwtDecode } from "jwt-decode";
+import AdminTable from "../components/AdminTable";
 
 function GroupManagement() {
   const [user, setUser] = useState(
@@ -170,6 +171,9 @@ function GroupManagement() {
           <div style={containerStyle}>
             <TagGet />
             <CsvUpload />
+          </div>
+          <div className="admin-table">
+            <AdminTable/>
           </div>
           <div className="section-button-container">
             <input

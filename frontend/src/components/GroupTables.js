@@ -6,7 +6,7 @@ import Switch from "react-switch";
 
 function GroupTables ({section, data, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
-    console.log(groupData)
+    //console.log(groupData)
     const [sectionName, setSectionName] = useState(section.title);
     const [sectionId, setSectionId] = useState(section.section_id);
     const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
@@ -187,7 +187,6 @@ function GroupTables ({section, data, deleteComponent}) {
 
     const deleteSection = async() => {
         
-        //Add a confirm to see if they really do want to delete this section
         try{
 
             var result = window.confirm(`Want to delete ${sectionName} and its groups?`);

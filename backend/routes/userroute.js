@@ -15,4 +15,6 @@ router.post('/resetPassword', userController.resetPassword)
 
 router.post('/checkUserExists', userController.checkUserExists)
 
+router.get('/getAdmins', userController.getAdmins)
+
 module.exports = router
