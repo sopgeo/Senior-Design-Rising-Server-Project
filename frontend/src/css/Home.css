@@ -26,11 +26,11 @@ body {
 }
 
 .desktop {
-    /* background-image: url('../images/l3harris.jpg'); */
     position: relative;
     width: 100vw;
     display: grid;
     height: 100%;
+    max-width: 100vw;
     max-height: 100vh;
     margin: auto;
 }

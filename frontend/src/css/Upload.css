@@ -192,3 +192,11 @@
 #project-name, #project-year, #project-semester, #project-sponsor {
     text-align: left;
 }
+
+.h4 {
+    padding: 10px;
+}
+
+.project-info {
+    height: 100%;
+}
