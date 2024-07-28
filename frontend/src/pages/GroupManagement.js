@@ -163,7 +163,7 @@ function GroupManagement() {
       <div className="PageBody">
         <br />
 
-        <h1 className="Title">Group Management</h1>
+        <h1 className="Title">Group Management </h1>
         <br />
 
         <div className="App">

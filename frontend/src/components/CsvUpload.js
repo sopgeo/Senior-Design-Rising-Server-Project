@@ -8,9 +8,20 @@ const CsvUpload = () => {
   const [file, setFile] = useState(null);
   const [errorRows, setErrorRows] = useState([]);
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+const handleFileChange = (e) => {
+  const selectedFile = e.target.files[0];
+  const validFileTypes = ["text/csv", "application/vnd.ms-excel"]; // add valid MIME types
+  const fileExtension = selectedFile.name.split('.').pop();
+
+  if (selectedFile && validFileTypes.includes(selectedFile.type) && fileExtension === "csv") {
+    setFile(selectedFile);
+  } else {
+    alert("Please upload a valid .csv file.");
+    setFile(null);
+    e.target.value = ""; // Reset the input field
+  }
+};
+
 
   const handleFileUpload = async () => {
     if (file) {
@@ -213,36 +224,28 @@ const CsvUpload = () => {
   };
 
   return (
-    <div className="csv-upload-container" style={containerStyle}>
-      <div style={sectionStyle}>
-        <h2 style={headingStyle}>Select CSV to upload</h2>
+    <div className="csv-upload-container">
+      <div className="csv-upload-section">
+        <h2 className="csv-upload-heading">Select CSV to upload</h2>
         <div style={{ marginBottom: '10px' }}>
           <input 
             type="file" 
             accept=".csv" 
             onChange={handleFileChange} 
-            style={{ padding: '5px', width: '250px' }} 
+            className="csv-upload-input" 
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
           <button 
             onClick={handleFileUpload} 
-            style={{ 
-              padding: '10px 20px',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              width: '150px',
-              height: '40px',
-              fontSize: '16px',
-              textAlign: 'center',
-            }}>
+            className="csv-upload-button"
+          >
             Upload CSV
           </button>
         </div>
         <div style={{ textAlign: 'center' }}>
           <p>Class CSV files should have the header (FirstName,LastName,PID,GroupName) on line 1. Only the section name on line 2. Lines 3 and after should be student information
-            in the format of the header.
+            in the format of the header. Larger files may take a minute to upload.
           </p>
         </div>
       </div>
