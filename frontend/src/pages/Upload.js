@@ -238,8 +238,6 @@ function Upload() {
 
         <div className="project-info">
 
-          
-
           <div className="line2">
             <div className="project-name-field">
               <div id="project-name">Project Name</div>
