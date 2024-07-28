@@ -4,13 +4,13 @@ import Path from "../components/Path";
 import "../css/CsvUpload.css";
 
 
-const CsvUpload = () => {
+const CsvUpload = ({ onRefresh }) => {
   const [file, setFile] = useState(null);
   const [errorRows, setErrorRows] = useState([]);
 
 const handleFileChange = (e) => {
   const selectedFile = e.target.files[0];
-  const validFileTypes = ["text/csv", "application/vnd.ms-excel"]; // add valid MIME types
+  const validFileTypes = ["text/csv", "application/vnd.ms-excel"];
   const fileExtension = selectedFile.name.split('.').pop();
 
   if (selectedFile && validFileTypes.includes(selectedFile.type) && fileExtension === "csv") {
@@ -18,7 +18,7 @@ const handleFileChange = (e) => {
   } else {
     alert("Please upload a valid .csv file.");
     setFile(null);
-    e.target.value = ""; // Reset the input field
+    e.target.value = ""; 
   }
 };
 
@@ -183,7 +183,10 @@ const handleFileChange = (e) => {
             setErrorRows(errors);
             showErrorsPopup(errors);
           }
-          window.location.reload();
+          if (onRefresh) {
+            onRefresh();
+          }
+          //window.location.reload();
         },
       });
     }
@@ -240,7 +243,7 @@ const handleFileChange = (e) => {
             onClick={handleFileUpload} 
             className="csv-upload-button"
           >
-            Upload CSV
+            Upload CSV 
           </button>
         </div>
         <div style={{ textAlign: 'center' }}>

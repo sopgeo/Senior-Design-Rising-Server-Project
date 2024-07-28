@@ -188,10 +188,8 @@ function GroupTables ({section, data, deleteComponent}) {
                 return;
             }
     
-            // Delete all groups within the section
             await Promise.all(groupData.map((group, index) => deleteGroup(group.group_id, index, true)));
     
-            // Delete the section itself
             const token = JSON.parse(localStorage.getItem('user')).token;
             const response = await fetch(
                 Path.buildPath("api/section/deleteSection", true),
