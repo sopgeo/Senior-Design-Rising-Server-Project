@@ -147,66 +147,71 @@ function GroupTables ({section, data, deleteComponent}) {
 
     const deleteGroup = async(group_id, groupIndex, isDeletingSection) => {
         try {
-
-            var result = true;
-            if(!isDeletingSection){
-                result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+            if (!isDeletingSection) {
+                const result = window.confirm(`Want to delete ${groupData[groupIndex].title} and its users?`);
+                if (!result) {
+                    return;
+                }
             }
- 
-            if (!result) {
-                return
-            }
-
+    
             for (let i = 0; i < groupData[groupIndex].users.length; i++) {
-                await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i)
+                await deleteUser(groupData[groupIndex].users[i].ucf_id, groupIndex, i);
             }
-
-            const token = JSON.parse(localStorage.getItem('user')).token
+    
+            const token = JSON.parse(localStorage.getItem('user')).token;
             const response = await fetch(
                 Path.buildPath("api/group/deleteGroup", true),
                 {
-                  method: "POST",
-                  body: JSON.stringify({group_id: group_id}),
-                  headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                  },
+                    method: "POST",
+                    body: JSON.stringify({ group_id: group_id }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
                 }
-              )
-              const json = await response.json()
-              if (response.ok) {
+            );
+    
+            if (response.ok) {
                 let updatedGroup = JSON.parse(JSON.stringify(groupData));
-                updatedGroup.splice(groupIndex, 1)
+                updatedGroup.splice(groupIndex, 1);
                 setGroupData(updatedGroup);
-              }
+            }
+        } catch (error) {
+            console.log("failure to delete group with title " + groupData[groupIndex].title);
         }
-        catch (error) {
-            console.log("failure to delete group with title " + groupData[groupIndex].title)
-        }
-    }
+    };
 
     const deleteSection = async() => {
-        
-        //Add a confirm to see if they really do want to delete this section
-        try{
-
-            var result = window.confirm(`Want to delete ${sectionName} and its groups?`);
-            if(!result){
-                return
+        try {
+            const result = window.confirm(`Want to delete ${sectionName} and its groups?`);
+            if (!result) {
+                return;
             }
-             //Delete the groups in the section
-             for(let i = 0; i < groupData.length; i++){
-                const temp = groupData[i];
-                deleteGroup(groupData[i].group_id, i, true);
+    
+            // Delete all groups within the section
+            await Promise.all(groupData.map((group, index) => deleteGroup(group.group_id, index, true)));
+    
+            // Delete the section itself
+            const token = JSON.parse(localStorage.getItem('user')).token;
+            const response = await fetch(
+                Path.buildPath("api/section/deleteSection", true),
+                {
+                    method: "POST",
+                    body: JSON.stringify({ section_id: section.section_id }),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                }
+            );
+    
+            if (response.ok) {
+                deleteComponent(section.section_id);
             }
-            
-            deleteComponent(section.section_id);
-            
-        }
-        catch(error){
+        } catch (error) {
             console.log("Failure to delete Section " + sectionName);
         }
-    }
+    };
 
     const toggleSubmissionAbility = async() => {
         try {
