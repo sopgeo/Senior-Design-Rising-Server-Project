@@ -328,7 +328,7 @@ function Upload() {
                     <div className="drag-area">
                       <span className="header">Drag and drop a file here</span>
                       <span className="header">
-                        or <span class="button">select a file</span>{" "}
+                        or <span class="buttons">select a file</span>{" "}
                         <span className="header2"> from your computer </span>{" "}
                       </span>
                       <span class="support">Supports: PDF only</span>
