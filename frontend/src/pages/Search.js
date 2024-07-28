@@ -23,7 +23,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 function Search() {
   // Sets up variables we're using
   const [timer, setTimer] = useState("");
-  const [user, setUser] = useState(
+  const [user] = useState(
     localStorage.getItem("user") != null &&
       JSON.parse(localStorage.getItem("user")).hasOwnProperty("type")
       ? JSON.parse(localStorage.getItem("user")).type
@@ -44,13 +44,13 @@ function Search() {
   function getProjects(query, semester, year, keys) {
     //console.log(keys);
     let bodyJSON = {};
-    if (query != "") {
+    if (query !== "") {
       bodyJSON["query"] = query;
     }
-    if (semester != "") {
+    if (semester !== "") {
       bodyJSON["semester"] = semester;
     }
-    if (year != "") {
+    if (year !== "") {
       bodyJSON["year"] = year;
     }
     if (keys.length > 0) {
@@ -236,7 +236,7 @@ function Search() {
 
   function giveSearch(searchQuery) {
     setSearch(searchQuery);
-    if (timer != "") {
+    if (timer !== "") {
       clearTimeout(timer);
     }
     /* This time delay was chosen via testing so peck typing does
@@ -266,7 +266,7 @@ function Search() {
   const columns = getColumnsPermissions();
 
   function getColumnsPermissions() {
-    if (user == "admin" || user == "coordinator") {
+    if (user === "admin" || user === "coordinator") {
       return [
         {
           header: "Title",
@@ -312,6 +312,7 @@ function Search() {
               src={require("../images/delete-button.png")}
               width="22px"
               height="22px"
+              alt="delete"
               onClick={() => {
                 if (window.confirm("Are you sure you want to delete this project?")) {
                   deleteProject(row.original.project_id);
@@ -390,7 +391,7 @@ function Search() {
         let index = projects.findIndex(
           (proj) => proj.project_id === project_id
         );
-        if (index == 0) {
+        if (index === 0) {
           setProjects(projects.slice(1, projects.length));
         } else {
           setProjects(
@@ -420,7 +421,7 @@ function Search() {
 
   function getTable() {
     //console.log(first);
-    if (projects.length != 0) {
+    if (projects.length !== 0) {
       return (
         <div align="center">
           <table id="tanstackTable" align="center">
@@ -476,7 +477,7 @@ function Search() {
             <tr key={row.original.project_id + "_" + row.original.group_id}>
               {/* For all cells... */}
               {row.getVisibleCells().map((cell) => {
-                if (cell.column.id == "Actions") {
+                if (cell.column.id === "Actions") {
                   return (
                     <td
                       key={
@@ -583,7 +584,7 @@ function Search() {
     listTerms();
     getAllKeyWords();
     getProjects(search, semester, year, keyWords);
-  }, []);
+  }, [search, semester, year, keyWords]);
 
   /* * * * * * * * * *
    *   Design Page   *
