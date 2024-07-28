@@ -4,6 +4,7 @@
 
 body {
     margin: 0;
+    overflow-x:hidden;
 }
 
 .header {
@@ -289,7 +290,7 @@ body {
 
     .header-logo {
         padding: 10px;
-        margin-top: 150px;
+        margin-top: 200px;
         background-color: rgba(255, 201, 4, 0.8);
         color: black;
         font-weight: 700;

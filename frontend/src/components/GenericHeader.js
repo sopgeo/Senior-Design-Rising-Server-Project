@@ -15,7 +15,7 @@ export function GenericHeader({ background }) {
         <div className="Header">
           Computer Science Senior Design Projects
           <a className="loginLink" href="/login">
-            <button className="loginButton">Login</button>
+            <button className="loginButton">Log In</button>
           </a> 
 
         </div>
@@ -48,14 +48,14 @@ export function GenericHeader({ background }) {
       return (
         <div className={css}>
           <div className="navbar">
-          <div className="home"><a className="navItem" href="/">Home</a></div>
-            <a className="navItem" href="/search">Projects</a>
-            {/* <li onClick={showSidebar()}><a className="navItem"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li> */}
-          </div>
-          <div className="sidebar">
-          <div className="home"><a className="navItem" href="/">Home</a></div>
-            <a className="navItem" href="/search">Projects</a>
-          </div>
+            <div className="home"><a className="navItem" href="/">Home</a></div>
+              <a className="navItem" href="/search">Projects</a>
+              {/* <li onClick={showSidebar()}><a className="navItem"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li> */}
+            </div>
+            <div className="sidebar">
+            <div className="home"><a className="navItem" href="/">Home</a></div>
+              <a className="navItem" href="/search">Projects</a>
+            </div>
         </div>
       );
     }
