@@ -14,8 +14,8 @@ import {
 } from "@tanstack/react-table";
 import Path from "../components/Path";
 import Select from "react-select";
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 /* * * * * * * * * *
  *     Search      *
@@ -325,8 +325,14 @@ function Search() {
     } else {
       return [
         {
-          accessorKey: "name",
           header: "Title",
+          cell: ({ row }) => (
+            <>
+              {row.original.files.length > 0
+                ? "\u{1F4C4} " + row.original.name
+                : row.original.name}{" "}
+            </>
+          ),
         },
         {
           header: "Term",
@@ -360,7 +366,7 @@ function Search() {
 
   const deleteProject = async (project_id) => {
     try {
-      const token = JSON.parse(localStorage.getItem('user')).token
+      const token = JSON.parse(localStorage.getItem("user")).token;
       const response = await fetch(
         Path.buildPath("api/project/deleteProject", true),
         {
@@ -368,7 +374,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -378,7 +384,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         let index = projects.findIndex(
@@ -424,7 +430,7 @@ function Search() {
         </div>
       );
     } else if (first) {
-      return <Skeleton count={15}/>;
+      return <Skeleton count={15} />;
     } else {
       return <p align="center">Sorry, that query returned no results</p>;
     }
