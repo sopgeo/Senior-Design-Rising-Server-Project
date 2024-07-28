@@ -142,20 +142,20 @@ function Search() {
     let date = new Date();
     let termsArr = [];
 
-    for (let i = 0; i <= date.getFullYear() - 2016; i++) {
+    for (let i = 2016; i <= date.getFullYear(); i++) {
       let tempSpring = {};
-      tempSpring["value"] = "Spring " + (i + 2016).toString();
-      tempSpring["label"] = "Spring " + (i + 2016).toString();
+      tempSpring["value"] = "Spring " + i.toString();
+      tempSpring["label"] = "Spring " + i.toString();
       termsArr.push(tempSpring);
 
       let tempSummer = {};
-      tempSummer["value"] = "Summer " + (i + 2016).toString();
-      tempSummer["label"] = "Summer " + (i + 2016).toString();
+      tempSummer["value"] = "Summer " + i.toString();
+      tempSummer["label"] = "Summer " + i.toString();
       termsArr.push(tempSummer);
 
       let tempFall = {};
-      tempFall["value"] = "Fall " + (i + 2016).toString();
-      tempFall["label"] = "Fall " + (i + 2016).toString();
+      tempFall["value"] = "Fall " + i.toString();
+      tempFall["label"] = "Fall " + i.toString();
       termsArr.push(tempFall);
     }
 
