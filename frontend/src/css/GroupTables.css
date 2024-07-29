@@ -100,8 +100,8 @@
 
 .member-row{
     height: 50px;
-    display: flex;
-    justify-content:space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.25fr;
 }
 
 .member-row2{
@@ -144,17 +144,6 @@
     margin-top: 5px;
 }
 
-.add-member-button{
-    height: 30px;
-    width: 260px;
-    color: black;
-    border-color: transparent;
-    background-color: #FFC904;
-    border-radius: 25px;
-    margin-right: 75px;
-
-}
-
 .semester-buttons-container{
     display:flex;
     justify-content: space-between;
@@ -193,6 +182,7 @@
     margin-right: 15px;
     margin-top: 1%;
     text-wrap: nowrap;
+    border-radius: 25px;
 }    
 
 .submissions-enabled-circle{

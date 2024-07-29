@@ -133,3 +133,19 @@ exports.checkUserExists = async (req, res) => {
         res.status(500).json({ error: error.message, message: "Error occurred checking user" });
     }
 }
+
+exports.getAdmins = async (req, res) => {
+    try{
+        const admins = await User.findAll({
+            where: {
+                type: {
+                    [Op.or]: ['admin', 'coordinator']
+                } 
+            }
+        });
+        res.status(200).json(admins);
+    } catch(error) {
+        console.error('Error fetching admins: ', error);
+        res.status(500).json({error: 'Internal Server Error'});
+    }
+}
