@@ -146,6 +146,8 @@ function GroupManagement() {
     marginBottom: "20px",
   };
 
+  
+
   if ((user==="admin" || user==="coordinator") && width) {
   } else if (width) {
     return (
@@ -195,11 +197,12 @@ function GroupManagement() {
           </div>
           <div className="section-container">
             {sections.map((section, index) => (
+              section.title == "Admins" ? null : (
               <GroupTables
                 key={`${section.section_id}-${refreshKey}`}
                 section={section}
                 deleteComponent={deleteSection}
-              />
+              />)
             ))}
           </div>
         </div>

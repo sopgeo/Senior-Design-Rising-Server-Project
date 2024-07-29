@@ -383,12 +383,20 @@ function Upload() {
         <CsFooter />
       </div>
     );
+  } else if(!submissionsEnabled){
+    return(
+      <>
+        Submissions are not currently enabled for your group. If you believe this is a mistake, 
+        please contact one of your professors.
+      </>
+    );
   } else if (width) {
+    return(
     <>
       You must be logged in and in your submission window to view this page. If
       you think you are seeing this message in error, contact one of your
       professors.
-    </>;
+    </>);
   } else {
     return (
       <>
