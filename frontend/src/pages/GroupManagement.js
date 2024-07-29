@@ -16,10 +16,10 @@ function GroupManagement() {
     setRefreshKey(oldKey => oldKey + 1);
   };
 
-  const [user, setUser] = useState(
+  const [user] = useState(
     JSON.parse(localStorage.getItem("user")) ? jwtDecode(JSON.parse(localStorage.getItem("user")).token).type : "public"
   );
-  const [width, setWidth] = useState(window.innerWidth > 600);
+  const [width] = useState(window.innerWidth > 600);
 
   function getUser() {
     return user;
@@ -59,7 +59,7 @@ function GroupManagement() {
   }, [refreshKey]);
 
   const addSection = async () => {
-    if (newSectionName.trim() == "") {
+    if (newSectionName.trim() === "") {
       alert("Please enter valid section name");
     } else {
       const sectionData = {
@@ -128,7 +128,7 @@ function GroupManagement() {
         throw new Error("Failed to delete section");
       }
 
-      const json = await response.json();
+      /*const json = */await response.json();
 
       if (response.ok) {
         fetchSections();
