@@ -15,7 +15,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
  * * * * * * * * * */
 function Project() {
   // Sets up variables we're using
-  const [user, setUser] = useState("public");
+  const [user] = useState("public");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [sponsor, setSponsor] = useState("");
@@ -80,7 +80,7 @@ function Project() {
   }
 
   function getName() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return (
         <>
           <br />
@@ -137,7 +137,7 @@ function Project() {
   }
 
   function getDescription() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return <p className="Description">{description}</p>;
     }else{
       return <p className="Description"><Skeleton count={3}/></p>;
@@ -157,7 +157,7 @@ function Project() {
   }
 
   function displaySponsor() {
-    if (projectName != "") {
+    if (projectName !== "") {
       return (
         <>
           <br />
@@ -189,7 +189,7 @@ function Project() {
   }
 
   function displayStudents() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return (
         <>
           <h3>Students</h3>
@@ -213,7 +213,7 @@ function Project() {
    * * * * * * * * * */
   function getPDF() {
     //console.log(show);
-    if (projectName == ""){
+    if (projectName === ""){
       return (
         <>
           <br />
@@ -225,7 +225,7 @@ function Project() {
           <br />
         </>
       );
-    }else if (show != "") {
+    }else if (show !== "") {
       return (
         <>
           <br />
@@ -235,7 +235,7 @@ function Project() {
               type="application/pdf"
               width="100%"
               height="1000px"
-            ></object>
+            >Project PDF</object>
           </div>
           <br />
           <br />
