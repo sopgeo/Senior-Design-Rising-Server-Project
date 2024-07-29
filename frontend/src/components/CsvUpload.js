@@ -5,6 +5,7 @@ import "../css/CsvUpload.css";
 
 const CsvUpload = ({ onRefresh }) => {
   const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false)
   //const [errorRows, setErrorRows] = useState([]);
 
   const handleFileChange = (e) => {
@@ -27,6 +28,8 @@ const CsvUpload = ({ onRefresh }) => {
       let sectionName = '';
       let sectionId = null;
       const batchSize = 25; 
+
+      setLoading(true)
 
       Papa.parse(file, {
         complete: async function(results) {
@@ -190,6 +193,7 @@ const CsvUpload = ({ onRefresh }) => {
           }
 
           //console.log('All batches processed');
+          setLoading(false)
 
           if (errors.length > 0) {
             //setErrorRows(errors);
@@ -225,12 +229,19 @@ const CsvUpload = ({ onRefresh }) => {
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
+          {loading ?
+          (
+            <div className="loader"></div>
+          ) :
+          (
           <button style={{ maxWidth: '150px'}}
             onClick={handleFileUpload} 
             className="csv-upload-button"
           >
             Upload CSV 
           </button>
+          )
+          }
         </div>
         <div style={{ textAlign: 'center'}}>
           <p>Class CSV files should have the header (FirstName,LastName,PID,GroupName) on line 1. Only the section name on line 2. Lines 3 and after should be student information
