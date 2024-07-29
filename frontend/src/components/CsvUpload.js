@@ -28,7 +28,7 @@ const handleFileUpload = async () => {
     let errors = [];
     let sectionName = '';
     let sectionId = null;
-    const batchSize = 100; 
+    const batchSize = 25; 
 
     Papa.parse(file, {
       complete: async function(results) {
