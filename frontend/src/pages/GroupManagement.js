@@ -8,6 +8,7 @@ import TagGet from "../components/TagGet";
 import GroupTables from "../components/GroupTables";
 import Path from "../components/Path";
 import { jwtDecode } from "jwt-decode";
+import AdminTable from "../components/AdminTable";
 
 function GroupManagement() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -176,6 +177,9 @@ function GroupManagement() {
           <div style={containerStyle}>
             <TagGet />
             <CsvUpload onRefresh={handleRefresh} />
+          </div>
+          <div className="admin-table1">
+            <AdminTable/>
           </div>
           <div className="section-button-container">
             <input

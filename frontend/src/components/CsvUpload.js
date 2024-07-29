@@ -239,14 +239,14 @@ const handleFileChange = (e) => {
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
-          <button 
+          <button style = {{ maxWidth: '150px'}}
             onClick={handleFileUpload} 
             className="csv-upload-button"
           >
             Upload CSV 
           </button>
         </div>
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center'}}>
           <p>Class CSV files should have the header (FirstName,LastName,PID,GroupName) on line 1. Only the section name on line 2. Lines 3 and after should be student information
             in the format of the header. Larger files may take a minute to upload.
           </p>

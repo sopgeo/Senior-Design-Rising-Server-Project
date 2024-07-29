@@ -1,0 +1,64 @@
+.admin-table{
+    margin-bottom:40px;
+    max-width: 1000px;
+    width:100%;
+}
+
+.admin-list{
+    list-style-type: none;
+    text-align: left;
+}
+
+.admin-header {
+    background-color: black;
+    padding: 12px;
+    border-radius: 5px;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.admin-list-container{
+    padding-left: 25px;
+}
+
+.admin-list li{
+    padding: 10px 20px 5px;
+}
+
+.admin-list li:nth-child(odd){
+    background-color: hsl(0, 0%, 90%);
+}
+
+.admin-list li:nth-child(even){
+    background-color: hsl(0, 0%, 80%);
+}
+
+.admin-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.25fr;
+}
+
+.delete-admin-button{
+    background-color: transparent;
+    width:30px;
+    height:30px;
+    box-shadow: none;
+    border:none;
+    margin-right:0px; 
+}
+
+.input-row{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.25fr;
+}
+
+.add-admin{
+    width: 125px; 
+    height: 30px;
+    border-radius: 25px;
+    box-shadow: none;
+    border-color: transparent;
+    margin-top: 15px;
+}
