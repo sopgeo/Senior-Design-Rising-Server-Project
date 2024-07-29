@@ -9,9 +9,13 @@ body{
     align-items: center;
     /* font-family: 'Courier New', Courier, monospace; */
     /* font-weight: bold; */
+    font-size: 18px;
 }
 
-/* .tags-input-container{ */
+.tags-input-container{
+    width: 890px;
+    border-color: black;
+}
 
 
 .react-select{

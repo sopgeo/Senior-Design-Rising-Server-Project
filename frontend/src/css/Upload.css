@@ -34,15 +34,13 @@
     text-align: left;
 }
 
-#full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc, #proj-name, #proj-sponsor {
+#proj-semester, #proj-year, #full-name-input, #linked-in-input, #project-role-input, #proj-name-input, #tags-input, #proj-desc, #proj-name, #proj-sponsor {
     border: 1px solid #555555;
     border-radius: 3px;
     height: 3.63rem;
     padding: .5em;
     flex-wrap: wrap;
 }
-
-
 
 #proj-desc {
     width: 450px;
@@ -62,13 +60,28 @@
     font-size: 16px
 }
 
-#proj-semester, #proj-sponsor {
+#proj-semester {
     width: 200px;
     height: 40px;
     font-size: 16px
 }
 
+#proj-sponsor {
+    width: 200px;
+    height: 40px;
+    font-size: 16px
+}
 
+.error-container {
+    margin-left: 10px;
+}
+
+.error-message {
+    color: black;
+    font-size: 12px;
+    margin-top: 4px;
+    clear: both;
+  }
 
 #full-name-input, #linked-in-input, #project-role-input {
     width: 214px;
@@ -86,7 +99,7 @@
 }
 
 .line2 {
-    display: flex;
+    display: inline-flex;
     justify-content: center;
 }
 
@@ -141,12 +154,13 @@
    margin: 10px 0 15px 0;
 }
 
-.drag-area .button, .drop-files {
+.drag-area .buttons, .drop-files {
     font-weight: 700;
 }
 
 #done-button {
-    width: 100px;
+    width: 115px;
+    height: 75px;
     margin: 20px;
     background-color: #FFC904;
     padding: 10px;
@@ -159,6 +173,30 @@
     background-color:#EAB906;
 }
 
-/* #proj-name-input, #tags-input, #full-name-input, #linked-in-input, #project-role-input {
-    margin: 5px;
-} */
+/* HTML: <div class="loader"></div> */
+.loader {
+    margin: auto;
+    width: 50px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: 
+      radial-gradient(farthest-side,#ffa516 94%,#0000) top/8px 8px no-repeat,
+      conic-gradient(#0000 30%,#ffa516);
+    -webkit-mask: radial-gradient(farthest-side,#0000 calc(100% - 8px),#000 0);
+    animation: l13 1s infinite linear;
+  }
+  @keyframes l13{ 
+    100%{transform: rotate(1turn)}
+  }
+
+#project-name, #project-year, #project-semester, #project-sponsor {
+    text-align: left;
+}
+
+.h4 {
+    padding: 10px;
+}
+
+.project-info {
+    height: 100%;
+}

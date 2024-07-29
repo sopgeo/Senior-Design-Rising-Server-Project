@@ -12,6 +12,8 @@ function Upload() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
   const [width, setWidth] = useState(window.innerWidth > 600);
+  const [loading, setLoading] = useState(false)
+  const [formErrors, setFormErrors] = useState({})
 
   const onDrop = (acceptedFiles) => {
     setSelectedFile(acceptedFiles[0]);
@@ -60,8 +62,35 @@ function Upload() {
     }
   };
 
+  const validate = () => {
+    const errors = {}
+    if (!document.getElementById("proj-name").value) errors.name = "Name is required"
+
+    if (!document.getElementById("proj-year").value) errors.year = "Year is required"
+    else {
+      const currentYear = new Date().getFullYear() + 1
+      const inputYear = document.getElementById("proj-year").value
+
+      if (!/^\d{4}$/.test(inputYear) || inputYear < 2010 || inputYear > currentYear)
+        errors.year = "Invalid year"
+    }
+
+    if (!document.getElementById("proj-semester").value) errors.semester = "Semester is required"
+    else if (document.getElementById("proj-semester").value !== 'Fall' &&
+             document.getElementById("proj-semester").value !== 'Summer' &&
+             document.getElementById("proj-semester").value !== 'Spring') errors.semester = "Semester must be Fall, Summer, Spring"
+
+    if (!document.getElementById("proj-semester").value) errors.sponsor = "Sponsor is required"
+
+    setFormErrors(errors)
+
+    return Object.keys(errors).length === 0
+  }
+
   const uploadProject = async () => {
+    if (!validate()) return
     try {
+      setLoading(true)
       const projectData = {
         group_id: groupId,
         name: document.getElementById("proj-name").value,
@@ -95,7 +124,10 @@ function Upload() {
       const project_id = json.project_id;
       const tags = getTagState();
       assignTags(project_id, tags);
-      if(selectedFile) uploadPDF(project_id, json.end_year, json.end_semester);
+      if(selectedFile) {
+        //alert("Loading")
+        await uploadPDF(project_id, json.end_year, json.end_semester);
+      }
 
       alert("You've submitted your project!");
       if (project_id == null) {
@@ -162,6 +194,8 @@ function Upload() {
       if (!response.ok) {
         throw new Error(`${response.status}`);
       }
+
+      return 1
     } catch (error) {
       console.error("Error uploading pdf" + error.message);
     }
@@ -196,74 +230,76 @@ function Upload() {
           {/* <h1>Hello, </h1> */}
           <h1>Upload your project</h1>
           <h3>Your group is: {groupTitle}</h3>
-          <h4>
+          <h4 class="h4">
             Thank you for your hard work this semester! Please upload your
             technical document to the server by filling out the form below.
           </h4>
         </div>
 
         <div className="project-info">
-          <div className="line1">
-            <div className="tags-field">
-              <div id="tags">Tags</div>
-              <TagsInput ref={tagStateRef} />
-            </div>
-          </div>
-          <br />
 
           <div className="line2">
             <div className="project-name-field">
               <div id="project-name">Project Name</div>
               <span contenteditable="false">
-                <textarea
+                <input
                   type="text"
                   id="proj-name"
                   placeholder="Type project name here..."
+                  style={{borderColor: formErrors.name ? 'red' : ''}}
                 >
-                  {""}
-                </textarea>
+                </input>
               </span>
             </div>
 
             <div className="project-year-field">
               <div id="project-year">Project Year</div>
               <span contenteditable="false">
-                <textarea
+                <input
                   type="text"
                   id="proj-year"
-                  placeholder="Type project year here..."
+                  placeholder="e.g. '2024'"
+                  style={{borderColor: formErrors.year ? 'red' : ''}}
                 >
-                  {""}
-                </textarea>
+                </input>
               </span>
             </div>
 
             <div className="project-semester-field">
               <div id="project-semester">Project Semester</div>
               <span contenteditable="false">
-                <textarea
+                <input
                   type="text"
                   id="proj-semester"
-                  placeholder="Type project semester here..."
+                  placeholder="e.g. 'Spring'"
+                  style={{borderColor: formErrors.semester ? 'red' : ''}}
                 >
-                  {""}
-                </textarea>
+                </input>
               </span>
             </div>
+
 
             <div className="project-sponsor-field">
               <div id="project-sponsor">Project Sponsor</div>
               <span contenteditable="false">
-                <textarea
+                <input
                   type="text"
                   id="proj-sponsor"
-                  placeholder="Type project sponsor here..."
+                  placeholder="e.g. 'Richard Leinecker'"
+                  style={{borderColor: formErrors.sponsor ? 'red' : ''}}
                 >
-                  {""}
-                </textarea>
+                </input>
               </span>
             </div>
           </div>
+            <div className="line1">
+                <div className="tags-field">
+                  <div id="tags">Tags</div>
+                  <TagsInput ref={tagStateRef} />
+                </div>
+            </div>
+            <br />
+          <br />
 
           <div className="line3">
             <div className="tech-doc-field">
@@ -291,7 +327,7 @@ function Upload() {
                     <div className="drag-area">
                       <span className="header">Drag and drop a file here</span>
                       <span className="header">
-                        or <span class="button">select a file</span>{" "}
+                        or <span class="buttons">select a file</span>{" "}
                         <span className="header2"> from your computer </span>{" "}
                       </span>
                       <span class="support">Supports: PDF only</span>
@@ -323,10 +359,26 @@ function Upload() {
             </div>
           </div>
 
+          
+
           <br />
+          {loading ? 
+          (
+            <div className="loader"></div>
+          ) : 
+          (
           <button id="done-button" onClick={uploadProject}>
             Done
           </button>
+          
+          )
+          }
+          <div className='error-container'> 
+          {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+          {formErrors.year && <span className="error-message">{formErrors.year}</span>}
+          {formErrors.semester && <span className="error-message">{formErrors.semester}</span>}
+          {formErrors.sponsor && <span className="error-message">{formErrors.sponsor}</span>}
+          </div>
         </div>
         <CsFooter />
       </div>

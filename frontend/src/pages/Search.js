@@ -14,8 +14,8 @@ import {
 } from "@tanstack/react-table";
 import Path from "../components/Path";
 import Select from "react-select";
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 /* * * * * * * * * *
  *     Search      *
@@ -141,31 +141,39 @@ function Search() {
   function listTerms() {
     let date = new Date();
     let termsArr = [];
-
-    for (let i = 0; i <= date.getFullYear() - 2016; i++) {
-      let tempSpring = {};
-      tempSpring["value"] = "Spring " + (i + 2016).toString();
-      tempSpring["label"] = "Spring " + (i + 2016).toString();
-      termsArr.push(tempSpring);
-
-      let tempSummer = {};
-      tempSummer["value"] = "Summer " + (i + 2016).toString();
-      tempSummer["label"] = "Summer " + (i + 2016).toString();
-      termsArr.push(tempSummer);
-
-      let tempFall = {};
-      tempFall["value"] = "Fall " + (i + 2016).toString();
-      tempFall["label"] = "Fall " + (i + 2016).toString();
-      termsArr.push(tempFall);
+    let currentYear = date.getFullYear();
+  
+    for (let i = 2016; i <= currentYear; i++) {
+      if (i < currentYear) {
+        let tempSpring = { value: "Spring " + i.toString(), label: "Spring " + i.toString() };
+        termsArr.push(tempSpring);
+  
+        let tempSummer = { value: "Summer " + i.toString(), label: "Summer " + i.toString() };
+        termsArr.push(tempSummer);
+  
+        let tempFall = { value: "Fall " + i.toString(), label: "Fall " + i.toString() };
+        termsArr.push(tempFall);
+      } else {
+        if (date >= new Date(currentYear, 0, 1)) {
+          let tempSpring = { value: "Spring " + i.toString(), label: "Spring " + i.toString() };
+          termsArr.push(tempSpring);
+        }
+        if (date >= new Date(currentYear, 4, 15)) {
+          let tempSummer = { value: "Summer " + i.toString(), label: "Summer " + i.toString() };
+          termsArr.push(tempSummer);
+        }
+        if (date >= new Date(currentYear, 7, 1)) {
+          let tempFall = { value: "Fall " + i.toString(), label: "Fall " + i.toString() };
+          termsArr.push(tempFall);
+        }
+      }
     }
-
-    let temp = {};
-    temp["value"] = "";
-    temp["label"] = "All";
+  
+    let temp = { value: "", label: "All" };
     termsArr.push(temp);
-
+  
     termsArr.reverse();
-
+  
     setTerms(termsArr);
   }
 
@@ -312,7 +320,11 @@ function Search() {
               src={require("../images/delete-button.png")}
               width="22px"
               height="22px"
-              onClick={() => deleteProject(row.original.project_id)}
+              onClick={() => {
+                if (window.confirm("Are you sure you want to delete this project?")) {
+                  deleteProject(row.original.project_id);
+                }
+              }}
               style={{ cursor: "pointer" }}
             />
           ),
@@ -321,8 +333,14 @@ function Search() {
     } else {
       return [
         {
-          accessorKey: "name",
           header: "Title",
+          cell: ({ row }) => (
+            <>
+              {row.original.files.length > 0
+                ? "\u{1F4C4} " + row.original.name
+                : row.original.name}{" "}
+            </>
+          ),
         },
         {
           header: "Term",
@@ -356,7 +374,7 @@ function Search() {
 
   const deleteProject = async (project_id) => {
     try {
-      const token = JSON.parse(localStorage.getItem('user')).token
+      const token = JSON.parse(localStorage.getItem("user")).token;
       const response = await fetch(
         Path.buildPath("api/project/deleteProject", true),
         {
@@ -364,7 +382,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -374,7 +392,7 @@ function Search() {
           body: JSON.stringify({ project_id: project_id }),
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
         });
         let index = projects.findIndex(
@@ -420,7 +438,7 @@ function Search() {
         </div>
       );
     } else if (first) {
-      return <Skeleton count={15}/>;
+      return <Skeleton count={15} />;
     } else {
       return <p align="center">Sorry, that query returned no results</p>;
     }

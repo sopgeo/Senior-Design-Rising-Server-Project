@@ -11,6 +11,12 @@ import { jwtDecode } from "jwt-decode";
 import AdminTable from "../components/AdminTable";
 
 function GroupManagement() {
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = () => {
+    setRefreshKey(oldKey => oldKey + 1);
+  };
+
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) ? jwtDecode(JSON.parse(localStorage.getItem("user")).token).type : "public"
   );
@@ -51,7 +57,7 @@ function GroupManagement() {
 
   useEffect(() => {
     fetchSections();
-  }, []);
+  }, [refreshKey]);
 
   const addSection = async () => {
     if (newSectionName.trim() == "") {
@@ -164,13 +170,13 @@ function GroupManagement() {
       <div className="PageBody">
         <br />
 
-        <h1 className="Title">Group Management</h1>
+        <h1 className="Title">Group Management </h1>
         <br />
 
         <div className="App">
           <div style={containerStyle}>
             <TagGet />
-            <CsvUpload />
+            <CsvUpload onRefresh={handleRefresh} />
           </div>
           <div className="admin-table1">
             <AdminTable/>
@@ -190,7 +196,7 @@ function GroupManagement() {
           <div className="section-container">
             {sections.map((section, index) => (
               <GroupTables
-                key={section.section_id}
+                key={`${section.section_id}-${refreshKey}`}
                 section={section}
                 deleteComponent={deleteSection}
               />
