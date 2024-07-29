@@ -73,14 +73,15 @@
 }
 
 .error-container {
+    display: flex;
+    flex-direction: column;
     margin-left: 10px;
 }
 
 .error-message {
-    color: black;
+    margin-bottom: 8px;
     font-size: 12px;
-    margin-top: 4px;
-    clear: both;
+    color: red;
   }
 
 #full-name-input, #linked-in-input, #project-role-input {

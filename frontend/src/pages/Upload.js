@@ -78,7 +78,7 @@ function Upload() {
              document.getElementById("proj-semester").value !== 'Summer' &&
              document.getElementById("proj-semester").value !== 'Spring') errors.semester = "Semester must be Fall, Summer, Spring"
 
-    if (!document.getElementById("proj-semester").value) errors.sponsor = "Sponsor is required"
+    if (!document.getElementById("proj-sponsor").value) errors.sponsor = "Sponsor is required"
 
     setFormErrors(errors)
 
@@ -372,10 +372,10 @@ function Upload() {
           )
           }
           <div className='error-container'> 
-          {formErrors.name && <span className="error-message">{formErrors.name}</span>}
-          {formErrors.year && <span className="error-message">{formErrors.year}</span>}
-          {formErrors.semester && <span className="error-message">{formErrors.semester}</span>}
-          {formErrors.sponsor && <span className="error-message">{formErrors.sponsor}</span>}
+          {formErrors.name && <div className="error-message">{formErrors.name}</div>}
+          {formErrors.year && <div className="error-message">{formErrors.year}</div>}
+          {formErrors.semester && <div className="error-message">{formErrors.semester}</div>}
+          {formErrors.sponsor && <div className="error-message">{formErrors.sponsor}</div>}
           </div>
         </div>
         <CsFooter />
