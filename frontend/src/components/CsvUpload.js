@@ -106,13 +106,13 @@ const CsvUpload = ({ onRefresh }) => {
                 });
 
                 const checkGroupJson = await checkGroupResponse.json();
-                console.log('Group check response:', checkGroupJson);
 
                 let groupId = null;
 
                 if (checkGroupJson.group_id) {
                   groupId = checkGroupJson.group_id;
                 } else {
+                  console.log('Group check response:', checkGroupJson);
                   const token = JSON.parse(localStorage.getItem('user')).token;
                   const createGroupResponse = await fetch(Path.buildPath("api/group/createGroup", true), {
                     method: 'POST',
@@ -124,7 +124,6 @@ const CsvUpload = ({ onRefresh }) => {
                   });
 
                   if (createGroupResponse.ok) {
-                    console.log('Group check response:', checkGroupJson);
                     const createGroupJson = await createGroupResponse.json();
                     groupId = createGroupJson.group_id;
                   } else {
