@@ -141,31 +141,39 @@ function Search() {
   function listTerms() {
     let date = new Date();
     let termsArr = [];
-
-    for (let i = 2016; i <= date.getFullYear(); i++) {
-      let tempSpring = {};
-      tempSpring["value"] = "Spring " + i.toString();
-      tempSpring["label"] = "Spring " + i.toString();
-      termsArr.push(tempSpring);
-
-      let tempSummer = {};
-      tempSummer["value"] = "Summer " + i.toString();
-      tempSummer["label"] = "Summer " + i.toString();
-      termsArr.push(tempSummer);
-
-      let tempFall = {};
-      tempFall["value"] = "Fall " + i.toString();
-      tempFall["label"] = "Fall " + i.toString();
-      termsArr.push(tempFall);
+    let currentYear = date.getFullYear();
+  
+    for (let i = 2016; i <= currentYear; i++) {
+      if (i < currentYear) {
+        let tempSpring = { value: "Spring " + i.toString(), label: "Spring " + i.toString() };
+        termsArr.push(tempSpring);
+  
+        let tempSummer = { value: "Summer " + i.toString(), label: "Summer " + i.toString() };
+        termsArr.push(tempSummer);
+  
+        let tempFall = { value: "Fall " + i.toString(), label: "Fall " + i.toString() };
+        termsArr.push(tempFall);
+      } else {
+        if (date >= new Date(currentYear, 0, 1)) {
+          let tempSpring = { value: "Spring " + i.toString(), label: "Spring " + i.toString() };
+          termsArr.push(tempSpring);
+        }
+        if (date >= new Date(currentYear, 4, 15)) {
+          let tempSummer = { value: "Summer " + i.toString(), label: "Summer " + i.toString() };
+          termsArr.push(tempSummer);
+        }
+        if (date >= new Date(currentYear, 7, 1)) {
+          let tempFall = { value: "Fall " + i.toString(), label: "Fall " + i.toString() };
+          termsArr.push(tempFall);
+        }
+      }
     }
-
-    let temp = {};
-    temp["value"] = "";
-    temp["label"] = "All";
+  
+    let temp = { value: "", label: "All" };
     termsArr.push(temp);
-
+  
     termsArr.reverse();
-
+  
     setTerms(termsArr);
   }
 

@@ -12,7 +12,7 @@ const studentAuth = async (req, res, next) => {
 
   const token = authorization.split(' ')[1]
 
-  //console.log(token)
+  // console.log(token)
   try {
     const {ucf_id, type} = jwt.verify(token, process.env.SECRET)
     if (!ucf_id) throw Error("UCF_ID not found")

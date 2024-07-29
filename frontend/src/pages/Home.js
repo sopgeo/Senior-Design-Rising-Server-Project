@@ -12,7 +12,8 @@ function Home() {
         <div className="header-logo">
           Computer Science Senior Design Projects
         </div>
-        <img className="img" src={require('../images/l3harris.jpg')} alt="L3Harris"/>
+        <img className="desktop" src={require ('../images/l3harris.jpg')} alt="L3Harris"/>
+        <img className="mobile" src={require ('../images/l3harrismobile.jpg')} alt="L3Harris"/>
       </div>
 
     

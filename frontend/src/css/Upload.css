@@ -154,7 +154,7 @@
    margin: 10px 0 15px 0;
 }
 
-.drag-area .button, .drop-files {
+.drag-area .buttons, .drop-files {
     font-weight: 700;
 }
 
@@ -191,4 +191,12 @@
 
 #project-name, #project-year, #project-semester, #project-sponsor {
     text-align: left;
+}
+
+.h4 {
+    padding: 10px;
+}
+
+.project-info {
+    height: 100%;
 }

@@ -9,10 +9,11 @@ body{
     align-items: center;
     /* font-family: 'Courier New', Courier, monospace; */
     /* font-weight: bold; */
+    font-size: 18px;
 }
 
 .tags-input-container{
-    width: 400px;
+    width: 890px;
     border-color: black;
 }
 

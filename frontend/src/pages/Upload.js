@@ -230,22 +230,13 @@ function Upload() {
           {/* <h1>Hello, </h1> */}
           <h1>Upload your project</h1>
           <h3>Your group is: {groupTitle}</h3>
-          <h4>
+          <h4 class="h4">
             Thank you for your hard work this semester! Please upload your
             technical document to the server by filling out the form below.
           </h4>
         </div>
 
         <div className="project-info">
-
-        <div className="line1">
-            <div className="tags-field">
-              <div id="tags">Tags</div>
-              <TagsInput ref={tagStateRef} />
-            </div>
-          </div>
-          <br />
-          
 
           <div className="line2">
             <div className="project-name-field">
@@ -287,6 +278,7 @@ function Upload() {
               </span>
             </div>
 
+
             <div className="project-sponsor-field">
               <div id="project-sponsor">Project Sponsor</div>
               <span contenteditable="false">
@@ -300,7 +292,14 @@ function Upload() {
               </span>
             </div>
           </div>
-          {/* <br /> */}
+            <div className="line1">
+                <div className="tags-field">
+                  <div id="tags">Tags</div>
+                  <TagsInput ref={tagStateRef} />
+                </div>
+            </div>
+            <br />
+          <br />
 
           <div className="line3">
             <div className="tech-doc-field">
@@ -328,7 +327,7 @@ function Upload() {
                     <div className="drag-area">
                       <span className="header">Drag and drop a file here</span>
                       <span className="header">
-                        or <span class="button">select a file</span>{" "}
+                        or <span class="buttons">select a file</span>{" "}
                         <span className="header2"> from your computer </span>{" "}
                       </span>
                       <span class="support">Supports: PDF only</span>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Path from "../components/Path";
 import Select from 'react-select';
+import '../css/TagGet.css';
 
 const TagGet = () => {
   const [tags, setTags] = useState([]);
@@ -38,7 +39,7 @@ const TagGet = () => {
   const deleteTags = async () => {
     const deletePromises = selectedTags.map(async (tag) => {
       try {
-        const token = JSON.parse(localStorage.getItem('user')).token
+        const token = JSON.parse(localStorage.getItem('user')).token;
         const response = await fetch(Path.buildPath("api/tag/deleteTag", true), {
           method: 'POST',
           headers: {
@@ -64,8 +65,18 @@ const TagGet = () => {
   };
 
   const handleAddTag = async () => {
+    if (newTagName.trim() === '') {
+      alert('Tag name cannot be empty!');
+      return;
+    }
+    
+    if (tags.some(tag => tag.name.toLowerCase() === newTagName.toLowerCase())) {
+      alert('Tag already exists!');
+      return;
+    }
+
     try {
-      const token = JSON.parse(localStorage.getItem('user')).token
+      const token = JSON.parse(localStorage.getItem('user')).token;
       const response = await fetch(Path.buildPath("api/tag/createTag", true), {
         method: 'POST',
         headers: {
@@ -94,88 +105,50 @@ const TagGet = () => {
     label: tag.name,
   }));
 
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'row', 
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginBottom: '20px',
-  };
-
-  const sectionStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center', 
-    marginBottom: '20px',
-    marginRight: '20px', 
-    marginTop: '0', 
-  };
-
-  const headingStyle = {
-    textAlign: 'center',
-    marginBottom: '10px',
-    color: '#000', 
-    fontSize: '20px', 
-    marginTop: '0', 
-  };
-
   const selectStyle = {
-    width: '300px',
-    marginBottom: '10px',
-  };
-
-  const inputStyle = {
-    padding: '8px',
-    fontSize: '16px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    marginBottom: '10px',
-    width: '200px',
-    boxSizing: 'border-box',
-  };
-
-  const addButtonStyle = {
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    width: '150px',
-    height: '40px',
-    fontSize: '16px',
-    textAlign: 'center',
+    container: (provided) => ({
+      ...provided,
+      width: '250px',
+      marginBottom: '10px',
+      boxSizing: 'border-box',
+    }),
+    control: (provided) => ({
+      ...provided,
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      minHeight: '25px',
+    }),
+    input: (provided) => ({
+      ...provided,
+      padding: '1px',
+    }),
   };
 
   return (
-    <div className="tags-container" style={containerStyle}>
-      <div style={sectionStyle}>
-        <h3 style={{ textAlign: 'center', marginBottom: '10px', color: '#000', fontSize: '20px', marginTop: '0' }}>Add a new tag</h3>
+    <div className="tags-container">
+      <div className="section">
+        <h3 className="section-heading">Add a new tag</h3>
         <input
           type="text"
           value={newTagName}
           onChange={(e) => setNewTagName(e.target.value)}
           placeholder="Enter tag name"
-          style={inputStyle}
+          className="input"
         />
-        <button onClick={handleAddTag} style={addButtonStyle}>
+        <button onClick={handleAddTag} className="button">
           Add
         </button>
       </div>
-      <div style={sectionStyle}>
-        <h2 style={headingStyle}>Select tags for deletion</h2>
+      <div className="section">
+        <h2 className="heading">Select tags for deletion</h2>
         <Select
           options={options}
           onChange={handleSelectChange}
           value={selectedTags}
           isMulti
-          styles={{
-            container: (provided) => ({
-              ...provided,
-              ...selectStyle
-            })
-          }}
+          styles={selectStyle}
         />
-        <button onClick={confirmDelete} style={addButtonStyle}>
+        <button onClick={confirmDelete} className="button">
           Delete
         </button>
       </div>
