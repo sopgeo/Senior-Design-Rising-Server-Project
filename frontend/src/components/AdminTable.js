@@ -48,11 +48,11 @@ function AdminTable() {
       const userData = {
           ucf_id: ucfIdRef.current.value,
           password: ucfIdRef.current.value,
-          group_id: 2000,
+          group_id: 2260,
           first_name: firstNameRef.current.value,
           last_name: lastNameRef.current.value,
           type: "admin",
-          section: null
+          section: 35
       }
       const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
