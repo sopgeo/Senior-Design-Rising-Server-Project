@@ -21,8 +21,6 @@ const CsvUpload = ({ onRefresh }) => {
     }
   };
 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
   const handleFileUpload = async () => {
     if (file) {
       let errors = [];
@@ -108,7 +106,7 @@ const CsvUpload = ({ onRefresh }) => {
                 });
 
                 const checkGroupJson = await checkGroupResponse.json();
-                //console.log('Group check response:', checkGroupJson);
+                console.log('Group check response:', checkGroupJson);
 
                 let groupId = null;
 
@@ -126,9 +124,9 @@ const CsvUpload = ({ onRefresh }) => {
                   });
 
                   if (createGroupResponse.ok) {
+                    console.log('Group check response:', checkGroupJson);
                     const createGroupJson = await createGroupResponse.json();
                     groupId = createGroupJson.group_id;
-                    await delay(200);
                   } else {
                     const createGroupJson = await createGroupResponse.json();
                     console.error('Failed to create group:', createGroupJson);
