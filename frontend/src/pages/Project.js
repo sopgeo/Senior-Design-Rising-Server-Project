@@ -22,7 +22,6 @@ function Project() {
   const [show, setShow] = useState("");
   const [tags, setTags] = useState([]);
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false)
   const urlInfo = new URLSearchParams(window.location.search);
   var projectId = "";
   if (urlInfo.has("id")) {
@@ -56,7 +55,6 @@ function Project() {
           ? setSponsor(json.sponsor)
           : setSponsor("");
         try {
-          setLoading(true)
           setShow(Path.buildPath(json.documents[0].filepath, false));
         } catch {
           setShow("");
@@ -229,30 +227,20 @@ function Project() {
       );
     }else if (show !== "") {
       return (
-        <div>
-          {loading ? 
-          (
-            <div className="loader"></div>
-          ) : 
-          (
-            <>
-            <br />
-            <div className="PDF">
-              <object
-                data={show}
-                type="application/pdf"
-                width="100%"
-                height="1000px"
-              >Project PDF</object>
-            </div>
-            <br />
-            <br />
-            <br />
-          </>
-          
-          )
-          }
-        </div>
+        <>
+          <br />
+          <div className="PDF">
+            <object
+              data={show}
+              type="application/pdf"
+              width="100%"
+              height="1000px"
+            ></object>
+          </div>
+          <br />
+          <br />
+          <br />
+        </>
 
       );
     } else {
