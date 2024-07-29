@@ -243,7 +243,7 @@ function Project() {
                 type="application/pdf"
                 width="100%"
                 height="1000px"
-              ></object>
+              >Project PDF</object>
             </div>
             <br />
             <br />
