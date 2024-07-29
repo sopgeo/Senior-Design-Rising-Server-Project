@@ -35,7 +35,7 @@ const CsvUpload = ({ onRefresh }) => {
         complete: async function(results) {
           const data = results.data;
           const totalRows = data.length;
-          let startIndex = 1; 
+          let startIndex = 2; 
 
           //console.log("CSV parsed successfully");
           //console.log(`Total rows: ${totalRows}`);
