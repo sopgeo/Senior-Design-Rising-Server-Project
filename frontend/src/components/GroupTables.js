@@ -238,7 +238,7 @@ function GroupTables ({section, deleteComponent}) {
                             <span className="submissions-enabled-text">{submissionsEnabled ? "Submissions Enabled" : "Submissions Disabled"}</span>
                         </div>
                     </div>
-
+                    <p>{sectionId}</p>
                     <div className="semester-buttons-container">
                         <button className="delete-section-button" onClick={deleteSection}>
                             <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px" alt="delete"/>
@@ -267,6 +267,7 @@ function GroupTables ({section, deleteComponent}) {
                                 <h3>{group.submitted}</h3>
                                 <h3>{group.title}</h3>
                             </div>
+                            <p className="test-group">{group.group_id}</p>
                             <div className="groupName-buttons-container">
                                 <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
                                     <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px" alt="delete"/>
