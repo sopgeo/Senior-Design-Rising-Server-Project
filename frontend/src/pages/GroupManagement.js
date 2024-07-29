@@ -172,7 +172,7 @@ function GroupManagement() {
             <TagGet />
             <CsvUpload />
           </div>
-          <div className="admin-table">
+          <div className="admin-table1">
             <AdminTable/>
           </div>
           <div className="section-button-container">

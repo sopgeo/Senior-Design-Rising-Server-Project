@@ -8,6 +8,7 @@ function AdminTable() {
   //const adminList = ["Bob", "Jim", "Jack", "Matthew", "Richard"];
   //const adminList = [];
   const [adminList, setAdminList] = useState([]);
+  const [isExpanded, setIsExpanded] = useState(false);
   const ucfIdRef = useRef(null);
   const firstNameRef = useRef(null);
   const lastNameRef = useRef(null);
@@ -70,7 +71,7 @@ function AdminTable() {
           /*
           let updatedGroup = JSON.parse(JSON.stringify(groupData));
           updatedGroup[groupIndex].users.push(json)
-          setGroupData(updatedGroup);
+          setGroupData(updatedGroup); 
           */
           let updatedAdmins = JSON.parse(JSON.stringify(adminList));
           updatedAdmins.push(json);
@@ -84,6 +85,12 @@ function AdminTable() {
 
   const deleteAdmin = async(ucf_id, index) =>{
     try {
+
+      const confirm = window.confirm("Are you sure you want to delete this admin?");
+      if(!confirm){
+        return;
+      }
+
       const token = JSON.parse(localStorage.getItem('user')).token
       const response = await fetch(
           Path.buildPath("api/user/deleteUser", true),
@@ -117,18 +124,26 @@ function AdminTable() {
     <div className="admin-table">
       <div className="admin-header">
         <h2>Administrators</h2>
+        <button 
+          className={`dropdown-button group-button ${isExpanded ? `rotated` : ``} `}
+          onClick={() => setIsExpanded(!isExpanded)}> 
+          <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
+        </button>
       </div>
       <div className="admin-list-container">
         <ul className="admin-list">
-          {adminList.map((admin, idx) => (
+          {isExpanded && adminList.map((admin, idx) => (
             <li key={idx} className="admin-row">
-              {admin.ucf_id} {admin.first_name} {admin.last_name}
+              <p className="col1"> {admin.ucf_id} </p>
+              <p className="col2"> {admin.first_name} </p> 
+              <p className="col3"> {admin.last_name} </p>
               <button className="delete-admin-button" onClick={() => deleteAdmin(admin.ucf_id, idx)}>
                 <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px" />
               </button>
             </li>
           ))}
-          <li className="member-row2">
+          {isExpanded && (
+          <li className="input-row">
             <div className="ucf-id-input">
               <p className="ucf-id-name">UCF ID:</p>
               <input className="ucf-id-input-field" ref={ucfIdRef}></input>
@@ -141,8 +156,9 @@ function AdminTable() {
               <p className="last-name-name">Last Name:</p>
               <input className="last-name-field" ref={lastNameRef}></input>
             </div>
-            <button className="add-user" id="add-user" onClick={() => addAdmin()} >Add Administrators</button>
+            <button className="add-admin" id="add-user" onClick={() => addAdmin()} >Add Admin</button>
           </li>
+          )}
         </ul>
       </div>
     </div>
