@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import CSS from "../css/GenericHeader.css";
-import Login from "./Login.js";
 
 export function GenericHeader({ background }) {
   const logout = () => {
@@ -64,7 +63,7 @@ export function GenericHeader({ background }) {
     let usertype = ud.type
 
 
-    if (background == false) {
+    if (background === false) {
       css = "see-through";
     } 
 
