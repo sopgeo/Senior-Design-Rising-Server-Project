@@ -1,4 +1,5 @@
 import React from "react";
+import "../css/GenericHeader.css";
 
 export function GenericHeader({ background }) {
   const logout = () => {
