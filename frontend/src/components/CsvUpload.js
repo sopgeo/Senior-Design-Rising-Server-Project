@@ -34,12 +34,12 @@ const CsvUpload = ({ onRefresh }) => {
           const totalRows = data.length;
           let startIndex = 1; 
 
-          console.log("CSV parsed successfully");
-          console.log(`Total rows: ${totalRows}`);
+          //console.log("CSV parsed successfully");
+          //console.log(`Total rows: ${totalRows}`);
 
           if (data.length > 1) {
             sectionName = data[1][0];
-            console.log(`Section name: ${sectionName}`);
+            //console.log(`Section name: ${sectionName}`);
             try {
               const checkResponse = await fetch(Path.buildPath("api/section/checkSectionExists", true), {
                 method: 'POST',
@@ -50,7 +50,7 @@ const CsvUpload = ({ onRefresh }) => {
               });
 
               const checkJson = await checkResponse.json();
-              console.log('Section check response:', checkJson);
+              //console.log('Section check response:', checkJson);
 
               if (checkJson.section_id) {
                 sectionId = checkJson.section_id;
@@ -79,7 +79,7 @@ const CsvUpload = ({ onRefresh }) => {
           }
 
           const processBatch = async (batch) => {
-            console.log(`Processing batch of size: ${batch.length}`);
+            //console.log(`Processing batch of size: ${batch.length}`);
             for (let row of batch) {
               let isValid = true;
               for (let key in row) {
@@ -124,12 +124,14 @@ const CsvUpload = ({ onRefresh }) => {
                   });
 
                   if (createGroupResponse.ok) {
+                    console.log('Group check response:', checkGroupJson);
                     const createGroupJson = await createGroupResponse.json();
                     groupId = createGroupJson.group_id;
                   } else {
                     const createGroupJson = await createGroupResponse.json();
                     console.error('Failed to create group:', createGroupJson);
                   }
+                  
                 }
 
                 const firstName = row[0];
@@ -146,7 +148,7 @@ const CsvUpload = ({ onRefresh }) => {
                   });
 
                   const checkUserJson = await checkUserResponse.json();
-                  console.log('User check response:', checkUserJson);
+                  //console.log('User check response:', checkUserJson);
 
                   if (!checkUserJson.exists) {
                     const token = JSON.parse(localStorage.getItem('user')).token;
@@ -185,10 +187,10 @@ const CsvUpload = ({ onRefresh }) => {
             const batch = data.slice(startIndex, startIndex + batchSize);
             await processBatch(batch);
             startIndex += batchSize;
-            console.log(`Processed up to row: ${startIndex}`);
+            //console.log(`Processed up to row: ${startIndex}`);
           }
 
-          console.log('All batches processed');
+          //console.log('All batches processed');
 
           if (errors.length > 0) {
             //setErrorRows(errors);
