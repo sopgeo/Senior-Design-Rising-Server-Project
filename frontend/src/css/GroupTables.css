@@ -116,11 +116,12 @@
     margin: 10px 50px 10px 10px;
 }
 
-#add-group {
+.add-group-button {
+    max-width: 150px;
     display: flex;
     justify-content: center;
-    height: 35px;
-    width: 200px;
+    height: 33px;
+    width: 150px;
     color: black;
     border:none;
     background-color:#FFC904;
@@ -130,11 +131,11 @@
     margin-top: 5px;
 }
 
-.add-group-button{
+/* .add-group-button{
     display: flex;
     justify-content: center;
     height: 35px;
-    width: 200px;
+    width: 300px;
     color: white;
     border:none;
     background-color:black;
@@ -142,7 +143,7 @@
     padding-bottom: 5px;
     padding-top: 5px;
     margin-top: 5px;
-}
+} */
 
 .semester-buttons-container{
     display:flex;

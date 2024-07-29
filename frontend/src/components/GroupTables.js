@@ -264,7 +264,7 @@ function GroupTables ({section, data, deleteComponent}) {
                     {isSemesterExpanded && (
                         <div className="group-name">
                                 <input ref={groupTitleRef} placeholder="Enter Group Name" ></input>
-                                <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
+                                <button className="add-group-button" onClick={() => addGroup()}>+ Add Group</button>
                         </div>
                     )}
                 </div>
