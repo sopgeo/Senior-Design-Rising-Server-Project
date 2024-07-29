@@ -15,14 +15,13 @@ import 'react-loading-skeleton/dist/skeleton.css'
  * * * * * * * * * */
 function Project() {
   // Sets up variables we're using
-  const [user, setUser] = useState("public");
+  const [user] = useState("public");
   const [projectName, setProjectName] = useState("");
   const [description, setDescription] = useState("");
   const [sponsor, setSponsor] = useState("");
   const [show, setShow] = useState("");
   const [tags, setTags] = useState([]);
   const [students, setStudents] = useState([]);
-  const [loading, setLoading] = useState(false)
   const urlInfo = new URLSearchParams(window.location.search);
   var projectId = "";
   if (urlInfo.has("id")) {
@@ -56,7 +55,6 @@ function Project() {
           ? setSponsor(json.sponsor)
           : setSponsor("");
         try {
-          setLoading(true)
           setShow(Path.buildPath(json.documents[0].filepath, false));
         } catch {
           setShow("");
@@ -82,7 +80,7 @@ function Project() {
   }
 
   function getName() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return (
         <>
           <br />
@@ -139,7 +137,7 @@ function Project() {
   }
 
   function getDescription() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return <p className="Description">{description}</p>;
     }else{
       return <p className="Description"><Skeleton count={3}/></p>;
@@ -159,7 +157,7 @@ function Project() {
   }
 
   function displaySponsor() {
-    if (projectName != "") {
+    if (projectName !== "") {
       return (
         <>
           <br />
@@ -191,7 +189,7 @@ function Project() {
   }
 
   function displayStudents() {
-    if(projectName != ""){
+    if(projectName !== ""){
       return (
         <>
           <h3>Students</h3>
@@ -215,7 +213,7 @@ function Project() {
    * * * * * * * * * */
   function getPDF() {
     //console.log(show);
-    if (projectName == ""){
+    if (projectName === ""){
       return (
         <>
           <br />
@@ -227,32 +225,22 @@ function Project() {
           <br />
         </>
       );
-    }else if (show != "") {
+    }else if (show !== "") {
       return (
-        <div>
-          {loading ? 
-          (
-            <div className="loader"></div>
-          ) : 
-          (
-            <>
-            <br />
-            <div className="PDF">
-              <object
-                data={show}
-                type="application/pdf"
-                width="100%"
-                height="1000px"
-              ></object>
-            </div>
-            <br />
-            <br />
-            <br />
-          </>
-          
-          )
-          }
-        </div>
+        <>
+          <br />
+          <div className="PDF">
+            <object
+              data={show}
+              type="application/pdf"
+              width="100%"
+              height="1000px"
+            ></object>
+          </div>
+          <br />
+          <br />
+          <br />
+        </>
 
       );
     } else {

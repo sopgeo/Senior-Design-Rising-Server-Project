@@ -1,28 +1,18 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import "../css/GroupTables.css";
 import Path from "../components/Path";
 import Switch from "react-switch";
 
-function GroupTables ({section, data, deleteComponent}) {
+function GroupTables ({section, deleteComponent}) {
     const [groupData, setGroupData] = useState(section.groups || []); //Holds all of the data being displayed in this component
-    //console.log(groupData)
-    const [sectionName, setSectionName] = useState(section.title);
-    const [sectionId, setSectionId] = useState(section.section_id);
-    const [tempSectionName, setTempSectionName] = useState(""); //used when first typing the name of new section
+    console.log(groupData)
+    const [sectionName] = useState(section.title);
+    const [sectionId] = useState(section.section_id);
     const [submissionsEnabled, setSubmissionsEnabled] = useState(section.submissions_enabled);
     //For dropdown
     const [isSemesterExpanded, setIsSemesterExpanded] = useState(true);
     const [expandedGroups, setExpandedGroups] = useState({});
-    //For editing group member
-    const [editingMember, setEditingMember] = useState({groupIndex: null, memberIndex: null, editedName: "", originalName: ""});
-    //For adding a new Group
-    const [newGroupName, setNewGroupName] = useState("");
-    const [isAddingNewGroup, setIsAddingNewGroup] = useState(false); //keeps track of if a new group is being added and saved
-    //For adding a new member
-    const [newMemberName, setNewMemberName] = useState("");
-    const initAddingMemberState = Array.from({length: groupData.length}, () => false);// initializes the isAddingNewMember to be all false at the start
-    const [isAddingNewMember, setIsAddingNewMember] = useState(initAddingMemberState);
 
     function giveStatus(submitted) {
         if(submitted){
@@ -251,12 +241,12 @@ function GroupTables ({section, data, deleteComponent}) {
 
                     <div className="semester-buttons-container">
                         <button className="delete-section-button" onClick={deleteSection}>
-                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px" alt="delete"/>
                         </button>
                         <button 
                             className={`dropdown-button ${isSemesterExpanded ? 'rotated' : ''}`} 
                             onClick={toggleSemester}>
-                            <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px"/>
+                            <img src={require('../images/black-dropdown-button.png')} width="38px" height="38px" alt="delete"/>
                         </button>
                     </div>
                 </div>
@@ -264,7 +254,7 @@ function GroupTables ({section, data, deleteComponent}) {
                     {isSemesterExpanded && (
                         <div className="group-name">
                                 <input ref={groupTitleRef} placeholder="Enter Group Name" ></input>
-                                <button id="add-group"  onClick={() => addGroup()}>+ Add Group</button>
+                                <button className="add-group-button" onClick={() => addGroup()}>+ Add Group</button>
                         </div>
                     )}
                 </div>
@@ -279,12 +269,12 @@ function GroupTables ({section, data, deleteComponent}) {
                             </div>
                             <div className="groupName-buttons-container">
                                 <button className="delete-group-button" onClick={() => deleteGroup(group.group_id, index, false)}>
-                                    <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px"/>
+                                    <img className="delete-icon" src={require('../images/delete-button-white.png')} width="22px" height="22px" alt="delete"/>
                                 </button>
                                 <button 
                                     className={`dropdown-button group-button ${expandedGroups[index] ? `rotated` : ``} `}
                                     onClick={() => toggleGroup(index)}> 
-                                    <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px"/>
+                                    <img src={require('../images/white-dropdown-button.png')} width="22px" height="22px" alt="delete"/>
                                 </button>
                             </div>
                             
@@ -298,7 +288,7 @@ function GroupTables ({section, data, deleteComponent}) {
                                     <p className="col3"> {user.last_name} </p>
                                     <div className="member-button-container">
                                         <button className="delete-member-button" onClick={() => deleteUser(user.ucf_id, index, idx)}>
-                                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px"/>
+                                            <img className="delete-icon" src={require('../images/delete-button.png')} width="22px" height="22px" alt="delete"/>
                                         </button>
                                     </div>
                                 </li>

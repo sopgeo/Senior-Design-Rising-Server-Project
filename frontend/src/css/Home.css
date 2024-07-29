@@ -11,7 +11,6 @@ body {
     display: flex;
 }
 
-/* home page image of l3 harris */
 .header-logo {
     display: flex;
     z-index: 1;
@@ -52,7 +51,7 @@ body {
 }
 
 .white-rect p {
-    font-size: 22px;
+    font-size: 18px;
     /* width: 80%; */
 }
 
@@ -66,7 +65,7 @@ body {
 }
 
 .yellow-rect p {
-    font-size: 22px;
+    font-size: 18px;
     /* width: 80%;
     max-width: 80%; */
 }
@@ -103,7 +102,7 @@ body {
 }
 
 .black-rect p {
-    font-size: 22px;
+    font-size: 18px;
     color: white;
     max-width: 80vw;
 }
@@ -119,7 +118,7 @@ body {
 
 .white-rect2 p {
     /* margin: 5px; */
-    font-size: 22px;
+    font-size: 18px;
     width: 80%;
     max-width: 80%;
 }
@@ -279,22 +278,22 @@ body {
     }
     
     .mobile {
-        display: flex;
+        /* display: flex; */
         position: relative;
         width: 100vw;
         display: grid;
         height: 100%;
-        max-height: 100vh;
+        /* max-height: 100vh; */
         margin: auto;
     }
 
     .header-logo {
         padding: 10px;
-        margin-top: 200px;
+        margin-top: 150px;
         background-color: rgba(255, 201, 4, 0.8);
         color: black;
         font-weight: 700;
-        font-size: 2em;
+        font-size: 1.5em;
         max-width: 100vw;
     }
 }

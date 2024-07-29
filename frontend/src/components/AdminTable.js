@@ -48,7 +48,7 @@ function AdminTable() {
       const userData = {
           ucf_id: ucfIdRef.current.value,
           password: ucfIdRef.current.value,
-          group_id: null,
+          group_id: 2000,
           first_name: firstNameRef.current.value,
           last_name: lastNameRef.current.value,
           type: "admin",
