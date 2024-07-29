@@ -8,10 +8,9 @@ import CsFooter from "../components/CsFooter.js";
 import Path from "../components/Path.js";
 
 function Upload() {
-  const [uploadedURL, setUploadedURL] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [submissionsEnabled, setSubmissionsEnabled] = useState(1);
-  const [width, setWidth] = useState(window.innerWidth > 600);
+  const [width] = useState(window.innerWidth > 600);
   const [loading, setLoading] = useState(false)
   const [formErrors, setFormErrors] = useState({})
 
@@ -30,7 +29,6 @@ function Upload() {
 
   const [groupTitle, setGroupTitle] = useState(null);
   const [groupId, setGroupId] = useState(null);
-  const [userStorage, setUserStorage] = useState(null);
 
   const getGroupInformation = async (group_id) => {
     try {
