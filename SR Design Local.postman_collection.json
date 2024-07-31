@@ -1,0 +1,888 @@
+{
+	"info": {
+		"_postman_id": "07127fc2-7057-4742-86b4-4667b29de8ec",
+		"name": "SR Design Local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32357864",
+		"_collection_link": "https://www.postman.com/sdwebportal/workspace/sdwebportal-workspace/collection/32357864-07127fc2-7057-4742-86b4-4667b29de8ec?action=share&source=collection_link&creator=32357864"
+	},
+	"item": [
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "localhost:5000/api/project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const projectIds = [424, 190, 162];\r",
+									"\r",
+									"function testProjectId(projectId) {\r",
+									"    pm.sendRequest({\r",
+									"        url: `localhost:5000/api/project/getProject?project_id=${projectId}`,\r",
+									"        method: 'GET'\r",
+									"    }, function (err, response) {\r",
+									"        pm.test(`Project ${projectId} successfully fetched`, function () {\r",
+									"            pm.expect(response).to.have.status(200);\r",
+									"        });\r",
+									"        pm.test(`Project ${projectId} has coorect project_id field`, function () {\r",
+									"            let jsonData = response.json();\r",
+									"            pm.expect(jsonData).to.have.property('project_id', projectId);\r",
+									"        });\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"projectIds.forEach(testProjectId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/project/getProject?project_id=585",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"getProject"
+							],
+							"query": [
+								{
+									"key": "project_id",
+									"value": "585"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "localhost:5000/api/project",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:5000/api/project/getProject?project_id=424",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"project",
+										"getProject"
+									],
+									"query": [
+										{
+											"key": "project_id",
+											"value": "424"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "localhost:5000/api/project/createProject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"group_id\": 69,\r\n      \"name\": \"Test\",\r\n      \"sponsor\": \"Ryan\",\r\n      \"sponsor_contact\": \"Phone\",\r\n      \"description\": \"Good project\",\r\n      \"end_semester\": \"Spring\",\r\n      \"end_year\": 2024\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/project/createProject",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"createProject"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/project/getProjects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/project/getProjects",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"getProjects"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/project/getProjectMembers",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": \"399\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/project/getProjectMembers",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"getProjectMembers"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Don't want to break the example",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"project_id\": \"399\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/project/getProjectMembers",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"project",
+										"getProjectMembers"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "localhost:5000/api/project/searchProjects",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"query\": \"\",\r\n    \"semester\": \"Spring\",\r\n    \"year\": \"2022\",\r\n    \"tags\": [\"Fullstack\", \"Health\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://207.154.230.144/api/project/searchProjects",
+							"protocol": "http",
+							"host": [
+								"207",
+								"154",
+								"230",
+								"144"
+							],
+							"path": [
+								"api",
+								"project",
+								"searchProjects"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Messing around with queries",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:5000/api/project/searchProjects",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"api",
+										"project",
+										"searchProjects"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "localhost:5000/api/project/deleteProject",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": 967\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/project/deleteProject",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"project",
+								"deleteProject"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "localhost:5000/api/user/createUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ucf_id\": 54,\r\n    \"password\": \"jeff\",\r\n    \"type\": \"admin\",\r\n    \"group_id\": 1846,\r\n    \"first_name\": \"Test2\",\r\n    \"last_name\": \"Dev\",\r\n    \"section\": \"Dev\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/user/createUser",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"createUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/user/deleteUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ucf_id\": 53\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/user/deleteUser",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"deleteUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/user/loginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"ucf_id\": 53,\r\n    \"password\": \"jeff\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://207.154.230.144/api/user/loginUser",
+							"protocol": "http",
+							"host": [
+								"207",
+								"154",
+								"230",
+								"144"
+							],
+							"path": [
+								"api",
+								"user",
+								"loginUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/user/resetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ucf_id\": 53,\r\n    \"password\": \"pp\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/user/resetpassword",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"user",
+								"resetpassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "localhost:5000/api/file/upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "pdf",
+									"type": "file",
+									"src": "/C:/Users/ryang/Downloads/Lab2Latour.pdf"
+								},
+								{
+									"key": "projectId",
+									"value": "190",
+									"type": "text"
+								},
+								{
+									"key": "year",
+									"value": "1337",
+									"type": "text"
+								},
+								{
+									"key": "semester",
+									"value": "Spring",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:5000/api/file/upload",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/file/deleteFile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"project_id\": 967\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/file/deleteFile",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"file",
+								"deleteFile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tag",
+			"item": [
+				{
+					"name": "localhost:5000/api/tag/createTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"testy\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/tag/createTag",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tag",
+								"createTag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/tag/deleteTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag_id\": 58\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/tag/deleteTag",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tag",
+								"deleteTag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/tag/assignTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag_id\": 9,\r\n    \"project_id\": 424\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/tag/assignTag",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tag",
+								"assignTag"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/tag/tags",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/tag/tags",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tag",
+								"tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/tag/unassignTag",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tag_id\": 9,\r\n    \"project_id\": 424\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/tag/unassignTag",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tag",
+								"unassignTag"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Group",
+			"item": [
+				{
+					"name": "localhost:5000/api/group/getGroups",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"section_id\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://207.154.230.144/api/group/getGroups",
+							"protocol": "http",
+							"host": [
+								"207",
+								"154",
+								"230",
+								"144"
+							],
+							"path": [
+								"api",
+								"group",
+								"getGroups"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:5000/api/group/getGroupById",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"group_id\": 1846\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/group/getGroupById",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"group",
+								"getGroupById"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/group/createGroup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"section_id\": 2,\r\n    \"title\": \"DevGroup2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/group/createGroup",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"group",
+								"createGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/group/deleteGroup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"group_id\":1847\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/group/deleteGroup",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"group",
+								"deleteGroup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Section",
+			"item": [
+				{
+					"name": "localhost:5000/api/section/deleteSection",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"section_id\":4\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/section/deleteSection",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"section",
+								"deleteSection"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/section/createSection",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/section/createSection",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"section",
+								"createSection"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/section/getSections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:5000/api/section/getSections",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"section",
+								"getSections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:5000/api/section/changeSubmissionStatus",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"section_id\": 2,\r\n    \"status\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:5000/api/section/changeSubmissionStatus",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"section",
+								"changeSubmissionStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
