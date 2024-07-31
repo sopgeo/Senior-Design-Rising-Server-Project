@@ -13,6 +13,7 @@ export default function Login() {
     const [passwordForReset, setPasswordForReset] = useState('');
     const [idForReset, setIdForReset] = useState('')
     const [snackbarInfo, setSnackbarInfo] = useState({ open: false, message: '', severity: 'info' });
+    const [oldPassword, setOldPassword] = useState('')
     
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d\W_]{8,}$/
                           
@@ -24,6 +25,7 @@ export default function Login() {
         let hasError = false;
 
         setIdForReset(ucf_id)
+        setOldPassword(password)
 
         
         setShowTooltip({ ucf_id: false, password: false });
@@ -109,7 +111,7 @@ export default function Login() {
         try {
             const response = await fetch(Path.buildPath("api/user/resetPassword", true), {
                 method: 'POST',
-                body: JSON.stringify({ ucf_id: idForReset, password: passwordForReset }),
+                body: JSON.stringify({ ucf_id: idForReset, old_password: oldPassword, password: passwordForReset }),
                 headers: {
                     'Content-Type': 'application/json',
                 },

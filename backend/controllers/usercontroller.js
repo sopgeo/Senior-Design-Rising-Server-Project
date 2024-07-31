@@ -105,6 +105,12 @@ exports.resetPassword = async (req, res) => {
             throw Error("No user found");
         }
 
+        const match = await bcrypt.compare(req.body.old_password, user.password)
+        
+        if (!match) {
+            throw Error("Incorrect UCF ID or password")
+        }
+
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(req.body.password, salt)
 
